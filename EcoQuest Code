@@ -257,10 +257,10 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background:var(--bg); col
    ═══════════════════════════════════════════ */
 :root{
   --green:#2ECC40;--dark-green:#1a7a28;--red:#E74C3C;
-  --bg:#0d1b2e;--card:#1b2d4f;--card2:#162340;--text:#eaf4ff;
+  --bg:#87CEEB;--card:#ffffff;--card2:#e8f7ff;--text:#12304a;
   --accent:#00e5ff;--xp:#FFD600;--badge:#FF9800;
 }
-body{font-family:'Nunito',system-ui,sans-serif !important;background:var(--bg);background-image:radial-gradient(circle at 15% 20%,rgba(0,229,255,.05) 0%,transparent 45%),radial-gradient(circle at 85% 75%,rgba(46,204,64,.05) 0%,transparent 45%);}
+body{font-family:'Nunito',system-ui,sans-serif !important;background:linear-gradient(180deg,#87CEEB 0%,#bfefff 45%,#e9fbff 100%) !important;background-attachment:fixed !important;color:var(--text) !important;}
 #stars-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
 .star-dot{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d,3s) ease-in-out infinite;}
 @keyframes twinkle{0%,100%{opacity:.12;transform:scale(1)}50%{opacity:.85;transform:scale(1.6)}}
@@ -268,7 +268,7 @@ body{font-family:'Nunito',system-ui,sans-serif !important;background:var(--bg);b
 body{font-size:16px;}
 .card p{font-size:.97rem;}
 .choice-btn,.quiz-option,.eco-action{font-size:1rem !important;}
-#main-nav{background:rgba(10,22,40,.97) !important;border-bottom:3px solid var(--accent) !important;backdrop-filter:blur(12px);}
+#main-nav{background:rgba(10,40,65,.88) !important;border-bottom:3px solid var(--accent) !important;backdrop-filter:blur(12px);}
 #main-nav .logo{font-size:1.3rem !important;font-weight:900 !important;text-shadow:0 0 14px rgba(0,229,255,.7);letter-spacing:.5px;}
 .nav-btn{font-family:'Nunito',sans-serif !important;font-weight:700 !important;background:rgba(255,255,255,.06) !important;border:1.5px solid rgba(0,229,255,.3) !important;font-size:.8rem !important;}
 .nav-btn:hover,.nav-btn.active{box-shadow:0 0 12px rgba(0,229,255,.5) !important;}
@@ -396,6 +396,567 @@ body{font-size:16px;}
   .world-banner h1{font-size:1.8rem !important;}
 }
 </style>
+
+<style>
+/* =========================================================
+   ECOQUEST KID-FIRST VISUAL UPGRADE v3
+   Pure CSS enhancement - keeps existing HTML/JS/game logic
+   ========================================================= */
+:root{
+  --kid-bg:#071a2f;
+  --kid-card:#102b49;
+  --kid-card-2:#15395c;
+  --kid-text:#f7fbff;
+  --kid-muted:#b9d5ea;
+  --kid-cyan:#3de7ff;
+  --kid-blue:#4f8cff;
+  --kid-green:#45e68a;
+  --kid-lime:#b7f34a;
+  --kid-yellow:#ffd84d;
+  --kid-pink:#ff72c8;
+  --kid-orange:#ff9d3d;
+  --kid-purple:#a77bff;
+  --kid-shadow:0 18px 50px rgba(0,0,0,.30);
+}
+
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Nunito',system-ui,sans-serif !important;
+  color:var(--kid-text) !important;
+  background:
+    radial-gradient(circle at 10% 10%,rgba(61,231,255,.12),transparent 30%),
+    radial-gradient(circle at 90% 25%,rgba(167,123,255,.10),transparent 28%),
+    radial-gradient(circle at 25% 90%,rgba(69,230,138,.09),transparent 30%),
+    linear-gradient(135deg,#061326,#0a2038 48%,#081a2e) !important;
+}
+
+body::before{
+  content:'';
+  position:fixed;
+  inset:-30%;
+  pointer-events:none;
+  z-index:-1;
+  background:
+    radial-gradient(circle,rgba(255,255,255,.055) 0 2px,transparent 3px) 0 0/90px 90px;
+  animation:starDrift 35s linear infinite;
+  opacity:.45;
+}
+@keyframes starDrift{from{transform:translate3d(0,0,0)}to{transform:translate3d(90px,90px,0)}}
+
+.screen{animation:screenIn .45s cubic-bezier(.22,.8,.25,1);}
+@keyframes screenIn{
+  from{opacity:0;transform:translateY(14px) scale(.985)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+/* NAVIGATION */
+#main-nav{
+  min-height:64px !important;
+  padding:9px 18px !important;
+  background:rgba(5,18,34,.82) !important;
+  border-bottom:1px solid rgba(61,231,255,.38) !important;
+  box-shadow:0 8px 30px rgba(0,0,0,.22) !important;
+  backdrop-filter:blur(18px) saturate(140%) !important;
+}
+#main-nav .logo{
+  font-size:1.35rem !important;
+  color:#ffffff !important;
+  text-shadow:0 0 16px rgba(61,231,255,.75) !important;
+  letter-spacing:.3px;
+}
+#main-nav .logo::after{
+  content:' • PLAY • LEARN • PROTECT';
+  color:var(--kid-green);
+  font-size:.58rem;
+  letter-spacing:1.2px;
+  vertical-align:middle;
+  margin-left:5px;
+}
+.nav-links{gap:7px !important;}
+.nav-btn{
+  min-height:35px;
+  padding:6px 12px !important;
+  border-radius:999px !important;
+  background:rgba(255,255,255,.045) !important;
+  border:1px solid rgba(255,255,255,.12) !important;
+  color:#eaf7ff !important;
+  font-weight:800 !important;
+  transition:transform .2s,box-shadow .2s,background .2s !important;
+}
+.nav-btn:hover,.nav-btn.active{
+  transform:translateY(-2px) !important;
+  background:linear-gradient(135deg,rgba(61,231,255,.22),rgba(79,140,255,.18)) !important;
+  border-color:rgba(61,231,255,.6) !important;
+  box-shadow:0 8px 20px rgba(0,0,0,.22),0 0 16px rgba(61,231,255,.18) !important;
+}
+.nav-btn.parent-btn:hover{
+  background:linear-gradient(135deg,rgba(255,157,61,.25),rgba(255,114,200,.18)) !important;
+  border-color:rgba(255,157,61,.65) !important;
+}
+
+.xp-bar{
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:999px;
+  padding:5px 9px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+}
+#nav-xp{color:var(--kid-yellow) !important;text-shadow:0 0 10px rgba(255,216,77,.35);}
+
+.content{padding-top:70px !important;}
+
+/* BUTTONS */
+.btn{
+  min-height:46px;
+  padding:12px 24px !important;
+  border-radius:18px !important;
+  font-weight:900 !important;
+  letter-spacing:.2px;
+  box-shadow:0 8px 20px rgba(0,0,0,.20);
+  transition:transform .18s,box-shadow .18s,filter .18s !important;
+}
+.btn::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,transparent 20%,rgba(255,255,255,.22) 45%,transparent 70%);
+  transform:translateX(-120%);
+  transition:transform .55s ease;
+}
+.btn:hover::after{transform:translateX(120%);}
+.btn:hover{transform:translateY(-4px) scale(1.025) !important;filter:saturate(1.08);}
+.btn:active{transform:translateY(0) scale(.985) !important;}
+
+.btn-primary{background:linear-gradient(135deg,#21d4fd,#3877ff 55%,#7657ff) !important;}
+.btn-green{background:linear-gradient(135deg,#32db7a,#18a957) !important;}
+.btn-water{background:linear-gradient(135deg,#32c8ff,#2969ff) !important;}
+.btn-air{background:linear-gradient(135deg,#59e1e8,#10a8c4) !important;}
+.btn-soil{background:linear-gradient(135deg,#b88a67,#74462f) !important;}
+.btn-fire{background:linear-gradient(135deg,#ffb340,#ff5d62) !important;}
+.btn-yellow{background:linear-gradient(135deg,#ffe36a,#ffb52e) !important;}
+
+/* HERO */
+.hero{padding:78px 20px 45px !important;}
+.hero h1{text-shadow:0 8px 28px rgba(0,0,0,.25);}
+.hero p{color:#cae1f3 !important;line-height:1.75;}
+
+/* CARDS */
+.card{
+  background:
+    linear-gradient(145deg,rgba(21,57,92,.94),rgba(12,39,65,.96)) !important;
+  border:1px solid rgba(141,218,255,.13) !important;
+  border-radius:24px !important;
+  padding:22px !important;
+  box-shadow:var(--kid-shadow),inset 0 1px 0 rgba(255,255,255,.055) !important;
+  position:relative;
+  overflow:hidden;
+}
+.card::before{
+  content:'';
+  position:absolute;
+  width:120px;height:120px;
+  top:-70px;right:-65px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(61,231,255,.12),transparent 65%);
+  pointer-events:none;
+}
+.card:hover{
+  transform:translateY(-7px) !important;
+  border-color:rgba(61,231,255,.45) !important;
+  box-shadow:0 24px 55px rgba(0,0,0,.35),0 0 0 1px rgba(61,231,255,.08) !important;
+}
+.card h3{font-weight:900 !important;}
+.card p{line-height:1.7 !important;color:#d2e5f4;}
+
+/* FEATURE CARDS / GRIDS */
+.grid-2,.grid-3{gap:20px !important;}
+.grid-2>.card,.grid-3>.card{animation:cardFloatIn .55s both;}
+.grid-2>.card:nth-child(2),.grid-3>.card:nth-child(2){animation-delay:.06s;}
+.grid-2>.card:nth-child(3),.grid-3>.card:nth-child(3){animation-delay:.12s;}
+@keyframes cardFloatIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+
+/* HOME ADVENTURE ICONS */
+.world-node .world-circle,
+#screen-home [onclick*="showScreen"] > div:first-child{
+  position:relative;
+  overflow:visible;
+}
+.world-circle::after,
+#screen-home [onclick*="showScreen"] > div:first-child::after{
+  content:'';
+  position:absolute;
+  inset:-7px;
+  border-radius:50%;
+  border:2px solid rgba(255,255,255,.18);
+  animation:ringPulse 2.6s ease-in-out infinite;
+}
+@keyframes ringPulse{0%,100%{transform:scale(.92);opacity:.25}50%{transform:scale(1.08);opacity:.75}}
+
+/* MAP */
+#screen-map .map-container{
+  background:
+    radial-gradient(circle at center,rgba(61,231,255,.08),transparent 30%),
+    radial-gradient(circle at 15% 70%,rgba(69,230,138,.08),transparent 25%),
+    radial-gradient(circle at 90% 30%,rgba(167,123,255,.08),transparent 25%);
+  border-radius:30px;
+  overflow:hidden;
+}
+.world-circle{
+  width:124px !important;
+  height:124px !important;
+  border-width:5px !important;
+  box-shadow:0 12px 30px rgba(0,0,0,.35),inset 0 2px 8px rgba(255,255,255,.22) !important;
+}
+.world-circle:not(.locked){animation:mapBob 3.4s ease-in-out infinite;}
+.world-node:nth-of-type(2) .world-circle{animation-delay:.4s;}
+.world-node:nth-of-type(3) .world-circle{animation-delay:.8s;}
+@keyframes mapBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.world-node:hover .world-circle:not(.locked){animation:none;transform:scale(1.14) rotate(-2deg) !important;}
+.world-label{
+  padding:8px 12px;
+  border-radius:14px;
+  background:rgba(4,17,31,.72);
+  border:1px solid rgba(255,255,255,.1);
+  backdrop-filter:blur(8px);
+}
+
+/* WORLD BANNERS */
+.world-banner{
+  border-radius:0 0 34px 34px !important;
+  box-shadow:0 15px 35px rgba(0,0,0,.2);
+}
+.world-banner h1{letter-spacing:.2px;}
+.world-banner p{max-width:760px;margin:8px auto 0 !important;line-height:1.65;}
+.world-banner-badge{
+  background:rgba(255,255,255,.14) !important;
+  border:1px solid rgba(255,255,255,.2) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+/* TABS */
+.tabs{
+  position:sticky;
+  top:64px;
+  z-index:20;
+  background:rgba(5,18,34,.76);
+  backdrop-filter:blur(12px);
+  padding:12px 16px !important;
+  border-bottom:1px solid rgba(255,255,255,.08) !important;
+}
+.tab-btn{
+  min-height:42px;
+  padding:9px 17px !important;
+  border-radius:999px !important;
+  font-weight:900 !important;
+  transition:transform .18s,background .18s,box-shadow .18s !important;
+}
+.tab-btn:hover{transform:translateY(-2px);}
+.tab-btn.active{box-shadow:0 8px 18px rgba(61,231,255,.18) !important;}
+
+/* QUIZ */
+.quiz-option,.choice-btn{
+  position:relative;
+  overflow:hidden;
+  min-height:54px;
+  padding:14px 18px !important;
+  border-radius:18px !important;
+  background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025)) !important;
+  border:2px solid rgba(255,255,255,.11) !important;
+  color:#f6fbff !important;
+  line-height:1.45;
+}
+.quiz-option::before,.choice-btn::before{
+  content:'';
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:5px;
+  background:linear-gradient(var(--kid-cyan),var(--kid-purple));
+  transform:scaleY(0);
+  transition:transform .2s ease;
+}
+.quiz-option:hover::before,.choice-btn:hover::before{transform:scaleY(1);}
+.quiz-option:hover,.choice-btn:hover{
+  transform:translateY(-3px) translateX(2px) !important;
+  background:linear-gradient(145deg,rgba(61,231,255,.12),rgba(167,123,255,.08)) !important;
+  border-color:rgba(61,231,255,.5) !important;
+  box-shadow:0 10px 25px rgba(0,0,0,.18);
+}
+.quiz-option.correct,.choice-btn.correct{
+  background:linear-gradient(135deg,rgba(69,230,138,.25),rgba(69,230,138,.08)) !important;
+  border-color:#45e68a !important;
+  box-shadow:0 0 26px rgba(69,230,138,.18) !important;
+}
+.quiz-option.wrong,.choice-btn.wrong{
+  background:linear-gradient(135deg,rgba(255,95,98,.22),rgba(255,95,98,.06)) !important;
+  border-color:#ff7779 !important;
+}
+
+/* PROGRESS */
+.progress-container{
+  background:rgba(255,255,255,.07) !important;
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.2);
+}
+.progress-fill{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(90deg,#35d6ff,#45e68a,#ffd84d) !important;
+}
+.progress-fill::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.45) 48%,transparent 76%);
+  transform:translateX(-120%);
+  animation:progressShine 2.2s linear infinite;
+}
+@keyframes progressShine{to{transform:translateX(120%)}}
+
+/* XP */
+#xp-popup{
+  border:2px solid rgba(255,255,255,.65) !important;
+  box-shadow:0 15px 35px rgba(255,190,50,.25),0 0 30px rgba(255,216,77,.22) !important;
+  animation:xpPop .55s cubic-bezier(.2,.9,.25,1.5) !important;
+}
+@keyframes xpPop{0%{opacity:0;transform:translateY(-12px) scale(.65) rotate(-3deg)}65%{opacity:1;transform:translateY(3px) scale(1.08) rotate(1deg)}100%{transform:translateY(0) scale(1) rotate(0)}}
+
+/* BADGES */
+.badge-item{
+  background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.025)) !important;
+  border:2px solid rgba(255,255,255,.08) !important;
+  box-shadow:0 10px 25px rgba(0,0,0,.18);
+}
+.badge-item:hover{transform:translateY(-7px) scale(1.03);}
+.badge-icon{filter:drop-shadow(0 5px 10px rgba(0,0,0,.25));}
+.badge-item.earned{animation:badgeWiggle 4s ease-in-out infinite;}
+@keyframes badgeWiggle{0%,92%,100%{transform:rotate(0)}94%{transform:rotate(-4deg)}96%{transform:rotate(4deg)}98%{transform:rotate(-2deg)}}
+
+/* ECO ACTIONS */
+.eco-action{
+  min-height:58px;
+  background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.02)) !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  border-radius:18px !important;
+}
+.eco-action:hover{transform:translateX(6px) !important;}
+.eco-action.done{box-shadow:0 8px 22px rgba(69,230,138,.11);}
+.eco-check{box-shadow:0 0 0 4px rgba(69,230,138,.07);}
+
+/* DRAG AND DROP */
+.drag-item{
+  min-height:50px;
+  background:linear-gradient(145deg,#163c61,#0e2844) !important;
+}
+.drag-item:hover{box-shadow:0 12px 28px rgba(0,0,0,.22),0 0 18px rgba(61,231,255,.11) !important;}
+.drop-zone{
+  background:rgba(255,255,255,.025);
+  min-height:145px !important;
+}
+.drop-zone.drag-over{box-shadow:0 0 0 5px rgba(61,231,255,.06);}
+
+/* SCENARIO / LEARNING BOXES */
+.scenario-box{
+  background:linear-gradient(145deg,rgba(61,231,255,.10),rgba(167,123,255,.06)) !important;
+  border:1px solid rgba(61,231,255,.34) !important;
+  box-shadow:0 12px 30px rgba(0,0,0,.18);
+}
+.fun-fact{box-shadow:0 10px 26px rgba(0,0,0,.13);}
+.safety-box{box-shadow:0 10px 24px rgba(255,157,61,.10);}
+
+/* SOIL WORLD */
+.soil-env{
+  border:2px solid rgba(255,255,255,.12);
+  box-shadow:0 18px 40px rgba(0,0,0,.25) !important;
+}
+.soil-env::after{
+  content:'🌱  🪱  🍄  🐛';
+  position:absolute;
+  left:10%;right:10%;bottom:4%;
+  display:flex;justify-content:space-between;
+  font-size:1.3rem;
+  opacity:.35;
+  pointer-events:none;
+}
+.clickable-obj{animation:objFloat 3s ease-in-out infinite;}
+.clickable-obj:nth-child(2){animation-delay:.25s}.clickable-obj:nth-child(3){animation-delay:.5s}.clickable-obj:nth-child(4){animation-delay:.75s}
+@keyframes objFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+/* GARDEN GAME */
+.garden-grid{gap:14px !important;}
+.garden-cell{
+  background:linear-gradient(145deg,rgba(113,72,45,.92),rgba(70,42,30,.9)) !important;
+  box-shadow:inset 0 4px 10px rgba(0,0,0,.18);
+}
+.garden-cell:hover{box-shadow:0 10px 25px rgba(69,230,138,.12) !important;}
+.garden-cell.planted{box-shadow:inset 0 -8px 20px rgba(69,230,138,.10),0 10px 24px rgba(69,230,138,.12) !important;}
+
+/* CYCLE */
+.cycle-item{background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.025)) !important;}
+.cycle-item.active{box-shadow:0 12px 28px rgba(61,231,255,.12);}
+
+/* CHATBOT */
+.chat-fab{
+  width:64px !important;height:64px !important;
+  background:linear-gradient(135deg,#ffb83d,#ff5b67) !important;
+  border:3px solid rgba(255,255,255,.6) !important;
+  box-shadow:0 12px 28px rgba(0,0,0,.3),0 0 24px rgba(255,157,61,.28) !important;
+  animation:chatPulse 2.4s ease-in-out infinite;
+}
+@keyframes chatPulse{0%,100%{box-shadow:0 12px 28px rgba(0,0,0,.3),0 0 0 0 rgba(255,157,61,.25)}50%{box-shadow:0 12px 28px rgba(0,0,0,.3),0 0 0 12px rgba(255,157,61,0)}}
+.chat-window{
+  width:min(380px,calc(100vw - 24px)) !important;
+  height:min(560px,calc(100vh - 110px)) !important;
+  border:2px solid rgba(255,157,61,.45) !important;
+  box-shadow:0 24px 60px rgba(0,0,0,.4) !important;
+}
+
+/* CERTIFICATE */
+.certificate{
+  background:
+    radial-gradient(circle at top left,rgba(255,216,77,.12),transparent 30%),
+    linear-gradient(145deg,#122e4c,#0b2038) !important;
+}
+
+/* MOBILE BOTTOM NAV */
+#bottom-nav{
+  background:rgba(5,18,34,.92) !important;
+  backdrop-filter:blur(18px) !important;
+  box-shadow:0 -10px 30px rgba(0,0,0,.22) !important;
+}
+.bnav-btn{border-radius:14px;}
+.bnav-btn:active,.bnav-btn.active{background:rgba(61,231,255,.08);}
+
+/* HEADINGS AND SECTIONS */
+.section-header h2{letter-spacing:-.2px;}
+.section-header p{color:var(--kid-muted) !important;line-height:1.6;}
+.divider{opacity:.75;}
+
+/* TOOLTIP */
+.tooltip-text{
+  border-radius:12px !important;
+  padding:8px 11px !important;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+/* FOCUS ACCESSIBILITY */
+button:focus-visible,
+[tabindex]:focus-visible,
+.clickable-obj:focus-visible{
+  outline:3px solid var(--kid-yellow) !important;
+  outline-offset:4px !important;
+}
+
+/* REDUCED MOTION */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+    scroll-behavior:auto !important;
+  }
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  #main-nav .logo::after{display:none;}
+  .world-circle{width:104px !important;height:104px !important;}
+}
+@media(max-width:600px){
+  #main-nav{padding:8px 10px !important;}
+  #main-nav .logo{font-size:1.08rem !important;}
+  .xp-bar{padding:4px 6px !important;}
+  #nav-xp{font-size:.84rem !important;}
+  #nav-xp-bar{width:55px !important;}
+  .content{padding-top:62px !important;padding-bottom:84px !important;}
+  .card{padding:18px !important;border-radius:20px !important;}
+  .section-header{padding:22px 14px 6px !important;}
+  .section-header h2{font-size:1.65rem !important;}
+  .world-circle{width:82px !important;height:82px !important;font-size:2rem !important;}
+  .world-label{font-size:.78rem !important;padding:6px 8px !important;}
+  .tabs{top:58px;padding:9px 10px !important;overflow-x:auto;flex-wrap:nowrap !important;}
+  .tab-btn{white-space:nowrap;min-height:40px;padding:8px 14px !important;}
+  .btn{width:auto;max-width:100%;}
+  .chat-window{right:12px !important;bottom:76px !important;}
+  #watson-chat{right:12px !important;bottom:16px !important;}
+}
+</style>
+
+<style>
+
+/* ============================================================
+   ECOQUEST ADVENTURE GAME UPGRADE — 5 MISSIONS PER WORLD
+   ============================================================ */
+.game-world-banner{padding:38px 20px 34px!important;position:relative;overflow:hidden;background-size:200% 200%!important;animation:bannerShift 8s ease infinite;}
+@keyframes bannerShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.world-mascot{font-size:5rem;filter:drop-shadow(0 8px 20px rgba(255,255,255,.28));animation:heroBob 2.8s ease-in-out infinite;margin-bottom:4px}
+@keyframes heroBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}}
+.world-banner-stats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:15px}
+.pollution-tabs{position:sticky;top:58px;z-index:40;background:rgba(13,27,46,.92);backdrop-filter:blur(12px);box-shadow:0 6px 22px rgba(0,0,0,.22)}
+.game-level-shell{max-width:1120px;margin:0 auto;padding:24px 18px 40px}
+.mission-intro-card{display:flex;align-items:center;gap:16px;padding:18px 20px;margin-bottom:20px;border-radius:24px;background:linear-gradient(135deg,rgba(0,229,255,.14),rgba(46,204,64,.10));border:2px solid rgba(0,229,255,.28);box-shadow:0 12px 35px rgba(0,0,0,.18);position:relative;overflow:hidden}
+.mission-intro-card::after{content:'';position:absolute;inset:auto -20px -42px auto;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.06);}
+.mission-intro-card.water-intro{background:linear-gradient(135deg,rgba(66,165,245,.18),rgba(0,229,255,.08));border-color:rgba(66,165,245,.35)}
+.mission-intro-icon{font-size:3.2rem;animation:float 3s ease-in-out infinite}
+.mission-intro-card h2{font-size:1.5rem;font-weight:900;margin-bottom:4px}
+.mission-intro-card p{color:#b7cee7;line-height:1.55}
+.mission-progress-pill{margin-left:auto;white-space:nowrap;padding:9px 13px;border-radius:20px;background:rgba(255,214,0,.14);border:1.5px solid rgba(255,214,0,.4);color:var(--xp);font-weight:900;font-size:.82rem}
+.mission-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.mission-card{position:relative;background:linear-gradient(145deg,rgba(27,45,79,.97),rgba(18,34,59,.97));border:2px solid rgba(255,255,255,.09);border-radius:26px;padding:18px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.22);transition:transform .25s,box-shadow .25s,border-color .25s}
+.mission-card::before{content:'';position:absolute;inset:0 auto 0 0;width:5px;background:linear-gradient(180deg,#00e5ff,#2ECC40);opacity:.7}
+.air-mission::before{background:linear-gradient(180deg,#80DEEA,#00BCD4)}
+.water-mission::before{background:linear-gradient(180deg,#90CAF9,#1565C0)}
+.mission-card:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.2);box-shadow:0 18px 40px rgba(0,0,0,.3)}
+.mission-card[data-status='✅ Completed']{border-color:rgba(46,204,64,.55);box-shadow:0 0 28px rgba(46,204,64,.14)}
+.mission-card[data-status='✅ Completed']::after{content:'✅ COMPLETED';position:absolute;right:14px;top:14px;padding:5px 9px;border-radius:14px;background:rgba(46,204,64,.16);border:1px solid rgba(46,204,64,.4);font-size:.68rem;font-weight:900;color:#8ff29a}
+.boss-mission{grid-column:1/-1;background:linear-gradient(145deg,rgba(76,45,96,.95),rgba(29,30,69,.98));border-color:rgba(255,214,0,.24)}
+.boss-mission::before{background:linear-gradient(180deg,#FFD600,#FF9800,#FF69B4)}
+.mission-card-top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}
+.mission-number{font-size:.73rem;letter-spacing:.8px;font-weight:900;color:#8cdff0}
+.water-mission .mission-number{color:#7fbfff}
+.mission-xp{padding:5px 9px;border-radius:14px;background:rgba(255,214,0,.11);border:1px solid rgba(255,214,0,.25);color:var(--xp);font-size:.72rem;font-weight:900}
+.mission-title{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}
+.mission-icon{font-size:2.25rem;line-height:1;filter:drop-shadow(0 6px 10px rgba(0,0,0,.28))}
+.mission-title h3{font-size:1.2rem;font-weight:900;margin-bottom:3px}
+.mission-title p{font-size:.84rem;color:#a8c1da;line-height:1.45}
+.game-panel{background:rgba(7,18,33,.52);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+.game-hud{display:flex;justify-content:space-between;align-items:center;gap:10px;color:#cce5f4;font-size:.78rem;font-weight:800;margin-bottom:10px}
+.game-hud span:last-child{color:var(--xp);font-size:.9rem}
+.icon-game-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.game-object{min-height:92px;border:2px solid rgba(255,255,255,.1);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.05),rgba(0,229,255,.03));color:#fff;cursor:pointer;font-size:2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:.2s;font-family:'Nunito',sans-serif}
+.game-object small{font-size:.68rem;color:#b7cee7;font-weight:800}
+.game-object:hover{transform:translateY(-4px) rotate(-2deg);border-color:#80DEEA;box-shadow:0 10px 24px rgba(0,229,255,.12)}
+.game-object.hit{background:rgba(231,76,60,.12);border-color:rgba(231,76,60,.65);animation:badPop .35s ease}
+.game-object.safe{background:rgba(46,204,64,.12);border-color:rgba(46,204,64,.65);animation:goodPop .35s ease}
+@keyframes goodPop{0%{transform:scale(.9)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes badPop{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.game-feedback{min-height:42px;margin-top:10px;border-radius:14px;padding:10px 12px;background:rgba(255,255,255,.035);color:#c7d8e8;font-size:.82rem;line-height:1.45;display:flex;align-items:center}
+.scenario-round{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:9px;padding:11px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07)}
+.scenario-round span{grid-column:1/-1;color:#80deea;font-weight:900;font-size:.74rem}.scenario-round strong{grid-column:1/-1;font-size:.8rem;margin-bottom:2px}
+.scenario-round button,.power-choice,.city-upgrade,.sort-challenge button,.detective-questions button,.saver-step button{border:2px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);color:#fff;border-radius:14px;padding:9px 10px;cursor:pointer;font-weight:800;font-family:'Nunito',sans-serif;transition:.18s;font-size:.75rem}
+.scenario-round button:hover,.power-choice:hover,.city-upgrade:hover,.sort-challenge button:hover,.detective-questions button:hover,.saver-step button:hover{transform:translateY(-2px);border-color:rgba(0,229,255,.55);background:rgba(0,229,255,.08)}
+.scenario-round button.selected-good,.power-choice.selected-good,.city-upgrade.selected-good,.saver-step button.selected-good,.sort-challenge button.selected-good,.detective-questions button.selected-good{border-color:#2ECC40;background:rgba(46,204,64,.16);box-shadow:0 0 18px rgba(46,204,64,.14)}
+.scenario-round button.selected-bad,.power-choice.selected-bad,.city-upgrade.selected-bad,.saver-step button.selected-bad,.sort-challenge button.selected-bad,.detective-questions button.selected-bad{border-color:#E74C3C;background:rgba(231,76,60,.13)}
+.sky-game{background:linear-gradient(180deg,rgba(70,150,210,.15),rgba(8,18,34,.55))}
+.cloud-battle{height:190px;border-radius:18px;position:relative;overflow:hidden;background:linear-gradient(180deg,#69c9ef 0%,#bcecff 70%,#7ed957 70%,#5eae38 100%);box-shadow:inset 0 -30px 50px rgba(0,0,0,.12)}
+.cloud-battle::before{content:'🏙️';position:absolute;bottom:12px;left:10%;font-size:3.6rem;filter:drop-shadow(0 5px 7px rgba(0,0,0,.2))}
+.floating-cloud{position:absolute;border:0;background:none;cursor:pointer;font-size:2.6rem;filter:drop-shadow(0 5px 8px rgba(0,0,0,.22));animation:cloudFloat 2.8s ease-in-out infinite;transition:.2s}
+.floating-cloud:hover{transform:scale(1.18);filter:drop-shadow(0 7px 10px rgba(0,0,0,.3))}.floating-cloud.c1{left:8%;top:18%}.floating-cloud.c2{left:25%;top:48%;animation-delay:.3s}.floating-cloud.c3{left:42%;top:12%;animation-delay:.6s}.floating-cloud.c4{left:57%;top:52%;animation-delay:.9s}.floating-cloud.c5{left:71%;top:20%;animation-delay:1.2s}.floating-cloud.c6{left:83%;top:50%;animation-delay:1.5s}.floating-cloud.c7{left:32%;top:75%;animation-delay:1.8s}.floating-cloud.c8{left:65%;top:75%;animation-delay:2.1s}
+@keyframes cloudFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.floating-cloud.cleared{animation:cloudGone .45s ease forwards}@keyframes cloudGone{to{transform:scale(1.6);opacity:0}}
+.power-grid,.city-builder{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.power-choice,.city-upgrade{min-height:65px;font-size:.78rem}.power-choice.good{background:linear-gradient(145deg,rgba(46,204,64,.05),rgba(255,255,255,.03))}.power-choice.bad{background:linear-gradient(145deg,rgba(231,76,60,.05),rgba(255,255,255,.03))}
+.city-meter,.water-meter{height:14px;background:rgba(255,255,255,.08);border-radius:20px;overflow:hidden;margin-top:9px}.city-meter div{height:100%;width:0;background:linear-gradient(90deg,#00e5ff,#2ECC40,#FFD600);background-size:200% 100%;animation:meterShine 2.3s linear infinite;border-radius:inherit;transition:width .35s}.water-meter div{height:100%;width:0;background:linear-gradient(90deg,#42A5F5,#00e5ff,#8ef6ff);background-size:200% 100%;animation:meterShine 2s linear infinite;border-radius:inherit;transition:width .35s}@keyframes meterShine{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+.river-rescue{background:linear-gradient(180deg,rgba(66,165,245,.14),rgba(0,53,105,.18))}.river-field{position:relative;height:190px;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#75d4f7 0%,#2196F3 48%,#0D47A1 100%);box-shadow:inset 0 0 40px rgba(255,255,255,.08)}.river-field::after{content:'';position:absolute;left:0;right:0;bottom:0;height:34px;background:repeating-radial-gradient(ellipse at center,rgba(255,255,255,.16) 0 6px,transparent 7px 16px);opacity:.5}.river-field>button{position:absolute;border:0;background:rgba(255,255,255,.08);border-radius:50%;font-size:2rem;cursor:pointer;transition:.2s;padding:7px;animation:float 2.5s ease-in-out infinite}.river-field>button:nth-child(1){left:8%;top:20%}.river-field>button:nth-child(2){left:28%;top:50%}.river-field>button:nth-child(3){left:50%;top:22%}.river-field>button:nth-child(4){left:67%;top:54%}.river-field>button:nth-child(5){left:81%;top:18%}.river-field>button:nth-child(6){left:43%;top:73%}.river-field>button:hover{transform:scale(1.18)}.river-field>button.cleaned{animation:trashSplash .42s ease forwards}@keyframes trashSplash{to{transform:translateY(-15px) scale(1.6);opacity:0}}
+.fish-swim{position:absolute;font-size:2rem;animation:fishSwim 7s linear infinite}.fish-swim.f1{left:5%;top:35%}.fish-swim.f2{left:60%;top:72%;animation-delay:1s}.fish-swim.f3{left:20%;top:80%;animation-delay:2s}@keyframes fishSwim{0%{transform:translateX(0)}50%{transform:translateX(140px)}100%{transform:translateX(0)}}
+.sort-challenge,.detective-questions,.water-saver-scene{display:grid;gap:9px}.sort-challenge button{text-align:left}.detective-questions>div{padding:10px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06)}.detective-questions strong{display:block;font-size:.78rem;margin-bottom:6px}.detective-questions button{margin:2px;width:calc(50% - 6px)}
+.ocean-game{background:linear-gradient(180deg,rgba(20,120,190,.16),rgba(0,18,35,.58))}.ocean-board{height:190px;position:relative;overflow:hidden;border-radius:18px;background:linear-gradient(180deg,#55b9f2,#0b70bf 45%,#06396f);box-shadow:inset 0 -20px 50px rgba(0,0,0,.2)}.ocean-board::after{content:'';position:absolute;left:0;right:0;bottom:0;height:25px;background:linear-gradient(90deg,rgba(255,255,255,.12),transparent,rgba(255,255,255,.12));animation:waveSlide 4s linear infinite}@keyframes waveSlide{to{transform:translateX(80px)}}.ocean-board>button{position:absolute;border:0;background:rgba(255,255,255,.08);border-radius:50%;padding:8px;font-size:2rem;cursor:pointer;animation:float 2.7s ease-in-out infinite;transition:.2s}.ocean-board>button:nth-child(1){left:8%;top:18%}.ocean-board>button:nth-child(2){left:26%;top:63%}.ocean-board>button:nth-child(3){left:46%;top:25%}.ocean-board>button:nth-child(4){left:62%;top:61%}.ocean-board>button:nth-child(5){left:76%;top:28%}.ocean-board>button:nth-child(6){left:85%;top:68%}.ocean-board>button:hover{transform:scale(1.2)}.ocean-board>button.cleared{animation:trashSplash .4s ease forwards}.ocean-animal{position:absolute;font-size:2rem;z-index:2;animation:swimAnimal 5s linear infinite}.ocean-animal.a1{left:12%;top:73%}.ocean-animal.a2{left:58%;top:38%;animation-delay:.8s}.ocean-animal.a3{left:36%;top:72%;animation-delay:1.4s}@keyframes swimAnimal{50%{transform:translateX(70px) translateY(-7px)}100%{transform:translateX(0) translateY(0)}}
+.saver-step{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px;align-items:center;padding:10px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)}.saver-step>span{font-size:1.7rem;grid-row:1/3}.saver-step strong{font-size:.76rem}.saver-step button{font-size:.72rem}.water-saver-scene{margin-bottom:10px}
+.mission-claim{display:inline-flex;align-items:center;justify-content:center;gap:6px;margin-top:13px;border:0;border-radius:18px;padding:11px 16px;background:linear-gradient(135deg,#00e5ff,#0070f3);color:#fff;font:900 .88rem 'Nunito',sans-serif;cursor:pointer;transition:.2s;box-shadow:0 7px 18px rgba(0,229,255,.22)}.mission-claim:hover{transform:translateY(-2px) scale(1.02)}.water-claim{background:linear-gradient(135deg,#42A5F5,#1565C0)}.boss-claim{background:linear-gradient(135deg,#FFD600,#FF9800,#FF69B4);color:#172033;box-shadow:0 7px 20px rgba(255,190,0,.24)}.mission-claim:disabled{opacity:.75;cursor:default;transform:none}
+.muted-text{font-size:.85rem;color:#b0c4de;margin-top:6px}.game-object:focus-visible,.mission-claim:focus-visible,.scenario-round button:focus-visible,.power-choice:focus-visible,.city-upgrade:focus-visible,.sort-challenge button:focus-visible,.detective-questions button:focus-visible,.saver-step button:focus-visible,.ocean-board button:focus-visible,.river-field button:focus-visible{outline:3px solid #FFD600;outline-offset:2px}
+@media(max-width:860px){.mission-grid{grid-template-columns:1fr}.boss-mission{grid-column:auto}.mission-intro-card{flex-wrap:wrap}.mission-progress-pill{margin-left:0}.pollution-tabs{top:54px}.icon-game-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.game-level-shell{padding:14px 10px 30px}.mission-card{padding:14px;border-radius:20px}.mission-title h3{font-size:1.03rem}.mission-icon{font-size:1.9rem}.power-grid,.city-builder{grid-template-columns:repeat(2,1fr)}.scenario-round{grid-template-columns:1fr}.scenario-round button{grid-column:1}.detective-questions button{width:100%;margin:2px 0}.saver-step{grid-template-columns:auto 1fr}.saver-step button{grid-column:2}.cloud-battle,.river-field,.ocean-board{height:175px}.pollution-tabs{overflow-x:auto;justify-content:flex-start;flex-wrap:nowrap}.pollution-tabs .tab-btn{white-space:nowrap}}
+@media(prefers-reduced-motion:reduce){.game-world-banner,.world-mascot,.cloud-battle,.floating-cloud,.fish-swim,.ocean-animal,.mission-intro-icon,.city-meter div,.water-meter div{animation:none!important}.mission-card,.game-object,.mission-claim{transition:none!important}}
+
+</style>
 </head>
 <body>
 <!-- TWINKLING STARS BACKGROUND -->
@@ -518,12 +1079,12 @@ body{font-size:16px;}
     <!-- AIR CITY -->
     <div class="world-node" style="position:absolute; top:8%; left:50%; transform:translateX(-50%);" onclick="showScreen('air')">
       <div class="world-circle air">🌬️</div>
-      <div class="world-label">AIR CITY<br><span style="font-size:0.7rem;color:#80DEEA;" id="air-progress-label">0/6 Levels</span></div>
+      <div class="world-label">AIR CITY<br><span style="font-size:0.7rem;color:#80DEEA;" id="air-progress-label">0/5 Levels</span></div>
     </div>
     <!-- WATER VALLEY -->
     <div class="world-node" style="position:absolute; top:50%; left:8%; transform:translateY(-50%);" onclick="showScreen('water')">
       <div class="world-circle water">💧</div>
-      <div class="world-label">WATER VALLEY<br><span style="font-size:0.7rem;color:#42A5F5;" id="water-progress-label">0/6 Levels</span></div>
+      <div class="world-label">WATER VALLEY<br><span style="font-size:0.7rem;color:#42A5F5;" id="water-progress-label">0/5 Levels</span></div>
     </div>
     <!-- SOIL GARDENS -->
     <div class="world-node" style="position:absolute; top:50%; right:8%; transform:translateY(-50%);" onclick="showScreen('soil')">
@@ -863,149 +1424,281 @@ body{font-size:16px;}
 
 <!-- ==================== AIR POLLUTION WORLD ==================== -->
 <div id="screen-air" class="screen content">
-  <div class="world-banner air-banner">
-    <div style="font-size:4rem;filter:drop-shadow(0 6px 18px rgba(0,0,0,.5));animation:float 3.5s ease-in-out infinite;margin-bottom:4px;">🌬️</div>
+  <div class="world-banner air-banner game-world-banner">
+    <div class="world-mascot">🌬️</div>
     <h1>🌬️ Air City World</h1>
-    <p>Discover what pollutes our air and how clean air keeps us and nature healthy!</p>
-    <div style="margin-top:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-      <span class="world-banner-badge">🎯 4 Levels</span>
-      <span class="world-banner-badge">🎮 Quiz + Game</span>
+    <p>Complete 5 missions, clean the skies, and become an Air Guardian!</p>
+    <div class="world-banner-stats">
+      <span class="world-banner-badge">🎯 5 Game Levels</span>
+      <span class="world-banner-badge">⭐ XP + Badges</span>
       <span class="world-banner-badge" id="air-xp-earned">⭐ 0 XP Earned</span>
     </div>
   </div>
-  <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('air','info')">📖 Learn</button>
+
+  <div class="tabs pollution-tabs">
+    <button class="tab-btn active" onclick="showTab('air','levels')">🎮 Missions</button>
+    <button class="tab-btn" onclick="showTab('air','info')">📖 Learn</button>
     <button class="tab-btn" onclick="showTab('air','quiz')">❓ Quiz</button>
-    <button class="tab-btn" onclick="showTab('air','game')">🎮 Mini Game</button>
     <button class="tab-btn" onclick="showTab('air','actions')">✅ Actions</button>
   </div>
-  <div class="tab-content active" id="air-tab-info">
+
+  <div class="tab-content active" id="air-tab-levels">
+    <div class="game-level-shell">
+      <div class="mission-intro-card">
+        <div class="mission-intro-icon">🦸</div>
+        <div>
+          <h2>Air Hero Training</h2>
+          <p>Each mission teaches one important idea. Play it, learn from your mistakes, then unlock the next mission.</p>
+        </div>
+        <div class="mission-progress-pill" id="air-mission-progress">0/5 Complete</div>
+      </div>
+
+      <div class="mission-grid">
+        <div class="mission-card air-mission" data-level="1">
+          <div class="mission-card-top"><span class="mission-number">LEVEL 1</span><span class="mission-xp">+50 XP</span></div>
+          <div class="mission-title"><span class="mission-icon">🔎</span><div><h3>Pollution Spotter</h3><p>Find the objects that can make air dirty.</p></div></div>
+          <div class="game-panel" id="air-l1-panel">
+            <div class="game-hud"><span>🎯 Find 4 pollution sources</span><span id="air-l1-score">0/4</span></div>
+            <div class="icon-game-grid">
+              <button class="game-object" onclick="airL1Pick(this,true,'🏭 Factory smoke can pollute air.')">🏭<small>Factory</small></button>
+              <button class="game-object" onclick="airL1Pick(this,false,'🌳 Trees are part of a healthy green space.')">🌳<small>Tree</small></button>
+              <button class="game-object" onclick="airL1Pick(this,true,'🚗 Vehicle exhaust can add pollutants to the air.')">🚗<small>Traffic</small></button>
+              <button class="game-object" onclick="airL1Pick(this,false,'🐦 Birds are part of the ecosystem, not a pollution source.')">🐦<small>Bird</small></button>
+              <button class="game-object" onclick="airL1Pick(this,true,'🔥 Burning rubbish releases smoke and harmful pollutants.')">🔥<small>Burning waste</small></button>
+              <button class="game-object" onclick="airL1Pick(this,true,'🌫️ Fine dust particles can reduce air quality.')">🌫️<small>Dust</small></button>
+              <button class="game-object" onclick="airL1Pick(this,false,'🚲 Cycling produces no tailpipe emissions.')">🚲<small>Bicycle</small></button>
+              <button class="game-object" onclick="airL1Pick(this,false,'☀️ Solar energy can generate electricity without direct air pollution.')">☀️<small>Solar</small></button>
+            </div>
+            <div class="game-feedback" id="air-l1-feedback"></div>
+          </div>
+          <button class="mission-claim" id="air-l1-claim" style="display:none" onclick="claimLevel('air',1,50,'','🔎');refreshAirProgress();">⭐ Mission Complete!</button>
+        </div>
+
+        <div class="mission-card air-mission" data-level="2">
+          <div class="mission-card-top"><span class="mission-number">LEVEL 2</span><span class="mission-xp">+60 XP</span></div>
+          <div class="mission-title"><span class="mission-icon">🚦</span><div><h3>Clean Route Challenge</h3><p>Choose the better travel option for each trip.</p></div></div>
+          <div class="game-panel" id="air-l2-panel">
+            <div class="scenario-round"><span>🚌 Trip 1</span><strong>Going a short distance</strong><button onclick="airRouteAnswer(this,true)">🚶 Walk when safe</button><button onclick="airRouteAnswer(this,false)">🚗 Drive alone</button></div>
+            <div class="scenario-round"><span>🚍 Trip 2</span><strong>Going across town</strong><button onclick="airRouteAnswer(this,true)">🚌 Public transport</button><button onclick="airRouteAnswer(this,false)">🚗 Use a separate car</button></div>
+            <div class="scenario-round"><span>🚲 Trip 3</span><strong>Going to a nearby park</strong><button onclick="airRouteAnswer(this,true)">🚲 Cycle safely</button><button onclick="airRouteAnswer(this,false)">🚙 Leave the engine running</button></div>
+            <div class="game-feedback" id="air-l2-feedback"></div>
+          </div>
+          <button class="mission-claim" id="air-l2-claim" style="display:none" onclick="claimLevel('air',2,60,'','🚦');refreshAirProgress();">⭐ Mission Complete!</button>
+        </div>
+
+        <div class="mission-card air-mission" data-level="3">
+          <div class="mission-card-top"><span class="mission-number">LEVEL 3</span><span class="mission-xp">+70 XP</span></div>
+          <div class="mission-title"><span class="mission-icon">☁️</span><div><h3>Smog Buster</h3><p>Tap every pollution cloud before it covers the city!</p></div></div>
+          <div class="game-panel sky-game" id="air-l3-panel">
+            <div class="game-hud"><span>☁️ Pollution clouds</span><span id="air-l3-score">0/8</span></div>
+            <div class="cloud-battle" id="air-cloud-battle">
+              <button class="floating-cloud c1" onclick="airL3Cloud(this)">🌫️</button><button class="floating-cloud c2" onclick="airL3Cloud(this)">☁️</button><button class="floating-cloud c3" onclick="airL3Cloud(this)">🌫️</button><button class="floating-cloud c4" onclick="airL3Cloud(this)">☁️</button><button class="floating-cloud c5" onclick="airL3Cloud(this)">🌫️</button><button class="floating-cloud c6" onclick="airL3Cloud(this)">☁️</button><button class="floating-cloud c7" onclick="airL3Cloud(this)">🌫️</button><button class="floating-cloud c8" onclick="airL3Cloud(this)">☁️</button>
+            </div>
+            <div class="game-feedback" id="air-l3-feedback">Tap the clouds to clear the sky! 💨</div>
+          </div>
+          <button class="mission-claim" id="air-l3-claim" style="display:none" onclick="claimLevel('air',3,70,'','☁️');refreshAirProgress();">⭐ Sky Cleared!</button>
+        </div>
+
+        <div class="mission-card air-mission" data-level="4">
+          <div class="mission-card-top"><span class="mission-number">LEVEL 4</span><span class="mission-xp">+70 XP</span></div>
+          <div class="mission-title"><span class="mission-icon">⚡</span><div><h3>Power-Up Planner</h3><p>Build a cleaner energy plan for the city.</p></div></div>
+          <div class="game-panel" id="air-l4-panel">
+            <div class="power-grid">
+              <button class="power-choice good" onclick="airPowerPick(this,true)">☀️ Solar</button>
+              <button class="power-choice good" onclick="airPowerPick(this,true)">🌬️ Wind</button>
+              <button class="power-choice bad" onclick="airPowerPick(this,false)">🔥 Burn rubbish</button>
+              <button class="power-choice good" onclick="airPowerPick(this,true)">💧 Hydropower</button>
+              <button class="power-choice bad" onclick="airPowerPick(this,false)">🏭 Dirty fuel</button>
+              <button class="power-choice good" onclick="airPowerPick(this,true)">💡 Save electricity</button>
+            </div>
+            <div class="game-hud"><span>✅ Choose 4 helpful options</span><span id="air-l4-score">0/4</span></div>
+            <div class="game-feedback" id="air-l4-feedback"></div>
+          </div>
+          <button class="mission-claim" id="air-l4-claim" style="display:none" onclick="claimLevel('air',4,70,'','⚡');refreshAirProgress();">⭐ City Powered!</button>
+        </div>
+
+        <div class="mission-card air-mission boss-mission" data-level="5">
+          <div class="mission-card-top"><span class="mission-number">LEVEL 5 • BOSS</span><span class="mission-xp">+100 XP</span></div>
+          <div class="mission-title"><span class="mission-icon">🏙️</span><div><h3>Build a Green City</h3><p>Choose 5 upgrades that help the city breathe better.</p></div></div>
+          <div class="game-panel city-builder-panel" id="air-l5-panel">
+            <div class="city-builder" id="air-city-builder">
+              <button class="city-upgrade" onclick="airCityPick(this,true)">🌳 More trees</button>
+              <button class="city-upgrade" onclick="airCityPick(this,true)">🚲 Cycle paths</button>
+              <button class="city-upgrade" onclick="airCityPick(this,true)">🚌 Public transport</button>
+              <button class="city-upgrade" onclick="airCityPick(this,true)">♻️ Better waste management</button>
+              <button class="city-upgrade" onclick="airCityPick(this,true)">☀️ Clean energy</button>
+              <button class="city-upgrade" onclick="airCityPick(this,false)">🔥 Open waste burning</button>
+              <button class="city-upgrade" onclick="airCityPick(this,false)">🚗 More traffic</button>
+            </div>
+            <div class="game-hud"><span>🏙️ Green upgrades</span><span id="air-l5-score">0/5</span></div>
+            <div class="city-meter"><div id="air-city-meter-fill"></div></div>
+            <div class="game-feedback" id="air-l5-feedback"></div>
+          </div>
+          <button class="mission-claim boss-claim" id="air-l5-claim" style="display:none" onclick="claimLevel('air',5,100,'Air Guardian','🌬️');refreshAirProgress();">🏆 Become Air Guardian!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="air-tab-info">
     <div style="padding:20px; max-width:800px; margin:0 auto;">
-      <div class="card" style="border-color:#80DEEA;">
-        <h3 style="color:#80DEEA; margin-bottom:12px;">🌬️ What is Air Pollution?</h3>
-        <p style="line-height:1.8;">Air pollution happens when harmful substances — such as gases, particles, and smoke — enter the atmosphere. These pollutants can come from vehicles, factories, burning waste, and natural events. Clean air is vital for the health of people, animals, and plants.</p>
-      </div>
+      <div class="card" style="border-color:#80DEEA;"><h3 style="color:#80DEEA; margin-bottom:12px;">🌬️ What is Air Pollution?</h3><p style="line-height:1.8;">Air pollution happens when harmful substances — such as gases, particles, and smoke — enter the atmosphere. These pollutants can come from vehicles, factories, burning waste, and natural events.</p></div>
       <div class="grid-2" style="padding:0; margin-top:16px;">
-        <div class="card" style="border-color:#FF7043;"><div style="font-size:2rem;">🚗</div><strong>Vehicle Emissions</strong><p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Cars, trucks, and motorbikes release exhaust fumes containing carbon monoxide and other pollutants.</p></div>
-        <div class="card" style="border-color:#FF7043;"><div style="font-size:2rem;">🏭</div><strong>Factory Smoke</strong><p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Some industrial processes release smoke and gases into the air.</p></div>
-        <div class="card" style="border-color:#FF7043;"><div style="font-size:2rem;">🔥</div><strong>Burning Waste</strong><p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Burning rubbish or leaves in the open releases smoke, ash, and toxic gases.</p></div>
-        <div class="card" style="border-color:#FF7043;"><div style="font-size:2rem;">🌫️</div><strong>Dust & Particles</strong><p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Construction sites, dry soil, and roads can create fine dust that floats in the air.</p></div>
+        <div class="card" style="border-color:#FF7043;"><div style="font-size:2rem;">🚗</div><strong>Vehicle Emissions</strong><p class="muted-text">Cars and trucks can release exhaust pollutants into the air.</p></div>
+        <div class="card" style="border-color:#FF7043;"><div style="font-size:2rem;">🏭</div><strong>Factory Smoke</strong><p class="muted-text">Some industrial processes can release smoke and gases.</p></div>
+        <div class="card" style="border-color:#FF7043;"><div style="font-size:2rem;">🔥</div><strong>Burning Waste</strong><p class="muted-text">Open burning releases smoke, ash and harmful gases.</p></div>
+        <div class="card" style="border-color:#FF7043;"><div style="font-size:2rem;">🌫️</div><strong>Dust & Particles</strong><p class="muted-text">Roads, dry soil and construction can create airborne particles.</p></div>
       </div>
-      <div class="card" style="margin-top:16px; border-color:var(--green);">
-        <h4 style="color:var(--green); margin-bottom:10px;">💚 Effects of Air Pollution</h4>
-        <p style="line-height:1.7;">Polluted air can affect breathing health, harm trees and plants, and contribute to broader environmental changes. Communities, governments, and organizations all work together to improve air quality.</p>
-      </div>
-      <div class="card" style="margin-top:16px; border-color:var(--accent);">
-        <h4 style="color:var(--accent); margin-bottom:10px;">✨ Fun Fact!</h4>
-        <p>Trees help improve air quality! One large tree can absorb a significant amount of carbon dioxide each year. Caring for trees and green spaces is one way communities help keep air healthier.</p>
-      </div>
-      <button class="btn btn-air" onclick="showTab('air','quiz')" style="margin-top:16px;">Take the Quiz! →</button>
+      <div class="fun-fact"><h4>✨ Fun Fact</h4><p>Healthy green spaces can support cleaner local environments. Communities can combine trees, cleaner transport and good waste management to improve air quality.</p></div>
+      <button class="btn btn-air" onclick="showTab('air','levels')">🎮 Back to Missions</button>
     </div>
   </div>
+
   <div class="tab-content" id="air-tab-quiz">
-    <div style="padding:20px; max-width:600px; margin:0 auto;">
-      <h3 style="color:#80DEEA; margin-bottom:16px;">❓ Air Pollution Quiz</h3>
-      <div id="air-quiz-container"></div>
-    </div>
+    <div style="padding:20px; max-width:650px; margin:0 auto;"><h3 style="color:#80DEEA; margin-bottom:16px;">❓ Air Pollution Quiz</h3><div id="air-quiz-container"></div></div>
   </div>
-  <div class="tab-content" id="air-tab-game">
-    <div style="padding:20px; max-width:700px; margin:0 auto;">
-      <h3 style="color:#80DEEA; margin-bottom:8px;">🎮 Clean the Skies!</h3>
-      <p style="color:#b0c4de; margin-bottom:16px;">Click on each pollution source to learn about it and reduce air pollution!</p>
-      <div style="background:linear-gradient(180deg,#1a3a6b,#2d6a8a,#87CEEB); border-radius:16px; min-height:250px; position:relative; display:flex; align-items:center; justify-content:space-around; flex-wrap:wrap; padding:30px; gap:20px;" id="air-game-scene">
-        <div style="text-align:center; cursor:pointer;" onclick="airGameClick('factory',this)"><div style="font-size:3rem;" class="pulse">🏭</div><div style="font-size:0.8rem;">Factory</div></div>
-        <div style="text-align:center; cursor:pointer;" onclick="airGameClick('car',this)"><div style="font-size:3rem;" class="pulse">🚗</div><div style="font-size:0.8rem;">Car</div></div>
-        <div style="text-align:center; cursor:pointer;" onclick="airGameClick('fire',this)"><div style="font-size:3rem;" class="pulse">🔥</div><div style="font-size:0.8rem;">Burning waste</div></div>
-        <div style="text-align:center; cursor:pointer;" onclick="airGameClick('tree',this)"><div style="font-size:3rem;">🌳</div><div style="font-size:0.8rem;">Tree</div></div>
-        <div style="text-align:center; cursor:pointer;" onclick="airGameClick('bike',this)"><div style="font-size:3rem;">🚲</div><div style="font-size:0.8rem;">Bicycle</div></div>
-        <div style="text-align:center; cursor:pointer;" onclick="airGameClick('solar',this)"><div style="font-size:3rem;">☀️</div><div style="font-size:0.8rem;">Clean energy</div></div>
-      </div>
-      <div id="air-game-info" style="margin-top:16px; padding:14px; background:rgba(0,229,255,0.08); border:1px solid var(--accent); border-radius:12px; display:none;"></div>
-      <button class="btn btn-air" onclick="claimLevel('air',1,80,'Air Guardian','🌬️')" style="margin-top:16px;">⭐ Complete Air World! (+80 XP)</button>
-    </div>
-  </div>
+
   <div class="tab-content" id="air-tab-actions">
-    <div style="padding:20px; max-width:600px; margin:0 auto;">
-      <h3 style="color:#80DEEA; margin-bottom:16px;">✅ Safe Things I Can Do</h3>
-      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>🚶 Walk or cycle when it is appropriate and safe to do so</div></div>
+    <div style="padding:20px; max-width:650px; margin:0 auto;"><h3 style="color:#80DEEA; margin-bottom:16px;">✅ Safe Air-Hero Actions</h3>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>🚶 Walk or cycle when appropriate and safe</div></div>
       <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>💡 Switch off lights and electronics when not in use</div></div>
-      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>🌳 Help care for trees and green spaces in your community</div></div>
-      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>🔥 Never burn rubbish — use proper waste bins</div></div>
-      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>📢 Tell a trusted adult if you see someone burning waste dangerously</div></div>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>🌳 Help care for trees and green spaces</div></div>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>🔥 Never burn rubbish</div></div>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>📢 Tell a trusted adult about dangerous pollution</div></div>
     </div>
   </div>
 </div>
 
 <!-- ==================== WATER POLLUTION WORLD ==================== -->
 <div id="screen-water" class="screen content">
-  <div class="world-banner water-banner">
-    <div style="font-size:4rem;filter:drop-shadow(0 6px 18px rgba(0,0,0,.5));animation:float 4s ease-in-out infinite .4s;margin-bottom:4px;">💧</div>
+  <div class="world-banner water-banner game-world-banner">
+    <div class="world-mascot">💧</div>
     <h1>💧 Water Valley World</h1>
-    <p>Protect rivers, lakes, and oceans from pollution — water is life!</p>
-    <div style="margin-top:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-      <span class="world-banner-badge">🎯 4 Levels</span>
-      <span class="world-banner-badge">🎮 Quiz + Game</span>
+    <p>Complete 5 splashy missions and become a Water Guardian!</p>
+    <div class="world-banner-stats">
+      <span class="world-banner-badge">🎯 5 Game Levels</span>
+      <span class="world-banner-badge">🎮 Rescue + Quiz</span>
       <span class="world-banner-badge" id="water-xp-earned">⭐ 0 XP Earned</span>
     </div>
   </div>
-  <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('water','info')">📖 Learn</button>
+
+  <div class="tabs pollution-tabs">
+    <button class="tab-btn active" onclick="showTab('water','levels')">🎮 Missions</button>
+    <button class="tab-btn" onclick="showTab('water','info')">📖 Learn</button>
     <button class="tab-btn" onclick="showTab('water','quiz')">❓ Quiz</button>
-    <button class="tab-btn" onclick="showTab('water','game')">🎮 Mini Game</button>
     <button class="tab-btn" onclick="showTab('water','actions')">✅ Actions</button>
   </div>
-  <div class="tab-content active" id="water-tab-info">
+
+  <div class="tab-content active" id="water-tab-levels">
+    <div class="game-level-shell">
+      <div class="mission-intro-card water-intro">
+        <div class="mission-intro-icon">🐬</div>
+        <div><h2>Water Guardian Training</h2><p>Protect rivers, lakes and oceans through five fast, friendly missions.</p></div>
+        <div class="mission-progress-pill" id="water-mission-progress">0/5 Complete</div>
+      </div>
+
+      <div class="mission-grid">
+        <div class="mission-card water-mission" data-level="1">
+          <div class="mission-card-top"><span class="mission-number">LEVEL 1</span><span class="mission-xp">+50 XP</span></div>
+          <div class="mission-title"><span class="mission-icon">🛟</span><div><h3>River Rescue</h3><p>Remove litter and help the river come back to life.</p></div></div>
+          <div class="game-panel river-rescue" id="water-l1-panel">
+            <div class="game-hud"><span>🗑️ Collect 6 litter items</span><span id="water-l1-score">0/6</span></div>
+            <div class="river-field">
+              <button onclick="waterL1Clean(this)">🧴</button><button onclick="waterL1Clean(this)">🛍️</button><button onclick="waterL1Clean(this)">🥫</button><button onclick="waterL1Clean(this)">📦</button><button onclick="waterL1Clean(this)">🧃</button><button onclick="waterL1Clean(this)">🧻</button>
+              <span class="fish-swim f1">🐟</span><span class="fish-swim f2">🐠</span><span class="fish-swim f3">🐟</span>
+            </div>
+            <div class="game-feedback" id="water-l1-feedback">Tap the floating litter — save the river! 🌊</div>
+          </div>
+          <button class="mission-claim water-claim" id="water-l1-claim" style="display:none" onclick="claimLevel('water',1,50,'','🛟');refreshWaterProgress();">⭐ River Saved!</button>
+        </div>
+
+        <div class="mission-card water-mission" data-level="2">
+          <div class="mission-card-top"><span class="mission-number">LEVEL 2</span><span class="mission-xp">+60 XP</span></div>
+          <div class="mission-title"><span class="mission-icon">♻️</span><div><h3>Water Waste Sorter</h3><p>Choose what belongs in the right place before it reaches water.</p></div></div>
+          <div class="game-panel" id="water-l2-panel">
+            <div class="sort-challenge" id="water-sort-items">
+              <button onclick="waterL2Sort(this,true)">🧴 Plastic bottle → ♻️ Bin</button>
+              <button onclick="waterL2Sort(this,true)">🥫 Can → ♻️ Bin</button>
+              <button onclick="waterL2Sort(this,true)">🍌 Food scraps → 🗑️/Compost</button>
+              <button onclick="waterL2Sort(this,false)">🧪 Unknown chemical → 🌊 River</button>
+              <button onclick="waterL2Sort(this,false)">🔋 Battery → 🌊 River</button>
+            </div>
+            <div class="game-hud"><span>✅ Make safe choices</span><span id="water-l2-score">0/3</span></div>
+            <div class="game-feedback" id="water-l2-feedback"></div>
+          </div>
+          <button class="mission-claim water-claim" id="water-l2-claim" style="display:none" onclick="claimLevel('water',2,60,'','♻️');refreshWaterProgress();">⭐ Waste Sorted!</button>
+        </div>
+
+        <div class="mission-card water-mission" data-level="3">
+          <div class="mission-card-top"><span class="mission-number">LEVEL 3</span><span class="mission-xp">+70 XP</span></div>
+          <div class="mission-title"><span class="mission-icon">🕵️</span><div><h3>Water Detective</h3><p>Spot the choices that protect water quality.</p></div></div>
+          <div class="game-panel" id="water-l3-panel">
+            <div class="detective-questions">
+              <div><strong>1. A tap is running while nobody uses it.</strong><button onclick="waterL3Answer(this,true)">🚰 Turn it off</button><button onclick="waterL3Answer(this,false)">💦 Leave it running</button></div>
+              <div><strong>2. You see litter beside a lake.</strong><button onclick="waterL3Answer(this,true)">🗑️ Use the proper bin</button><button onclick="waterL3Answer(this,false)">🌊 Toss it into water</button></div>
+              <div><strong>3. You find an unknown chemical container.</strong><button onclick="waterL3Answer(this,true)">👨‍👩‍👧 Tell a trusted adult</button><button onclick="waterL3Answer(this,false)">🧪 Pour it into the drain</button></div>
+              <div><strong>4. You can reduce unnecessary single-use plastic.</strong><button onclick="waterL3Answer(this,true)">♻️ Use reusable options when practical</button><button onclick="waterL3Answer(this,false)">🛍️ Use more disposable bags</button></div>
+            </div>
+            <div class="game-hud"><span>🕵️ Detective score</span><span id="water-l3-score">0/4</span></div>
+            <div class="game-feedback" id="water-l3-feedback"></div>
+          </div>
+          <button class="mission-claim water-claim" id="water-l3-claim" style="display:none" onclick="claimLevel('water',3,70,'','🕵️');refreshWaterProgress();">⭐ Case Solved!</button>
+        </div>
+
+        <div class="mission-card water-mission" data-level="4">
+          <div class="mission-card-top"><span class="mission-number">LEVEL 4</span><span class="mission-xp">+70 XP</span></div>
+          <div class="mission-title"><span class="mission-icon">🐬</span><div><h3>Ocean Defender</h3><p>Protect the animals by tapping harmful hazards.</p></div></div>
+          <div class="game-panel ocean-game">
+            <div class="game-hud"><span>🐬 Remove hazards</span><span id="water-l4-score">0/6</span></div>
+            <div class="ocean-board" id="water-ocean-board">
+              <button onclick="waterL4Hazard(this)">🛍️</button><button onclick="waterL4Hazard(this)">🧴</button><button onclick="waterL4Hazard(this)">🧪</button><button onclick="waterL4Hazard(this)">🪢</button><button onclick="waterL4Hazard(this)">🗑️</button><button onclick="waterL4Hazard(this)">🥤</button>
+              <span class="ocean-animal a1">🐢</span><span class="ocean-animal a2">🐬</span><span class="ocean-animal a3">🐠</span>
+            </div>
+            <div class="game-feedback" id="water-l4-feedback">The ocean is your playground. Keep hazards away from marine life! 💙</div>
+          </div>
+          <button class="mission-claim water-claim" id="water-l4-claim" style="display:none" onclick="claimLevel('water',4,70,'','🐬');refreshWaterProgress();">⭐ Ocean Protected!</button>
+        </div>
+
+        <div class="mission-card water-mission boss-mission" data-level="5">
+          <div class="mission-card-top"><span class="mission-number">LEVEL 5 • BOSS</span><span class="mission-xp">+100 XP</span></div>
+          <div class="mission-title"><span class="mission-icon">🚰</span><div><h3>Water Saver Dash</h3><p>Choose smart actions before the timer meter runs out.</p></div></div>
+          <div class="game-panel saver-game">
+            <div class="water-saver-scene" id="water-saver-scene">
+              <div class="saver-step"><span>🪥</span><strong>Brushing teeth</strong><button onclick="waterL5Choice(this,true)">🚰 Turn tap off</button><button onclick="waterL5Choice(this,false)">💦 Keep it running</button></div>
+              <div class="saver-step"><span>🚿</span><strong>Taking a shower</strong><button onclick="waterL5Choice(this,true)">⏱️ Use water thoughtfully</button><button onclick="waterL5Choice(this,false)">🌊 Waste extra water</button></div>
+              <div class="saver-step"><span>🪣</span><strong>Cleaning outside</strong><button onclick="waterL5Choice(this,true)">💧 Use only what is needed</button><button onclick="waterL5Choice(this,false)">💦 Leave water flowing</button></div>
+            </div>
+            <div class="game-hud"><span>💧 Water saver score</span><span id="water-l5-score">0/3</span></div>
+            <div class="water-meter"><div id="water-meter-fill"></div></div>
+            <div class="game-feedback" id="water-l5-feedback"></div>
+          </div>
+          <button class="mission-claim boss-claim" id="water-l5-claim" style="display:none" onclick="claimLevel('water',5,100,'Water Guardian','💧');refreshWaterProgress();">🏆 Become Water Guardian!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="water-tab-info">
     <div style="padding:20px; max-width:800px; margin:0 auto;">
-      <div class="card" style="border-color:#42A5F5;">
-        <h3 style="color:#42A5F5; margin-bottom:12px;">💧 What is Water Pollution?</h3>
-        <p style="line-height:1.8;">Water pollution happens when harmful substances enter rivers, lakes, oceans, or groundwater. This affects aquatic animals, plants, and the many communities that depend on clean water. Protecting water is everyone's responsibility.</p>
-      </div>
+      <div class="card" style="border-color:#42A5F5;"><h3 style="color:#42A5F5; margin-bottom:12px;">💧 What is Water Pollution?</h3><p style="line-height:1.8;">Water pollution happens when harmful substances enter rivers, lakes, oceans, or groundwater. It can affect aquatic life, plants and communities that depend on clean water.</p></div>
       <div class="grid-2" style="padding:0; margin-top:16px;">
-        <div class="card" style="border-color:#1565C0;"><div style="font-size:2rem;">🧴</div><strong>Plastic Waste</strong><p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Plastic bottles, bags, and packaging that are not properly disposed of can enter waterways.</p></div>
-        <div class="card" style="border-color:#1565C0;"><div style="font-size:2rem;">🧪</div><strong>Chemical Runoff</strong><p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Chemicals from farms, factories, or roads can wash into rivers and lakes.</p></div>
-        <div class="card" style="border-color:#1565C0;"><div style="font-size:2rem;">🗑️</div><strong>Improper Waste</strong><p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Throwing rubbish into water bodies is a major cause of water pollution worldwide.</p></div>
-        <div class="card" style="border-color:#1565C0;"><div style="font-size:2rem;">🏭</div><strong>Industrial Discharge</strong><p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Some industrial processes can release pollutants into nearby water if not properly managed.</p></div>
+        <div class="card" style="border-color:#1565C0;"><div style="font-size:2rem;">🧴</div><strong>Plastic Waste</strong><p class="muted-text">Plastic bottles and bags can enter waterways and harm wildlife.</p></div>
+        <div class="card" style="border-color:#1565C0;"><div style="font-size:2rem;">🧪</div><strong>Chemical Runoff</strong><p class="muted-text">Chemicals can reach water through runoff if not properly managed.</p></div>
+        <div class="card" style="border-color:#1565C0;"><div style="font-size:2rem;">🗑️</div><strong>Improper Waste</strong><p class="muted-text">Litter can travel into drains, rivers and oceans.</p></div>
+        <div class="card" style="border-color:#1565C0;"><div style="font-size:2rem;">🐟</div><strong>Aquatic Life</strong><p class="muted-text">Fish, plants and other organisms depend on healthy water environments.</p></div>
       </div>
-      <div class="card" style="margin-top:16px; border-color:#42A5F5;">
-        <h4 style="color:#42A5F5; margin-bottom:10px;">🐟 Effects on Aquatic Life</h4>
-        <p style="line-height:1.7;">Polluted water can harm fish, aquatic plants, and other creatures that depend on clean water. It can also affect the quality of drinking water and the communities that rely on water for food and livelihoods.</p>
-      </div>
-      <div class="card" style="margin-top:16px; border-color:var(--accent);">
-        <h4 style="color:var(--accent); margin-bottom:10px;">✨ Fun Fact!</h4>
-        <p>Oceans cover about 71% of Earth's surface. Keeping them clean is vital for weather patterns, oxygen production, and biodiversity across the entire planet!</p>
-      </div>
-      <button class="btn btn-water" onclick="showTab('water','quiz')" style="margin-top:16px;">Take the Quiz! →</button>
+      <div class="fun-fact"><h4>✨ Fun Fact</h4><p>Oceans cover about 71% of Earth's surface, so caring for water environments helps the whole planet.</p></div>
+      <button class="btn btn-water" onclick="showTab('water','levels')">🎮 Back to Missions</button>
     </div>
   </div>
-  <div class="tab-content" id="water-tab-quiz">
-    <div style="padding:20px; max-width:600px; margin:0 auto;">
-      <h3 style="color:#42A5F5; margin-bottom:16px;">❓ Water Pollution Quiz</h3>
-      <div id="water-quiz-container"></div>
-    </div>
-  </div>
-  <div class="tab-content" id="water-tab-game">
-    <div style="padding:20px; max-width:700px; margin:0 auto;">
-      <h3 style="color:#42A5F5; margin-bottom:8px;">🎮 Clean the River!</h3>
-      <p style="color:#b0c4de; margin-bottom:16px;">Click on the pollutants in the river to remove them and restore aquatic life!</p>
-      <div style="background:linear-gradient(180deg,#1a3a6b 0%,#1565C0 40%,#0D47A1 100%); border-radius:16px; min-height:250px; display:flex; align-items:center; justify-content:space-around; flex-wrap:wrap; padding:30px; gap:20px;" id="water-game-scene">
-        <div style="text-align:center; cursor:pointer;" onclick="waterGameClick('bottle',this)"><div style="font-size:3rem;" class="pulse">🧴</div><div style="font-size:0.8rem;">Plastic bottle</div></div>
-        <div style="text-align:center; cursor:pointer;" onclick="waterGameClick('bag',this)"><div style="font-size:3rem;" class="pulse">🛍️</div><div style="font-size:0.8rem;">Plastic bag</div></div>
-        <div style="text-align:center; cursor:pointer;" onclick="waterGameClick('can',this)"><div style="font-size:3rem;" class="pulse">🥫</div><div style="font-size:0.8rem;">Tin can</div></div>
-        <div style="text-align:center; cursor:pointer;" onclick="waterGameClick('fish',this)"><div style="font-size:3rem;">🐟</div><div style="font-size:0.8rem;">Fish — protect me!</div></div>
-        <div style="text-align:center; cursor:pointer;" onclick="waterGameClick('plant',this)"><div style="font-size:3rem;">🌿</div><div style="font-size:0.8rem;">Water plant</div></div>
-      </div>
-      <div id="water-game-info" style="margin-top:16px; padding:14px; background:rgba(66,165,245,0.08); border:1px solid #42A5F5; border-radius:12px; display:none;"></div>
-      <button class="btn btn-water" onclick="claimLevel('water',1,80,'Water Guardian','💧')" style="margin-top:16px;">⭐ Complete Water World! (+80 XP)</button>
-    </div>
-  </div>
+  <div class="tab-content" id="water-tab-quiz"><div style="padding:20px; max-width:650px; margin:0 auto;"><h3 style="color:#42A5F5; margin-bottom:16px;">❓ Water Pollution Quiz</h3><div id="water-quiz-container"></div></div></div>
   <div class="tab-content" id="water-tab-actions">
-    <div style="padding:20px; max-width:600px; margin:0 auto;">
-      <h3 style="color:#42A5F5; margin-bottom:16px;">✅ Safe Things I Can Do</h3>
-      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>🚿 Turn off taps when not needed</div></div>
-      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>🧴 Never throw litter near rivers, lakes, or beaches</div></div>
-      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>♻️ Recycle plastic bottles and packaging properly</div></div>
-      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>🐟 Join or support community water clean-up efforts</div></div>
-      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>💧 Use water responsibly — avoid wasting it</div></div>
+    <div style="padding:20px; max-width:650px; margin:0 auto;"><h3 style="color:#42A5F5; margin-bottom:16px;">✅ Safe Water-Guardian Actions</h3>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>🚰 Turn off taps when not needed</div></div>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>🧴 Never throw litter near water</div></div>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>♻️ Recycle plastic and packaging properly</div></div>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>🐟 Help care for local water environments</div></div>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>💧 Use water responsibly</div></div>
     </div>
   </div>
 </div>
@@ -1548,6 +2241,8 @@ function showTab(world, tab) {
   if (world === 'soil' && tab === 'guardian') initScenarios();
   if (world === 'air' && tab === 'quiz') initAirQuiz();
   if (world === 'water' && tab === 'quiz') initWaterQuiz();
+  if (world === 'air' && tab === 'levels') refreshAirProgress();
+  if (world === 'water' && tab === 'levels') refreshWaterProgress();
   if (world === 'games' && tab === 'healthy') initHealthyGame();
   if (world === 'games' && tab === 'match') initCauseMatch();
   if (world === 'games' && tab === 'garden') initGreenGarden();
@@ -1555,7 +2250,7 @@ function showTab(world, tab) {
 
 function tryEarthGuardian() {
   const done = state.completedLevels.soil.length + state.completedLevels.air.length + state.completedLevels.water.length;
-  if (done >= 3) showScreen('earthguardian');
+  if (done >= 16) showScreen('earthguardian');
   else {
     const el = document.getElementById('earth-circle');
     el.classList.add('shake');
@@ -1603,33 +2298,32 @@ function updateWorldBars() {
   const sl = state.completedLevels.soil.length;
   const al = state.completedLevels.air.length;
   const wl = state.completedLevels.water.length;
-  const sp = Math.round(sl/6*100), ap = Math.round(al/1*100), wp = Math.round(wl/1*100);
-  // Map cards
+  const sp = Math.min(100, Math.round(sl/6*100)), ap = Math.min(100, Math.round(al/5*100)), wp = Math.min(100, Math.round(wl/5*100));
   ['soil-bar','air-bar','water-bar'].forEach((id,i) => {
     const el = document.getElementById(id);
     if (el) el.style.width = [sp,ap,wp][i] + '%';
   });
-  // Soil world bar
   const swb = document.getElementById('soil-world-bar');
   if (swb) swb.style.width = sp + '%';
   const swp = document.getElementById('soil-world-pct');
   if (swp) swp.textContent = sp + '% Complete';
-  // Map labels
   const spl = document.getElementById('soil-progress-label');
   if (spl) spl.textContent = sl + '/6 Levels';
   const apl = document.getElementById('air-progress-label');
-  if (apl) apl.textContent = al + '/1 Completed';
+  if (apl) apl.textContent = al + '/5 Levels';
   const wpl = document.getElementById('water-progress-label');
-  if (wpl) wpl.textContent = wl + '/1 Completed';
-  // Earth HQ unlock
+  if (wpl) wpl.textContent = wl + '/5 Levels';
+  const am = document.getElementById('air-mission-progress');
+  if (am) am.textContent = al + '/5 Complete';
+  const wm = document.getElementById('water-mission-progress');
+  if (wm) wm.textContent = wl + '/5 Complete';
   const total = sl + al + wl;
-  if (total >= 3) {
+  if (total >= 16) {
     const ec = document.getElementById('earth-circle');
     if (ec) ec.classList.remove('locked');
     const el2 = document.getElementById('earth-label');
     if (el2) el2.textContent = '🌟 UNLOCKED!';
   }
-  // Progress screen
   ['prog-air-pct','prog-water-pct','prog-soil-pct'].forEach((id,i) => {
     const el = document.getElementById(id);
     if (el) el.textContent = [ap,wp,sp][i] + '%';
@@ -1638,7 +2332,23 @@ function updateWorldBars() {
     const el = document.getElementById(id);
     if (el) el.style.width = [ap,wp,sp][i] + '%';
   });
+  refreshMissionCards('air');
+  refreshMissionCards('water');
 }
+function refreshMissionCards(world) {
+  const completed = state.completedLevels[world] || [];
+  document.querySelectorAll(`#screen-${world} .mission-card`).forEach(card => {
+    const level = Number(card.dataset.level);
+    const done = completed.includes(level);
+    card.classList.toggle('mission-completed', done);
+    if (done) card.setAttribute('data-status','✅ Completed');
+    else card.removeAttribute('data-status');
+    const claim = card.querySelector('.mission-claim');
+    if (claim && done) { claim.textContent = '✅ Completed'; claim.disabled = true; claim.style.display = 'inline-flex'; }
+  });
+}
+function refreshAirProgress(){ updateWorldBars(); }
+function refreshWaterProgress(){ updateWorldBars(); }
 
 // ============================================================
 //  BADGES
@@ -1699,7 +2409,7 @@ function claimLevel(world, level, xp, badgeName, badgeIcon) {
   const xpEl = document.getElementById(world + '-xp-earned');
   if (xpEl) {
     const total = (state.completedLevels[world] || []).reduce((a,l2) => {
-      const levelXPs = {soil:{1:50,2:60,3:70,4:60,5:70,6:80},air:{1:80},water:{1:80}};
+      const levelXPs = {soil:{1:50,2:60,3:70,4:60,5:70,6:80},air:{1:50,2:60,3:70,4:70,5:100},water:{1:50,2:60,3:70,4:70,5:100}};
       return a + (levelXPs[world] && levelXPs[world][l2] || 0);
     }, 0);
     xpEl.textContent = total + ' XP Earned';
@@ -2056,6 +2766,90 @@ function quizAnswer(containerId, qi, chosen, correct, world, btn) {
     siblings[correct].classList.add('correct');
     res.innerHTML = '<span style="color:#EF9A9A;">❌ Not quite — the correct answer is highlighted in green.</span>';
   }
+}
+
+
+// ============================================================
+//  AIR WORLD — 5 GAME MISSIONS
+// ============================================================
+const airGameState = { l1:0, l2:0, l3:0, l4:0, l5:0 };
+function airL1Pick(el, correct, msg){
+  if(el.dataset.done) return;
+  el.dataset.done='1';
+  const fb=document.getElementById('air-l1-feedback');
+  if(correct){ airGameState.l1++; el.classList.add('hit'); fb.innerHTML='💨 '+msg; } else { el.classList.add('safe'); fb.innerHTML='🌿 '+msg; }
+  document.getElementById('air-l1-score').textContent=airGameState.l1+'/4';
+  if(airGameState.l1>=4){ fb.innerHTML='🎉 Fantastic! You found every pollution source. The city can breathe easier!'; document.getElementById('air-l1-claim').style.display='inline-flex'; launchConfetti(18); }
+}
+function airRouteAnswer(btn, good){
+  const round=btn.parentElement; if(round.dataset.done) return; round.dataset.done='1';
+  round.querySelectorAll('button').forEach(b=>b.disabled=true);
+  btn.classList.add(good?'selected-good':'selected-bad');
+  if(good){airGameState.l2++; document.getElementById('air-l2-feedback').innerHTML='✅ Great choice! Cleaner travel options can reduce unnecessary emissions.';}
+  else document.getElementById('air-l2-feedback').innerHTML='💡 Try again: when practical and safe, walking, cycling or shared/public transport can reduce emissions.';
+  document.getElementById('air-l2-score').textContent=airGameState.l2+'/3';
+  if(airGameState.l2>=3){document.getElementById('air-l2-claim').style.display='inline-flex'; launchConfetti(20);}
+}
+function airL3Cloud(btn){
+  if(btn.classList.contains('cleared')) return;
+  btn.classList.add('cleared'); airGameState.l3++;
+  document.getElementById('air-l3-score').textContent=airGameState.l3+'/8';
+  if(airGameState.l3>=8){document.getElementById('air-l3-feedback').innerHTML='🌤️ Sky cleared! You spotted all the pollution clouds.'; document.getElementById('air-l3-claim').style.display='inline-flex'; launchConfetti(24);}
+}
+function airPowerPick(btn, good){
+  if(btn.dataset.done) return; btn.dataset.done='1';
+  btn.classList.add(good?'selected-good':'selected-bad');
+  if(good) airGameState.l4++;
+  document.getElementById('air-l4-score').textContent=airGameState.l4+'/4';
+  document.getElementById('air-l4-feedback').innerHTML=good?'⚡ Nice! You picked an option that can support cleaner energy use.':'🔥 That choice can increase pollution. Look for cleaner options!';
+  if(airGameState.l4>=4){document.getElementById('air-l4-feedback').innerHTML='🎉 Power plan complete! Your city has a cleaner energy team.';document.getElementById('air-l4-claim').style.display='inline-flex';launchConfetti(24);}
+}
+function airCityPick(btn, good){
+  if(btn.dataset.done) return; btn.dataset.done='1'; btn.classList.add(good?'selected-good':'selected-bad');
+  if(good) airGameState.l5++;
+  document.getElementById('air-l5-score').textContent=airGameState.l5+'/5';
+  document.getElementById('air-city-meter-fill').style.width=Math.min(100,airGameState.l5*20)+'%';
+  document.getElementById('air-l5-feedback').innerHTML=good?'🏙️ Great upgrade! Keep building a greener city.':'💡 That choice can make air pollution worse. Choose a cleaner city upgrade.';
+  if(airGameState.l5>=5){document.getElementById('air-l5-feedback').innerHTML='🌈 AMAZING! Your city is greener, cleaner and more walkable!';document.getElementById('air-l5-claim').style.display='inline-flex';launchConfetti(35);}
+}
+
+// ============================================================
+//  WATER WORLD — 5 GAME MISSIONS
+// ============================================================
+const waterGameState = { l1:0, l2:0, l3:0, l4:0, l5:0 };
+function waterL1Clean(btn){
+  if(btn.classList.contains('cleaned')) return; btn.classList.add('cleaned'); waterGameState.l1++;
+  document.getElementById('water-l1-score').textContent=waterGameState.l1+'/6';
+  document.getElementById('water-l1-feedback').innerHTML='💦 Splash! One more piece of litter is out of the river.';
+  if(waterGameState.l1>=6){document.getElementById('water-l1-feedback').innerHTML='🐟 Hooray! The river is much cleaner and the fish can swim safely.';document.getElementById('water-l1-claim').style.display='inline-flex';launchConfetti(24);}
+}
+function waterL2Sort(btn,good){
+  if(btn.dataset.done) return; btn.dataset.done='1'; btn.classList.add(good?'selected-good':'selected-bad');
+  if(good) waterGameState.l2++;
+  document.getElementById('water-l2-score').textContent=waterGameState.l2+'/3';
+  document.getElementById('water-l2-feedback').innerHTML=good?'♻️ Good sorting! Keeping waste out of water helps protect ecosystems.':'⚠️ Not a safe choice. Unknown or hazardous materials should never be poured into water; tell a trusted adult.';
+  if(waterGameState.l2>=3){document.getElementById('water-l2-feedback').innerHTML='🎉 Great sorting! You stopped three items before they reached the water.';document.getElementById('water-l2-claim').style.display='inline-flex';launchConfetti(20);}
+}
+function waterL3Answer(btn,good){
+  const row=btn.parentElement; if(row.dataset.done) return; row.dataset.done='1'; row.querySelectorAll('button').forEach(b=>b.disabled=true); btn.classList.add(good?'selected-good':'selected-bad');
+  if(good) waterGameState.l3++;
+  document.getElementById('water-l3-score').textContent=waterGameState.l3+'/4';
+  document.getElementById('water-l3-feedback').innerHTML=good?'🔍 Excellent detective work!':'💡 Try the safer water-protecting choice.';
+  if(waterGameState.l3>=4){document.getElementById('water-l3-feedback').innerHTML='🕵️ Case solved! You found all four water-protecting choices.';document.getElementById('water-l3-claim').style.display='inline-flex';launchConfetti(22);}
+}
+function waterL4Hazard(btn){
+  if(btn.classList.contains('cleared')) return; btn.classList.add('cleared'); waterGameState.l4++;
+  document.getElementById('water-l4-score').textContent=waterGameState.l4+'/6';
+  document.getElementById('water-l4-feedback').innerHTML='🐬 Hazard removed! Keep helping the marine animals.';
+  if(waterGameState.l4>=6){document.getElementById('water-l4-feedback').innerHTML='🌊 Ocean protected! The marine animals have a safer habitat.';document.getElementById('water-l4-claim').style.display='inline-flex';launchConfetti(28);}
+}
+function waterL5Choice(btn,good){
+  const step=btn.parentElement; if(step.dataset.done) return; step.dataset.done='1'; step.querySelectorAll('button').forEach(b=>b.disabled=true); btn.classList.add(good?'selected-good':'selected-bad');
+  if(good) waterGameState.l5++;
+  document.getElementById('water-l5-score').textContent=waterGameState.l5+'/3';
+  document.getElementById('water-meter-fill').style.width=Math.min(100,waterGameState.l5*33.34)+'%';
+  document.getElementById('water-l5-feedback').innerHTML=good?'💧 Smart! Saving water is a powerful everyday habit.':'💡 Choose the option that avoids wasting water.';
+  if(waterGameState.l5>=3){document.getElementById('water-l5-feedback').innerHTML='🏆 Water Saver Champion! You completed every saving challenge.';document.getElementById('water-l5-claim').style.display='inline-flex';launchConfetti(35);}
 }
 
 // ============================================================
