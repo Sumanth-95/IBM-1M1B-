@@ -1,0 +1,2578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoQuest: Planet Protectors 🌍</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky: #87CEEB; --green: #4CAF50; --dark-green: #2E7D32;
+  --water: #1565C0; --light-water: #42A5F5; --soil: #8D6E63;
+  --dark-soil: #5D4037; --yellow: #FFD600; --orange: #FF8F00;
+  --purple: #7B1FA2; --red: #E53935; --white: #FFFFFF;
+  --bg: #0a1628; --card: #1a2744; --text: #e8f4f8;
+  --accent: #00e5ff; --xp: #FFD600; --badge: #FF9800;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background:var(--bg); color:var(--text); overflow-x:hidden; min-height:100vh; }
+
+/* SCREENS */
+.screen { display:none; min-height:100vh; }
+.screen.active { display:block; }
+
+/* NAV */
+#main-nav {
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  background:rgba(10,22,40,0.95); border-bottom:2px solid var(--accent);
+  display:flex; align-items:center; justify-content:space-between; padding:8px 16px;
+}
+#main-nav .logo { font-size:1.2rem; font-weight:800; color:var(--accent); cursor:pointer; }
+#main-nav .xp-bar { display:flex; align-items:center; gap:8px; font-size:0.9rem; }
+#main-nav .xp-val { color:var(--xp); font-weight:700; }
+.nav-links { display:flex; gap:6px; flex-wrap:wrap; }
+.nav-btn { background:transparent; border:1px solid var(--accent); color:var(--accent); padding:4px 10px; border-radius:20px; cursor:pointer; font-size:0.75rem; transition:all 0.2s; }
+.nav-btn:hover, .nav-btn.active { background:var(--accent); color:var(--bg); }
+.nav-btn.parent-btn { border-color:var(--badge); color:var(--badge); }
+.nav-btn.parent-btn:hover { background:var(--badge); color:white; }
+
+/* CONTENT AREA */
+.content { padding-top:60px; }
+
+/* BUTTONS */
+.btn { display:inline-block; padding:12px 28px; border-radius:30px; border:none; cursor:pointer; font-size:1rem; font-weight:700; transition:all 0.2s; }
+.btn-primary { background:linear-gradient(135deg,#00e5ff,#0070f3); color:white; }
+.btn-green { background:linear-gradient(135deg,#4CAF50,#2E7D32); color:white; }
+.btn-soil { background:linear-gradient(135deg,#8D6E63,#5D4037); color:white; }
+.btn-water { background:linear-gradient(135deg,#42A5F5,#1565C0); color:white; }
+.btn-air { background:linear-gradient(135deg,#80DEEA,#0097A7); color:white; }
+.btn-fire { background:linear-gradient(135deg,#FF9800,#E53935); color:white; }
+.btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,0.4); }
+.btn:active { transform:translateY(0); }
+
+/* CARDS */
+.card { background:var(--card); border-radius:16px; padding:20px; margin:10px; border:1px solid rgba(0,229,255,0.15); transition:all 0.3s; }
+.card:hover { border-color:var(--accent); transform:translateY(-3px); }
+.card h3 { margin-bottom:8px; }
+.grid-2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; padding:16px; }
+.grid-3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; padding:16px; }
+
+/* HERO */
+.hero { text-align:center; padding:60px 20px 40px; position:relative; overflow:hidden; }
+.hero h1 { font-size:clamp(2rem,5vw,4rem); font-weight:900; background:linear-gradient(135deg,#00e5ff,#4CAF50,#FFD600); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.hero p { font-size:1.2rem; color:#b0c4de; margin:16px 0 32px; max-width:600px; margin-left:auto; margin-right:auto; }
+.floating { animation:float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+.pulse { animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+
+/* XP NOTIFICATION */
+#xp-popup { position:fixed; top:70px; right:20px; background:var(--xp); color:var(--bg); padding:10px 20px; border-radius:20px; font-weight:800; font-size:1.1rem; z-index:9999; display:none; animation:slideIn 0.4s ease; }
+@keyframes slideIn { from{transform:translateX(100px);opacity:0} to{transform:translateX(0);opacity:1} }
+
+/* PROGRESS BAR */
+.progress-container { background:rgba(255,255,255,0.1); border-radius:10px; height:12px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--green)); border-radius:10px; transition:width 0.5s ease; }
+
+/* BADGES */
+.badge-item { display:inline-flex; flex-direction:column; align-items:center; gap:4px; padding:12px; background:var(--card); border-radius:12px; border:2px solid transparent; min-width:90px; }
+.badge-item.earned { border-color:var(--badge); background:rgba(255,152,0,0.1); }
+.badge-item.locked { opacity:0.4; filter:grayscale(0.8); }
+.badge-icon { font-size:2rem; }
+.badge-name { font-size:0.7rem; text-align:center; color:#b0c4de; }
+
+/* MODAL */
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:2000; display:none; align-items:center; justify-content:center; }
+.modal-overlay.open { display:flex; }
+.modal { background:var(--card); border-radius:20px; padding:30px; max-width:500px; width:90%; border:2px solid var(--accent); position:relative; max-height:80vh; overflow-y:auto; }
+.modal h2 { margin-bottom:12px; color:var(--accent); }
+.modal-close { position:absolute; top:12px; right:16px; background:none; border:none; color:var(--text); font-size:1.5rem; cursor:pointer; }
+
+/* QUIZ */
+.quiz-option { display:block; width:100%; text-align:left; padding:12px 18px; margin:6px 0; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); border-radius:10px; cursor:pointer; color:var(--text); font-size:1rem; transition:all 0.2s; }
+.quiz-option:hover { background:rgba(0,229,255,0.15); border-color:var(--accent); }
+.quiz-option.correct { background:rgba(76,175,80,0.3); border-color:var(--green); }
+.quiz-option.wrong { background:rgba(229,57,53,0.3); border-color:var(--red); }
+
+/* ADVENTURE MAP */
+#screen-map .map-container { position:relative; min-height:80vh; display:flex; align-items:center; justify-content:center; }
+.world-node { position:absolute; display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer; transition:all 0.3s; }
+.world-node:hover .world-circle { transform:scale(1.15); }
+.world-circle { width:100px; height:100px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2.5rem; border:4px solid rgba(255,255,255,0.3); transition:all 0.3s; box-shadow:0 0 20px rgba(0,0,0,0.5); }
+.world-circle.air { background:radial-gradient(circle,#80DEEA,#0097A7); border-color:#00BCD4; }
+.world-circle.water { background:radial-gradient(circle,#42A5F5,#1565C0); border-color:#2196F3; }
+.world-circle.soil { background:radial-gradient(circle,#A1887F,#5D4037); border-color:#8D6E63; }
+.world-circle.earth { background:radial-gradient(circle,#66BB6A,#2E7D32); border-color:#4CAF50; animation:glow 2s ease-in-out infinite; }
+.world-circle.locked { filter:grayscale(0.7); opacity:0.6; cursor:not-allowed; }
+@keyframes glow { 0%,100%{box-shadow:0 0 20px rgba(0,0,0,0.5)} 50%{box-shadow:0 0 40px rgba(76,175,80,0.8)} }
+.world-label { font-weight:700; font-size:0.85rem; text-align:center; color:var(--text); }
+.map-path { position:absolute; opacity:0.4; }
+
+/* SOIL WORLD */
+.soil-env { background:linear-gradient(180deg,#87CEEB 0%,#87CEEB 40%,#8BC34A 40%,#8BC34A 50%,#8D6E63 50%,#5D4037 80%,#3E2723 100%); border-radius:16px; min-height:300px; position:relative; overflow:hidden; display:flex; flex-direction:column; }
+.sky-layer { flex:0 0 40%; position:relative; display:flex; align-items:flex-end; justify-content:space-around; padding:20px; }
+.ground-layer { flex:0 0 20%; background:#8BC34A; display:flex; align-items:center; justify-content:space-around; padding:8px; }
+.underground-layer { flex:1; background:linear-gradient(180deg,#8D6E63,#5D4037); display:flex; align-items:center; justify-content:space-around; padding:16px; }
+.clickable-obj { cursor:pointer; font-size:2.5rem; transition:transform 0.2s; display:inline-block; }
+.clickable-obj:hover { transform:scale(1.3) rotate(5deg); }
+.info-bubble { position:absolute; background:rgba(10,22,40,0.95); border:2px solid var(--accent); border-radius:12px; padding:12px; max-width:220px; font-size:0.85rem; z-index:100; pointer-events:none; }
+
+/* DRAG AND DROP */
+.drag-item { background:var(--card); border:2px solid rgba(255,255,255,0.2); border-radius:10px; padding:10px 16px; cursor:grab; user-select:none; font-size:1.1rem; transition:all 0.2s; display:inline-flex; align-items:center; gap:6px; }
+.drag-item:hover { border-color:var(--accent); transform:scale(1.05); }
+.drag-item.dragging { opacity:0.5; cursor:grabbing; }
+.drop-zone { min-height:120px; border:3px dashed rgba(255,255,255,0.3); border-radius:16px; padding:16px; transition:all 0.2s; }
+.drop-zone.drag-over { border-color:var(--accent); background:rgba(0,229,255,0.1); }
+.drop-zone.correct { border-color:var(--green); background:rgba(76,175,80,0.1); }
+
+/* SCENARIO GAME */
+.scenario-box { background:rgba(0,229,255,0.08); border:2px solid var(--accent); border-radius:16px; padding:24px; margin:16px 0; }
+.scenario-choices { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px; }
+.choice-btn { padding:14px; border-radius:12px; border:2px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.05); cursor:pointer; color:var(--text); font-size:0.95rem; transition:all 0.2s; }
+.choice-btn:hover { border-color:var(--accent); background:rgba(0,229,255,0.1); }
+.choice-btn.correct { border-color:var(--green); background:rgba(76,175,80,0.2); }
+.choice-btn.wrong { border-color:var(--red); background:rgba(229,57,53,0.2); }
+
+/* ECO ACTIONS */
+.eco-action { display:flex; align-items:center; gap:12px; padding:12px 16px; background:rgba(255,255,255,0.05); border-radius:10px; margin:6px 0; cursor:pointer; transition:all 0.2s; border:1px solid transparent; }
+.eco-action:hover { border-color:var(--green); background:rgba(76,175,80,0.1); }
+.eco-action.done { border-color:var(--green); background:rgba(76,175,80,0.15); }
+.eco-check { width:22px; height:22px; border-radius:50%; border:2px solid var(--green); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:0.75rem; }
+.eco-action.done .eco-check { background:var(--green); }
+
+/* CONNECTION CYCLE */
+.cycle-item { background:var(--card); border-radius:12px; padding:16px 20px; cursor:pointer; transition:all 0.3s; border:2px solid transparent; }
+.cycle-item:hover, .cycle-item.active { border-color:var(--accent); background:rgba(0,229,255,0.1); }
+.cycle-arrow { text-align:center; font-size:1.5rem; color:var(--accent); }
+
+/* PARENT MODE */
+#screen-parent { background:linear-gradient(135deg,#0a1628,#1a2744); }
+.parent-lock { text-align:center; padding:80px 20px; }
+.parent-lock input { background:rgba(255,255,255,0.1); border:2px solid var(--accent); color:white; padding:12px 20px; border-radius:10px; font-size:1rem; width:200px; text-align:center; }
+
+/* CERTIFICATE */
+.certificate { background:linear-gradient(135deg,#1a2744,#0d1f33); border:4px solid var(--xp); border-radius:24px; padding:40px; text-align:center; max-width:600px; margin:20px auto; position:relative; }
+.cert-seal { font-size:5rem; animation:float 3s ease-in-out infinite; }
+
+/* LEVEL INDICATOR */
+.level-btn { display:flex; align-items:center; gap:10px; padding:14px 18px; background:rgba(255,255,255,0.05); border-radius:12px; border:1px solid rgba(255,255,255,0.1); cursor:pointer; transition:all 0.2s; width:100%; text-align:left; }
+.level-btn:hover { border-color:var(--accent); background:rgba(0,229,255,0.08); }
+.level-btn.completed { border-color:var(--green); }
+.level-btn .level-icon { font-size:1.8rem; }
+.level-num { font-size:0.75rem; color:#b0c4de; }
+
+/* MATCH GAME */
+.match-pair { display:flex; gap:16px; align-items:center; margin:10px 0; }
+.match-item { flex:1; padding:10px; background:rgba(255,255,255,0.07); border-radius:10px; border:2px solid transparent; cursor:pointer; transition:all 0.2s; text-align:center; }
+.match-item.selected { border-color:var(--accent); background:rgba(0,229,255,0.15); }
+.match-item.matched { border-color:var(--green); background:rgba(76,175,80,0.15); }
+
+/* GARDEN GAME */
+.garden-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; padding:16px; }
+.garden-cell { aspect-ratio:1; background:rgba(93,64,55,0.6); border-radius:12px; border:2px dashed rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:2rem; cursor:pointer; transition:all 0.3s; }
+.garden-cell.planted { background:rgba(76,175,80,0.3); border-color:var(--green); border-style:solid; }
+.garden-cell:hover { border-color:var(--green); }
+
+/* TABS */
+.tabs { display:flex; gap:8px; padding:16px; flex-wrap:wrap; border-bottom:1px solid rgba(255,255,255,0.1); }
+.tab-btn { padding:8px 18px; border-radius:20px; border:1px solid rgba(255,255,255,0.2); background:transparent; color:var(--text); cursor:pointer; font-size:0.9rem; transition:all 0.2s; }
+.tab-btn.active { background:var(--accent); color:var(--bg); border-color:var(--accent); }
+.tab-content { display:none; padding:16px; }
+.tab-content.active { display:block; }
+
+/* HEADER SECTION */
+.section-header { padding:24px 20px 8px; }
+.section-header h2 { font-size:1.8rem; }
+.section-header p { color:#b0c4de; margin-top:6px; }
+
+/* MINI GAME ZONE */
+.mini-game-zone { background:rgba(255,255,255,0.03); border-radius:16px; padding:20px; min-height:200px; }
+
+/* HEALTH BAR */
+.health-bar { display:flex; align-items:center; gap:10px; margin:12px 0; }
+.health-bar span { min-width:80px; font-size:0.85rem; color:#b0c4de; }
+
+/* TOOLTIP */
+.tooltip { position:relative; }
+.tooltip-text { visibility:hidden; background:var(--card); border:1px solid var(--accent); color:var(--text); padding:6px 10px; border-radius:8px; position:absolute; bottom:110%; left:50%; transform:translateX(-50%); white-space:nowrap; font-size:0.8rem; z-index:999; }
+.tooltip:hover .tooltip-text { visibility:visible; }
+
+/* STARS */
+.stars { color:var(--xp); font-size:1.5rem; letter-spacing:4px; }
+
+/* SECTION DIVIDER */
+.divider { height:2px; background:linear-gradient(90deg,transparent,var(--accent),transparent); margin:24px 0; }
+
+/* WORLD TITLE BANNER */
+.world-banner { padding:30px 20px; text-align:center; border-radius:0 0 24px 24px; }
+.world-banner.soil-banner { background:linear-gradient(135deg,#3E2723,#5D4037,#8BC34A); }
+.world-banner.air-banner { background:linear-gradient(135deg,#006064,#0097A7,#80DEEA); }
+.world-banner.water-banner { background:linear-gradient(135deg,#0D47A1,#1565C0,#42A5F5); }
+.world-banner h1 { font-size:2.2rem; font-weight:900; }
+.world-banner p { font-size:1rem; color:rgba(255,255,255,0.85); margin-top:8px; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--accent); border-radius:3px; }
+
+/* RESPONSIVE */
+@media(max-width:600px) {
+  .scenario-choices { grid-template-columns:1fr; }
+  .world-circle { width:70px; height:70px; font-size:1.8rem; }
+  .nav-links { display:none; }
+}
+
+/* CHAT BOT */
+#watson-chat { position:fixed; bottom:20px; right:20px; z-index:3000; }
+.chat-fab { width:56px; height:56px; background:linear-gradient(135deg,#FF9800,#E53935); border-radius:50%; border:none; cursor:pointer; font-size:1.5rem; box-shadow:0 4px 16px rgba(0,0,0,0.4); transition:all 0.2s; display:none; }
+.chat-fab:hover { transform:scale(1.1); }
+.chat-window { position:fixed; bottom:90px; right:20px; width:350px; height:500px; background:var(--card); border-radius:20px; border:2px solid var(--badge); overflow:hidden; display:none; flex-direction:column; box-shadow:0 8px 32px rgba(0,0,0,0.6); }
+.chat-window.open { display:flex; }
+.chat-header { background:linear-gradient(135deg,#E65100,#FF8F00); padding:14px 18px; display:flex; align-items:center; justify-content:space-between; }
+.chat-header h4 { font-size:0.95rem; }
+.chat-header span { font-size:0.75rem; opacity:0.85; }
+.chat-close { background:none; border:none; color:white; font-size:1.3rem; cursor:pointer; }
+.chat-messages { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px; }
+.chat-msg { padding:10px 14px; border-radius:14px; max-width:85%; font-size:0.88rem; line-height:1.5; }
+.chat-msg.bot { background:rgba(0,229,255,0.15); border:1px solid rgba(0,229,255,0.3); align-self:flex-start; }
+.chat-msg.user { background:linear-gradient(135deg,#FF9800,#E65100); align-self:flex-end; }
+.chat-input-row { display:flex; gap:8px; padding:12px; border-top:1px solid rgba(255,255,255,0.1); }
+.chat-input-row input { flex:1; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:20px; padding:8px 14px; color:white; font-size:0.9rem; }
+.chat-input-row button { background:var(--badge); border:none; color:white; border-radius:50%; width:36px; height:36px; cursor:pointer; font-size:1rem; }
+
+/* ANIMATIONS */
+.bounce-in { animation:bounceIn 0.5s cubic-bezier(0.68,-0.55,0.265,1.55); }
+@keyframes bounceIn { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+.shake { animation:shake 0.4s; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+.grow-in { animation:growIn 0.6s ease-out; }
+@keyframes growIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.clouds { animation:cloudMove 20s linear infinite; }
+@keyframes cloudMove { from{transform:translateX(-100px)} to{transform:translateX(calc(100vw + 100px))} }
+</style>
+<style>
+/* ═══════════════════════════════════════════
+   KID-FIRST DESIGN  — EcoQuest v2
+   ═══════════════════════════════════════════ */
+:root{
+  --green:#2ECC40;--dark-green:#1a7a28;--red:#E74C3C;
+  --bg:#0d1b2e;--card:#1b2d4f;--card2:#162340;--text:#eaf4ff;
+  --accent:#00e5ff;--xp:#FFD600;--badge:#FF9800;
+}
+body{font-family:'Nunito',system-ui,sans-serif !important;background:var(--bg);background-image:radial-gradient(circle at 15% 20%,rgba(0,229,255,.05) 0%,transparent 45%),radial-gradient(circle at 85% 75%,rgba(46,204,64,.05) 0%,transparent 45%);}
+#stars-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.star-dot{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d,3s) ease-in-out infinite;}
+@keyframes twinkle{0%,100%{opacity:.12;transform:scale(1)}50%{opacity:.85;transform:scale(1.6)}}
+.screen{position:relative;z-index:1;}
+body{font-size:16px;}
+.card p{font-size:.97rem;}
+.choice-btn,.quiz-option,.eco-action{font-size:1rem !important;}
+#main-nav{background:rgba(10,22,40,.97) !important;border-bottom:3px solid var(--accent) !important;backdrop-filter:blur(12px);}
+#main-nav .logo{font-size:1.3rem !important;font-weight:900 !important;text-shadow:0 0 14px rgba(0,229,255,.7);letter-spacing:.5px;}
+.nav-btn{font-family:'Nunito',sans-serif !important;font-weight:700 !important;background:rgba(255,255,255,.06) !important;border:1.5px solid rgba(0,229,255,.3) !important;font-size:.8rem !important;}
+.nav-btn:hover,.nav-btn.active{box-shadow:0 0 12px rgba(0,229,255,.5) !important;}
+.xp-val{font-size:1.05rem !important;font-weight:900 !important;}
+/* XP POPUP */
+#xp-popup{background:linear-gradient(135deg,var(--xp),#ff9800) !important;color:#0d1b2e !important;font-size:1.2rem !important;font-weight:900 !important;border-radius:32px !important;box-shadow:0 4px 24px rgba(255,214,0,.6) !important;animation:popIn .5s cubic-bezier(.34,1.56,.64,1) !important;}
+@keyframes popIn{from{transform:scale(0) translateY(-20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+/* CONFETTI */
+.confetti-piece{position:fixed;top:-12px;border-radius:3px;width:10px;height:10px;animation:confettiFall var(--dur,2.5s) ease-in forwards;z-index:9998;pointer-events:none;}
+@keyframes confettiFall{0%{transform:translateY(-12px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+/* PROGRESS */
+.progress-container{height:16px !important;border-radius:12px !important;}
+.progress-fill{background:linear-gradient(90deg,#00e5ff,#2ECC40,#FFD600,#00e5ff) !important;background-size:300% 100% !important;animation:barShimmer 2.5s linear infinite !important;}
+@keyframes barShimmer{0%{background-position:0% 0%}100%{background-position:300% 0%}}
+/* BUTTONS */
+.btn{font-family:'Nunito',sans-serif !important;font-weight:900 !important;border-radius:50px !important;letter-spacing:.3px !important;font-size:1.05rem !important;position:relative;overflow:hidden;}
+.btn:hover{transform:translateY(-3px) scale(1.04) !important;box-shadow:0 8px 28px rgba(0,0,0,.45) !important;}
+.btn:active{transform:translateY(0) scale(.97) !important;}
+.btn-primary{background:linear-gradient(135deg,#00e5ff,#0070f3) !important;box-shadow:0 4px 18px rgba(0,229,255,.4) !important;}
+.btn-green{background:linear-gradient(135deg,#2ECC40,#1a7a28) !important;box-shadow:0 4px 18px rgba(46,204,64,.4) !important;}
+.btn-fire{background:linear-gradient(135deg,#FF9800,#E53935) !important;box-shadow:0 4px 18px rgba(255,152,0,.4) !important;}
+.btn-yellow{display:inline-block;background:linear-gradient(135deg,#FFD600,#FF9800);color:#0d1b2e;font-weight:900;border-radius:50px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;padding:13px 30px;font-size:1.05rem;}
+/* CARDS */
+.card{background:var(--card) !important;border-radius:22px !important;border:2px solid rgba(0,229,255,.13) !important;box-shadow:0 4px 22px rgba(0,0,0,.3) !important;transition:all .25s !important;}
+.card:hover{border-color:rgba(0,229,255,.55) !important;transform:translateY(-5px) !important;box-shadow:0 12px 36px rgba(0,0,0,.45) !important;}
+/* BADGES */
+.badge-item{border-radius:20px !important;padding:18px 14px !important;min-width:105px !important;transition:all .25s !important;}
+.badge-item.earned{border-color:var(--badge) !important;background:linear-gradient(135deg,rgba(255,152,0,.22),rgba(255,152,0,.06)) !important;animation:badgeGlow 2.5s ease-in-out infinite !important;box-shadow:0 0 22px rgba(255,152,0,.4) !important;}
+@keyframes badgeGlow{0%,100%{box-shadow:0 0 12px rgba(255,152,0,.3)}50%{box-shadow:0 0 30px rgba(255,152,0,.75)}}
+.badge-icon{font-size:3rem !important;}
+.badge-name{font-size:.78rem !important;font-weight:700 !important;}
+/* TABS */
+.tab-btn{font-family:'Nunito',sans-serif !important;font-weight:800 !important;border-radius:26px !important;font-size:.9rem !important;border:2px solid rgba(255,255,255,.15) !important;}
+.tab-btn.active{background:var(--accent) !important;color:#0d1b2e !important;box-shadow:0 4px 14px rgba(0,229,255,.45) !important;}
+.tab-content.active{animation:fadeUp .32s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* WORLD BANNER */
+.world-banner{padding:32px 20px !important;position:relative;overflow:hidden;}
+.world-banner::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,.025) 0,rgba(255,255,255,.025) 2px,transparent 2px,transparent 14px);pointer-events:none;}
+.world-banner.soil-banner{background:linear-gradient(135deg,#2d1b0e,#5D4037,#6a9e1f) !important;}
+.world-banner.air-banner{background:linear-gradient(135deg,#003d42,#0097A7,#4dd0e1) !important;}
+.world-banner.water-banner{background:linear-gradient(135deg,#0a1f5c,#1565C0,#29b6f6) !important;}
+.world-banner h1{font-size:2.4rem !important;font-weight:900 !important;text-shadow:0 3px 14px rgba(0,0,0,.55);}
+.world-banner-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);padding:6px 16px;border-radius:30px;font-size:.85rem;font-weight:800;border:1px solid rgba(255,255,255,.3);margin:4px;font-family:'Nunito',sans-serif;}
+/* MAP NODES */
+.world-circle{width:115px !important;height:115px !important;font-size:3rem !important;border:4px solid rgba(255,255,255,.4) !important;box-shadow:0 8px 32px rgba(0,0,0,.5) !important;transition:all .3s !important;}
+.world-node:hover .world-circle:not(.locked){transform:scale(1.18) !important;box-shadow:0 12px 44px rgba(0,0,0,.6) !important;}
+.world-circle.air{background:radial-gradient(circle at 35% 35%,#b2ebf2,#0097A7) !important;border-color:#00BCD4 !important;}
+.world-circle.water{background:radial-gradient(circle at 35% 35%,#90caf9,#1565C0) !important;border-color:#2196F3 !important;}
+.world-circle.soil{background:radial-gradient(circle at 35% 35%,#bcaaa4,#5D4037) !important;border-color:#8D6E63 !important;}
+.world-circle.earth{background:radial-gradient(circle at 35% 35%,#a5d6a7,#2E7D32) !important;border-color:#4CAF50 !important;animation:earthGlow 2.5s ease-in-out infinite !important;}
+@keyframes earthGlow{0%,100%{box-shadow:0 0 20px rgba(0,0,0,.4)}50%{box-shadow:0 0 40px rgba(76,175,80,.7),0 0 60px rgba(76,175,80,.3)}}
+.world-label{font-size:.95rem !important;font-weight:800 !important;text-shadow:0 2px 8px rgba(0,0,0,.7);}
+/* SOIL ENV */
+.soil-env{background:linear-gradient(180deg,#5bc8e8 0%,#87CEEB 28%,#6abf1e 28%,#5a9e16 47%,#7a5040 47%,#5a3825 75%,#3E2723 100%) !important;border-radius:22px !important;box-shadow:inset 0 -6px 24px rgba(0,0,0,.35),0 8px 28px rgba(0,0,0,.4) !important;}
+.clickable-obj{font-size:2.8rem !important;filter:drop-shadow(0 3px 8px rgba(0,0,0,.4));transition:transform .2s,filter .2s !important;cursor:pointer;}
+.clickable-obj:hover{transform:scale(1.4) rotate(10deg) !important;filter:drop-shadow(0 6px 14px rgba(255,255,255,.35)) !important;}
+/* QUIZ */
+.quiz-option{border-radius:16px !important;border:2.5px solid rgba(255,255,255,.12) !important;padding:15px 20px !important;font-weight:700 !important;font-family:'Nunito',sans-serif !important;transition:all .18s !important;}
+.quiz-option:hover{transform:translateX(5px) !important;border-color:var(--accent) !important;background:rgba(0,229,255,.13) !important;}
+.quiz-option.correct{background:linear-gradient(135deg,rgba(46,204,64,.3),rgba(46,204,64,.08)) !important;border-color:var(--green) !important;}
+.quiz-option.wrong{background:rgba(231,76,60,.25) !important;border-color:var(--red) !important;}
+/* CHOICES */
+.choice-btn{border-radius:16px !important;border:2.5px solid rgba(255,255,255,.18) !important;font-weight:700 !important;font-family:'Nunito',sans-serif !important;transition:all .18s !important;text-align:left !important;}
+.choice-btn:hover{border-color:var(--accent) !important;transform:translateY(-3px) !important;background:rgba(0,229,255,.12) !important;}
+.choice-btn.correct{border-color:var(--green) !important;background:linear-gradient(135deg,rgba(46,204,64,.25),rgba(46,204,64,.05)) !important;animation:correctPop .4s ease;}
+.choice-btn.wrong{border-color:var(--red) !important;background:rgba(231,76,60,.18) !important;animation:wrongShake .4s ease;}
+@keyframes correctPop{0%{transform:scale(1)}40%{transform:scale(1.07)}100%{transform:scale(1)}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+/* ECO ACTIONS */
+.eco-action{border-radius:16px !important;border:2.5px solid transparent !important;padding:15px 18px !important;font-weight:700 !important;transition:all .2s !important;}
+.eco-action:hover{border-color:var(--green) !important;background:rgba(46,204,64,.1) !important;transform:translateX(5px) !important;}
+.eco-action.done{border-color:var(--green) !important;background:linear-gradient(135deg,rgba(46,204,64,.18),rgba(46,204,64,.04)) !important;}
+.eco-check{width:28px !important;height:28px !important;border-radius:50% !important;border:2.5px solid var(--green) !important;}
+/* DRAG */
+.drag-item{border-radius:16px !important;font-weight:800 !important;font-family:'Nunito',sans-serif !important;box-shadow:0 4px 14px rgba(0,0,0,.35) !important;background:linear-gradient(135deg,var(--card),var(--card2)) !important;border:2.5px solid rgba(0,229,255,.25) !important;transition:all .2s !important;}
+.drag-item:hover{border-color:var(--accent) !important;transform:scale(1.07) rotate(-2deg) !important;}
+.drag-item.dragging{opacity:.55 !important;transform:rotate(4deg) scale(1.06) !important;}
+.drop-zone{border:3px dashed rgba(255,255,255,.2) !important;border-radius:20px !important;}
+.drop-zone.drag-over{border-color:var(--accent) !important;background:rgba(0,229,255,.1) !important;transform:scale(1.02) !important;}
+/* MATCH */
+.match-item{border-radius:16px !important;padding:13px !important;font-weight:700 !important;border:2.5px solid rgba(255,255,255,.1) !important;transition:all .2s !important;}
+.match-item:hover{border-color:rgba(0,229,255,.5) !important;transform:scale(1.03) !important;}
+.match-item.selected{border-color:var(--accent) !important;background:rgba(0,229,255,.18) !important;animation:selectPulse .3s ease;}
+.match-item.matched{border-color:var(--green) !important;background:rgba(46,204,64,.18) !important;}
+@keyframes selectPulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+/* GARDEN */
+.garden-cell{border-radius:18px !important;font-size:2.2rem !important;border:3px dashed rgba(255,255,255,.2) !important;transition:all .3s !important;}
+.garden-cell:hover{border-color:var(--green) !important;background:rgba(46,204,64,.18) !important;transform:scale(1.08) !important;}
+.garden-cell.planted{border-style:solid !important;border-color:var(--green) !important;background:rgba(46,204,64,.25) !important;animation:growIn .55s cubic-bezier(.34,1.56,.64,1);}
+/* LEVEL BUTTONS */
+.level-btn{border-radius:18px !important;border:2.5px solid rgba(255,255,255,.1) !important;font-family:'Nunito',sans-serif !important;font-weight:700 !important;transition:all .2s !important;margin-bottom:10px !important;}
+.level-btn:hover{border-color:var(--accent) !important;background:rgba(0,229,255,.09) !important;transform:translateX(7px) !important;}
+.level-btn.completed{border-color:var(--green) !important;background:rgba(46,204,64,.07) !important;}
+.level-btn .level-icon{font-size:2.2rem !important;}
+/* CYCLE */
+.cycle-item{border-radius:18px !important;border:2.5px solid rgba(255,255,255,.12) !important;}
+.cycle-item:hover,.cycle-item.active{border-color:var(--accent) !important;background:rgba(0,229,255,.1) !important;}
+.cycle-arrow{font-size:1.7rem !important;animation:arrowBounce 1.6s ease-in-out infinite;}
+@keyframes arrowBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+/* CERTIFICATE */
+.certificate{border-radius:28px !important;box-shadow:0 0 70px rgba(255,214,0,.25),0 14px 44px rgba(0,0,0,.55) !important;}
+/* FUN FACT */
+.fun-fact{background:linear-gradient(135deg,rgba(255,214,0,.12),rgba(255,152,0,.04));border:2.5px solid var(--xp);border-radius:18px;padding:18px;margin:14px 0;position:relative;}
+.fun-fact::before{content:'✨';position:absolute;top:-13px;left:16px;font-size:1.5rem;}
+.safety-box{background:linear-gradient(135deg,rgba(255,152,0,.15),rgba(255,152,0,.03));border:2.5px solid var(--badge);border-radius:16px;padding:14px;margin:12px 0;}
+/* MOBILE NAV */
+#bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:1000;background:rgba(10,22,40,.98);border-top:2.5px solid var(--accent);padding:6px 4px 8px;}
+.bnav-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;}
+.bnav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:var(--text);cursor:pointer;font-size:.6rem;font-weight:800;font-family:'Nunito',sans-serif;padding:5px 2px;transition:color .15s;}
+.bnav-btn .bnav-icon{font-size:1.45rem;}
+.bnav-btn:active,.bnav-btn.active{color:var(--accent);}
+.section-header h2{font-size:2rem !important;font-weight:900 !important;}
+.divider{height:2px !important;background:linear-gradient(90deg,transparent,var(--accent),transparent) !important;margin:22px 0 !important;}
+::-webkit-scrollbar{width:7px;}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--accent),var(--green));border-radius:5px;}
+@media(max-width:600px){
+  .nav-links{display:none !important;}
+  #bottom-nav{display:block !important;}
+  .content{padding-bottom:78px !important;}
+  .world-circle{width:78px !important;height:78px !important;font-size:2rem !important;}
+  .scenario-choices{grid-template-columns:1fr !important;}
+  .garden-grid{grid-template-columns:repeat(3,1fr) !important;}
+  .hero h1{font-size:2rem !important;}
+  .world-banner h1{font-size:1.8rem !important;}
+}
+</style>
+</head>
+<body>
+<!-- TWINKLING STARS BACKGROUND -->
+<div id="stars-bg"></div>
+<!-- MOBILE BOTTOM NAV -->
+<nav id="bottom-nav">
+  <div class="bnav-grid">
+    <button class="bnav-btn" onclick="showScreen('map')"><span class="bnav-icon">🗺️</span>Map</button>
+    <button class="bnav-btn" onclick="showScreen('games')"><span class="bnav-icon">🎮</span>Games</button>
+    <button class="bnav-btn" onclick="showScreen('badges')"><span class="bnav-icon">🏆</span>Badges</button>
+    <button class="bnav-btn" onclick="showScreen('actions')"><span class="bnav-icon">✅</span>Actions</button>
+    <button class="bnav-btn" onclick="showScreen('parent')"><span class="bnav-icon">👨‍👩‍👧</span>Adults</button>
+  </div>
+</nav>
+
+<!-- XP POPUP -->
+<div id="xp-popup">⭐ +50 XP</div>
+
+<!-- MAIN NAV -->
+<nav id="main-nav">
+  <div class="logo" onclick="showScreen('home')">🌍 EcoQuest</div>
+  <div class="nav-links">
+    <button class="nav-btn" onclick="showScreen('map')">🗺️ Map</button>
+    <button class="nav-btn" onclick="showScreen('soil')">🌱 Soil</button>
+    <button class="nav-btn" onclick="showScreen('air')">🌬️ Air</button>
+    <button class="nav-btn" onclick="showScreen('water')">💧 Water</button>
+    <button class="nav-btn" onclick="showScreen('games')">🎮 Games</button>
+    <button class="nav-btn" onclick="showScreen('learnhub')">📚 Learn</button>
+    <button class="nav-btn" onclick="showScreen('badges')">🏆 Badges</button>
+    <button class="nav-btn" onclick="showScreen('actions')">🌱 Actions</button>
+    <button class="nav-btn parent-btn" onclick="showScreen('parent')">👨‍👩‍👧 Adults</button>
+  </div>
+  <div class="xp-bar">
+    <div>⭐</div><div class="xp-val" id="nav-xp">0 XP</div>
+    <div style="width:80px;"><div class="progress-container"><div class="progress-fill" id="nav-xp-bar" style="width:0%"></div></div></div>
+    <div style="font-size:0.8rem;color:#b0c4de;" id="nav-level">Lv 1</div>
+  </div>
+</nav>
+
+<!-- ==================== HOME ==================== -->
+<div id="screen-home" class="screen active content">
+  <div style="background:radial-gradient(ellipse at 50% 0%,#0d2040 0%,#0a1628 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 16px;text-align:center;position:relative;overflow:hidden;">
+    <!-- Animated floating shapes -->
+    <div style="position:absolute;top:8%;left:5%;font-size:2.5rem;animation:float 3.5s ease-in-out infinite;opacity:.5;">🌿</div>
+    <div style="position:absolute;top:15%;right:6%;font-size:2rem;animation:float 4s ease-in-out infinite 1s;opacity:.4;">💨</div>
+    <div style="position:absolute;top:40%;left:2%;font-size:2rem;animation:float 3s ease-in-out infinite .5s;opacity:.4;">🐝</div>
+    <div style="position:absolute;top:60%;right:3%;font-size:2.5rem;animation:float 4.5s ease-in-out infinite 1.5s;opacity:.4;">🦋</div>
+    <div style="position:absolute;bottom:12%;left:8%;font-size:2rem;animation:float 3.2s ease-in-out infinite .8s;opacity:.4;">🌸</div>
+    <div style="position:absolute;bottom:8%;right:7%;font-size:2rem;animation:float 3.8s ease-in-out infinite .3s;opacity:.4;">🍃</div>
+    <!-- MASCOT -->
+    <div style="font-size:5.5rem;filter:drop-shadow(0 8px 24px rgba(0,229,255,.5));animation:float 3s ease-in-out infinite;margin-bottom:8px;">🌍</div>
+    <!-- TITLE -->
+    <h1 style="font-size:clamp(2.2rem,7vw,4.5rem);font-weight:900;background:linear-gradient(135deg,#00e5ff 0%,#2ECC40 40%,#FFD600 70%,#FF69B4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;margin-bottom:4px;">EcoQuest</h1>
+    <div style="font-size:clamp(1.1rem,3vw,1.8rem);font-weight:800;color:#80deea;margin-bottom:8px;letter-spacing:1px;">🌿 PLANET PROTECTORS 🌿</div>
+    <p style="font-size:1.1rem;color:#c8ddf5;max-width:520px;margin:0 auto 28px;">Go on an adventure through <strong style="color:#00e5ff;">Air City</strong>, <strong style="color:#42A5F5;">Water Valley</strong>, and <strong style="color:#8BC34A;">Soil Gardens</strong> to become an Earth Guardian!</p>
+    <!-- WORLD ICONS ROW -->
+    <div style="display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin-bottom:32px;">
+      <div onclick="showScreen('air')" style="text-align:center;cursor:pointer;transition:transform .2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'">
+        <div style="width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,#b2ebf2,#0097A7);display:flex;align-items:center;justify-content:center;font-size:2.2rem;border:3px solid #00BCD4;box-shadow:0 0 20px rgba(0,188,212,.5);margin:0 auto 8px;animation:float 3.5s ease-in-out infinite .2s;">🌬️</div>
+        <div style="font-size:.9rem;font-weight:800;color:#80DEEA;">AIR CITY</div>
+      </div>
+      <div onclick="showScreen('water')" style="text-align:center;cursor:pointer;transition:transform .2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'">
+        <div style="width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,#90caf9,#1565C0);display:flex;align-items:center;justify-content:center;font-size:2.2rem;border:3px solid #2196F3;box-shadow:0 0 20px rgba(33,150,243,.5);margin:0 auto 8px;animation:float 4s ease-in-out infinite .6s;">💧</div>
+        <div style="font-size:.9rem;font-weight:800;color:#42A5F5;">WATER VALLEY</div>
+      </div>
+      <div onclick="showScreen('soil')" style="text-align:center;cursor:pointer;transition:transform .2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'">
+        <div style="width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,#bcaaa4,#5D4037);display:flex;align-items:center;justify-content:center;font-size:2.2rem;border:3px solid #8D6E63;box-shadow:0 0 20px rgba(141,110,99,.5);margin:0 auto 8px;animation:float 3.2s ease-in-out infinite 1s;">🌱</div>
+        <div style="font-size:.9rem;font-weight:800;color:#A1887F;">SOIL GARDENS</div>
+      </div>
+    </div>
+    <!-- CTA BUTTON -->
+    <button class="btn btn-primary" onclick="showScreen('map')" style="font-size:1.3rem;padding:18px 50px;box-shadow:0 0 30px rgba(0,229,255,.5);">🚀 Start My Adventure!</button>
+    <!-- LEARNING CYCLE -->
+    <div style="margin-top:22px;display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:580px;">
+      <span style="background:rgba(0,229,255,.12);border:1.5px solid rgba(0,229,255,.3);padding:5px 13px;border-radius:20px;font-size:.8rem;font-weight:700;">🔍 DISCOVER</span>
+      <span style="color:rgba(255,255,255,.3);">→</span>
+      <span style="background:rgba(0,229,255,.12);border:1.5px solid rgba(0,229,255,.3);padding:5px 13px;border-radius:20px;font-size:.8rem;font-weight:700;">📖 LEARN</span>
+      <span style="color:rgba(255,255,255,.3);">→</span>
+      <span style="background:rgba(255,214,0,.12);border:1.5px solid rgba(255,214,0,.3);padding:5px 13px;border-radius:20px;font-size:.8rem;font-weight:700;color:var(--xp);">🎮 PLAY</span>
+      <span style="color:rgba(255,255,255,.3);">→</span>
+      <span style="background:rgba(255,214,0,.12);border:1.5px solid rgba(255,214,0,.3);padding:5px 13px;border-radius:20px;font-size:.8rem;font-weight:700;color:var(--xp);">⭐ EARN XP</span>
+      <span style="color:rgba(255,255,255,.3);">→</span>
+      <span style="background:rgba(255,152,0,.12);border:1.5px solid rgba(255,152,0,.3);padding:5px 13px;border-radius:20px;font-size:.8rem;font-weight:700;color:var(--badge);">🏅 UNLOCK</span>
+      <span style="color:rgba(255,255,255,.3);">→</span>
+      <span style="background:rgba(46,204,64,.12);border:1.5px solid rgba(46,204,64,.3);padding:5px 13px;border-radius:20px;font-size:.8rem;font-weight:700;color:var(--green);">🌍 TAKE ACTION</span>
+    </div>
+    <!-- FEATURE CARDS -->
+    <div style="margin-top:36px;display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:16px;padding:0 12px;max-width:820px;width:100%;">
+      <div class="card" style="text-align:center;background:linear-gradient(135deg,rgba(0,229,255,.1),rgba(0,112,243,.05)) !important;border-color:rgba(0,229,255,.3) !important;cursor:pointer;" onclick="showScreen('games')">
+        <div style="font-size:2.5rem;margin-bottom:10px;">🎮</div>
+        <div style="font-weight:900;font-size:1.1rem;margin-bottom:6px;">Fun Games</div>
+        <div style="font-size:.85rem;color:#8ab4cc;">Detective missions, drag &amp; drop, quizzes &amp; more!</div>
+      </div>
+      <div class="card" style="text-align:center;background:linear-gradient(135deg,rgba(255,214,0,.1),rgba(255,152,0,.04)) !important;border-color:rgba(255,214,0,.3) !important;cursor:pointer;" onclick="showScreen('badges')">
+        <div style="font-size:2.5rem;margin-bottom:10px;">⭐</div>
+        <div style="font-weight:900;font-size:1.1rem;margin-bottom:6px;">Earn XP &amp; Badges</div>
+        <div style="font-size:.85rem;color:#8ab4cc;">Level up and collect 8 awesome badges!</div>
+      </div>
+      <div class="card" style="text-align:center;background:linear-gradient(135deg,rgba(46,204,64,.1),rgba(26,122,40,.04)) !important;border-color:rgba(46,204,64,.3) !important;cursor:pointer;" onclick="showScreen('actions')">
+        <div style="font-size:2.5rem;margin-bottom:10px;">🌎</div>
+        <div style="font-weight:900;font-size:1.1rem;margin-bottom:6px;">Save the Planet</div>
+        <div style="font-size:.85rem;color:#8ab4cc;">Real safe actions YOU can take every day!</div>
+      </div>
+    </div>
+    <!-- CORE MESSAGE -->
+    <div style="margin-top:28px;padding:16px 24px;background:rgba(46,204,64,.08);border:2px solid rgba(46,204,64,.25);border-radius:20px;max-width:560px;font-size:.95rem;line-height:1.7;color:#c8ddf5;">
+      <span style="font-size:1.3rem;">💚</span> <em>"The air we breathe, the water we use, and the soil that grows our food are all connected. Small safe actions can help us care for our environment."</em>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ADVENTURE MAP ==================== -->
+<div id="screen-map" class="screen content">
+  <div class="section-header" style="text-align:center;">
+    <h2>🗺️ Adventure Map</h2>
+    <p>Choose your world to explore and protect!</p>
+  </div>
+  <div class="map-container" style="position:relative; min-height:70vh; display:flex; align-items:center; justify-content:center; padding:40px 20px;">
+    <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;" id="map-svg"></svg>
+    <!-- AIR CITY -->
+    <div class="world-node" style="position:absolute; top:8%; left:50%; transform:translateX(-50%);" onclick="showScreen('air')">
+      <div class="world-circle air">🌬️</div>
+      <div class="world-label">AIR CITY<br><span style="font-size:0.7rem;color:#80DEEA;" id="air-progress-label">0/6 Levels</span></div>
+    </div>
+    <!-- WATER VALLEY -->
+    <div class="world-node" style="position:absolute; top:50%; left:8%; transform:translateY(-50%);" onclick="showScreen('water')">
+      <div class="world-circle water">💧</div>
+      <div class="world-label">WATER VALLEY<br><span style="font-size:0.7rem;color:#42A5F5;" id="water-progress-label">0/6 Levels</span></div>
+    </div>
+    <!-- SOIL GARDENS -->
+    <div class="world-node" style="position:absolute; top:50%; right:8%; transform:translateY(-50%);" onclick="showScreen('soil')">
+      <div class="world-circle soil">🌱</div>
+      <div class="world-label">SOIL GARDENS<br><span style="font-size:0.7rem;color:#A1887F;" id="soil-progress-label">0/6 Levels</span></div>
+    </div>
+    <!-- EARTH HQ -->
+    <div class="world-node" id="earth-hq-node" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);" onclick="tryEarthGuardian()">
+      <div class="world-circle earth locked" id="earth-circle">🌎</div>
+      <div class="world-label">EARTH HQ<br><span style="font-size:0.7rem;color:#4CAF50;" id="earth-label">Complete all worlds!</span></div>
+    </div>
+    <!-- CENTER DECORATION -->
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:-1;">
+      <div style="width:300px;height:300px;border-radius:50%;border:2px dashed rgba(0,229,255,0.2);"></div>
+    </div>
+    <!-- THREE POLLUTION WORLDS INFO -->
+    <div style="position:absolute; bottom:4%; left:50%; transform:translateX(-50%);">
+      <button class="btn btn-primary" onclick="showScreen('comparison')">🔍 The Three Pollution Worlds</button>
+    </div>
+  </div>
+  <!-- WORLD SUMMARY CARDS -->
+  <div class="grid-3" style="margin-top:0;">
+    <div class="card" onclick="showScreen('air')" style="cursor:pointer; border-color:#00BCD4;">
+      <div style="font-size:2rem;">🌬️</div><h3 style="color:#80DEEA;">Air City</h3>
+      <p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Smoke, vehicle emissions, dust — discover what pollutes our air and how to help.</p>
+      <div class="progress-container" style="margin-top:10px;"><div class="progress-fill" id="air-bar" style="width:0%;background:linear-gradient(90deg,#80DEEA,#00BCD4);"></div></div>
+    </div>
+    <div class="card" onclick="showScreen('water')" style="cursor:pointer; border-color:#2196F3;">
+      <div style="font-size:2rem;">💧</div><h3 style="color:#42A5F5;">Water Valley</h3>
+      <p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Plastic, sewage, chemicals — protect rivers, lakes and oceans.</p>
+      <div class="progress-container" style="margin-top:10px;"><div class="progress-fill" id="water-bar" style="width:0%;background:linear-gradient(90deg,#42A5F5,#1565C0);"></div></div>
+    </div>
+    <div class="card" onclick="showScreen('soil')" style="cursor:pointer; border-color:#8D6E63;">
+      <div style="font-size:2rem;">🌱</div><h3 style="color:#A1887F;">Soil Gardens</h3>
+      <p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Waste, chemicals, plastic — keep our soil healthy for plants and food.</p>
+      <div class="progress-container" style="margin-top:10px;"><div class="progress-fill" id="soil-bar" style="width:0%;background:linear-gradient(90deg,#A1887F,#5D4037);"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== THREE POLLUTION WORLDS COMPARISON ==================== -->
+<div id="screen-comparison" class="screen content">
+  <div class="section-header" style="text-align:center;">
+    <h2>🌐 The Three Pollution Worlds</h2>
+    <p>Click each card to explore that world!</p>
+  </div>
+  <div class="grid-3" style="padding:20px;">
+    <div class="card" onclick="showScreen('air')" style="cursor:pointer; border-color:#00BCD4; text-align:center;">
+      <div style="font-size:4rem; margin-bottom:12px;">🌬️</div>
+      <h2 style="color:#80DEEA;">AIR</h2>
+      <div class="divider"></div>
+      <p style="font-weight:700; color:#b0c4de;">What gets polluted?</p>
+      <p style="margin:8px 0;">The air around us — the atmosphere we breathe every day.</p>
+      <p style="font-weight:700; color:#b0c4de; margin-top:12px;">Common examples:</p>
+      <p style="margin:8px 0;">🚗 Vehicle smoke &bull; 🏭 Factory emissions &bull; 🔥 Burning waste &bull; 🌫️ Dust particles</p>
+      <button class="btn btn-air" style="margin-top:16px; width:100%;">Explore Air World →</button>
+    </div>
+    <div class="card" onclick="showScreen('water')" style="cursor:pointer; border-color:#2196F3; text-align:center;">
+      <div style="font-size:4rem; margin-bottom:12px;">💧</div>
+      <h2 style="color:#42A5F5;">WATER</h2>
+      <div class="divider"></div>
+      <p style="font-weight:700; color:#b0c4de;">What gets polluted?</p>
+      <p style="margin:8px 0;">Rivers, lakes, oceans, groundwater and other water environments.</p>
+      <p style="font-weight:700; color:#b0c4de; margin-top:12px;">Common examples:</p>
+      <p style="margin:8px 0;">🧴 Plastic waste &bull; 🏭 Chemicals &bull; 🗑️ Sewage &bull; 🚮 Litter in waterways</p>
+      <button class="btn btn-water" style="margin-top:16px; width:100%;">Explore Water World →</button>
+    </div>
+    <div class="card" onclick="showScreen('soil')" style="cursor:pointer; border-color:#8D6E63; text-align:center;">
+      <div style="font-size:4rem; margin-bottom:12px;">🌱</div>
+      <h2 style="color:#A1887F;">SOIL</h2>
+      <div class="divider"></div>
+      <p style="font-weight:700; color:#b0c4de;">What gets polluted?</p>
+      <p style="margin:8px 0;">The land and soil environment that supports all plant life and agriculture.</p>
+      <p style="font-weight:700; color:#b0c4de; margin-top:12px;">Common examples:</p>
+      <p style="margin:8px 0;">🗑️ Improper waste &bull; 🧪 Chemicals &bull; 🧴 Plastic &bull; 🔋 Batteries & electronics</p>
+      <button class="btn btn-soil" style="margin-top:16px; width:100%;">Explore Soil World →</button>
+    </div>
+  </div>
+  <div class="card" style="margin:20px; text-align:center; border-color:var(--accent);">
+    <h3 style="color:var(--accent); margin-bottom:12px;">💡 Did You Know?</h3>
+    <p style="font-size:1.05rem;">Air, water, and soil are all <strong>connected</strong>. A pollutant in one can travel and affect the others. That's why protecting <em>all three</em> matters!</p>
+    <button class="btn btn-primary" onclick="showScreen('connection')" style="margin-top:16px;">🔗 See How They Connect →</button>
+  </div>
+  <div style="text-align:center; padding:20px;">
+    <button class="btn" style="background:rgba(255,255,255,0.1);" onclick="showScreen('map')">← Back to Map</button>
+  </div>
+</div>
+
+<!-- ==================== SOIL POLLUTION WORLD ==================== -->
+<div id="screen-soil" class="screen content">
+  <div class="world-banner soil-banner">
+    <div style="font-size:4rem;filter:drop-shadow(0 6px 18px rgba(0,0,0,.5));animation:float 3s ease-in-out infinite;margin-bottom:4px;">🌱</div>
+    <h1>🌱 Soil Gardens World</h1>
+    <p>Explore the underground world of soil — and learn how to protect it!</p>
+    <div style="margin-top:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <span class="world-banner-badge">🎯 6 Levels</span>
+      <span class="world-banner-badge">🎮 5 Mini-Games</span>
+      <span class="world-banner-badge" id="soil-xp-earned">⭐ 0 XP Earned</span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('soil','levels')">📋 Levels</button>
+    <button class="tab-btn" onclick="showTab('soil','explore')">🌱 Level 1: Meet the Soil</button>
+    <button class="tab-btn" onclick="showTab('soil','detective')">🔍 Level 2: Polluters</button>
+    <button class="tab-btn" onclick="showTab('soil','save')">💪 Level 3: Save the Soil</button>
+    <button class="tab-btn" onclick="showTab('soil','food')">🥕 Level 4: Soil & Food</button>
+    <button class="tab-btn" onclick="showTab('soil','life')">🪱 Level 5: Soil Life</button>
+    <button class="tab-btn" onclick="showTab('soil','guardian')">🛡️ Level 6: Guardian</button>
+  </div>
+
+  <!-- LEVELS OVERVIEW -->
+  <div class="tab-content active" id="soil-tab-levels">
+    <div style="padding:16px; max-width:700px; margin:0 auto;">
+      <div class="level-btn" onclick="showTab('soil','explore')">
+        <div class="level-icon">🌱</div>
+        <div><div style="font-weight:700;">Level 1 — Meet the Soil</div><div class="level-num">Learn what soil is and why it matters • +50 XP</div></div>
+        <div style="margin-left:auto;" id="soil-l1-badge">⬜</div>
+      </div>
+      <div class="level-btn" onclick="showTab('soil','detective')">
+        <div class="level-icon">🔍</div>
+        <div><div style="font-weight:700;">Level 2 — What Pollutes the Soil?</div><div class="level-num">Identify causes of soil pollution • +60 XP</div></div>
+        <div style="margin-left:auto;" id="soil-l2-badge">⬜</div>
+      </div>
+      <div class="level-btn" onclick="showTab('soil','save')">
+        <div class="level-icon">💪</div>
+        <div><div style="font-weight:700;">Level 3 — Save the Soil</div><div class="level-num">Plan a cleanup and make safe choices • +70 XP</div></div>
+        <div style="margin-left:auto;" id="soil-l3-badge">⬜</div>
+      </div>
+      <div class="level-btn" onclick="showTab('soil','food')">
+        <div class="level-icon">🥕</div>
+        <div><div style="font-weight:700;">Level 4 — Soil and Food</div><div class="level-num">Connect healthy soil to the food we eat • +60 XP</div></div>
+        <div style="margin-left:auto;" id="soil-l4-badge">⬜</div>
+      </div>
+      <div class="level-btn" onclick="showTab('soil','life')">
+        <div class="level-icon">🪱</div>
+        <div><div style="font-weight:700;">Level 5 — Who Lives in the Soil?</div><div class="level-num">Discover the underground ecosystem • +70 XP</div></div>
+        <div style="margin-left:auto;" id="soil-l5-badge">⬜</div>
+      </div>
+      <div class="level-btn" onclick="showTab('soil','guardian')">
+        <div class="level-icon">🛡️</div>
+        <div><div style="font-weight:700;">Level 6 — Become a Soil Guardian</div><div class="level-num">Make responsible decisions in real scenarios • +80 XP</div></div>
+        <div style="margin-left:auto;" id="soil-l6-badge">⬜</div>
+      </div>
+    </div>
+    <div style="text-align:center; padding:20px;">
+      <div style="margin-bottom:16px; color:#b0c4de;">Soil World Progress</div>
+      <div class="progress-container" style="max-width:400px; margin:0 auto; height:16px;"><div class="progress-fill" id="soil-world-bar" style="width:0%;"></div></div>
+      <div style="margin-top:8px;" id="soil-world-pct">0% Complete</div>
+    </div>
+  </div>
+
+  <!-- LEVEL 1: SOIL EXPLORER -->
+  <div class="tab-content" id="soil-tab-explore">
+    <div style="padding:16px; max-width:800px; margin:0 auto;">
+      <div class="card" style="border-color:var(--green); margin-bottom:16px;">
+        <h3 style="color:#A5D6A7;">🌱 Level 1: Meet the Soil</h3>
+        <p style="margin-top:8px; line-height:1.7;"><strong style="color:var(--xp);">"Soil is more than dirt."</strong> It is home to billions of tiny living organisms and provides plants with the nutrients they need to grow. Healthy soil supports agriculture, forests, gardens — and ultimately the food on our table.</p>
+        <div class="grid-2" style="margin-top:16px; padding:0;">
+          <div class="card" style="background:rgba(76,175,80,0.1); border-color:var(--green);">🌾 <strong>Agriculture</strong><br><small>Soil provides the nutrients and water that crops need to grow food for billions of people.</small></div>
+          <div class="card" style="background:rgba(76,175,80,0.1); border-color:var(--green);">🌳 <strong>Ecosystems</strong><br><small>Forests, grasslands and wetlands all depend on healthy soil beneath them.</small></div>
+          <div class="card" style="background:rgba(76,175,80,0.1); border-color:var(--green);">🪱 <strong>Living Habitat</strong><br><small>Earthworms, insects, fungi and microorganisms all make soil their home.</small></div>
+          <div class="card" style="background:rgba(76,175,80,0.1); border-color:var(--green);">💧 <strong>Water Filter</strong><br><small>Healthy soil helps filter rainwater and recharge underground water supplies.</small></div>
+        </div>
+      </div>
+
+      <h3 style="padding:0 0 12px; color:var(--accent);">🎮 Soil Explorer — Click to Discover!</h3>
+      <p style="color:#b0c4de; margin-bottom:16px;">Click each item to learn about it. Explore all 6 to earn your badge!</p>
+
+      <!-- INTERACTIVE SOIL ENVIRONMENT -->
+      <div class="soil-env" style="min-height:340px; margin-bottom:16px;" id="soil-env-1">
+        <div class="sky-layer" style="position:relative;">
+          <span class="clickable-obj" onclick="showSoilInfo('sun',this)" title="Sun">☀️</span>
+          <span class="clickable-obj" onclick="showSoilInfo('cloud',this)" title="Cloud">⛅</span>
+          <span class="clickable-obj" onclick="showSoilInfo('tree',this)" title="Tree">🌳</span>
+        </div>
+        <div class="ground-layer">
+          <span class="clickable-obj" onclick="showSoilInfo('plant',this)" title="Plant">🌱</span>
+          <span class="clickable-obj" onclick="showSoilInfo('crop',this)" title="Crop">🥕</span>
+          <span class="clickable-obj" onclick="showSoilInfo('rain',this)" title="Rain">🌧️</span>
+        </div>
+        <div class="underground-layer">
+          <span class="clickable-obj" onclick="showSoilInfo('worm',this)" title="Earthworm">🪱</span>
+          <span class="clickable-obj" onclick="showSoilInfo('insect',this)" title="Insect">🐛</span>
+          <span class="clickable-obj" onclick="showSoilInfo('soil-layer',this)" title="Soil Layer">🪨</span>
+          <span class="clickable-obj" onclick="showSoilInfo('water-underground',this)" title="Underground Water">💧</span>
+        </div>
+      </div>
+      <div id="soil-info-box" style="display:none;" class="card" style="border-color:var(--green); margin-bottom:12px;"></div>
+
+      <div style="display:flex; align-items:center; gap:12px; margin-top:12px;">
+        <div style="flex:1;"><div class="progress-container"><div class="progress-fill" id="explore-progress" style="width:0%;background:linear-gradient(90deg,var(--green),#8BC34A);"></div></div></div>
+        <div id="explore-count" style="font-size:0.85rem; color:#b0c4de;">0/6 explored</div>
+      </div>
+      <button class="btn btn-green" id="l1-claim-btn" style="margin-top:16px; display:none;" onclick="claimLevel('soil',1,50,'Soil Explorer','🌱')">⭐ Claim +50 XP & Badge!</button>
+    </div>
+  </div>
+
+  <!-- LEVEL 2: POLLUTION DETECTIVE -->
+  <div class="tab-content" id="soil-tab-detective">
+    <div style="padding:16px; max-width:800px; margin:0 auto;">
+      <div class="card" style="border-color:#FF7043; margin-bottom:16px;">
+        <h3 style="color:#FFAB91;">🔍 Level 2: What Pollutes the Soil?</h3>
+        <p style="margin-top:8px; line-height:1.7;">Soil can be polluted in many ways. Learning to recognize these helps us protect our environment:</p>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-top:14px;">
+          <div style="padding:10px; background:rgba(255,112,67,0.1); border-radius:10px; font-size:0.9rem;">🗑️ Improperly dumped waste</div>
+          <div style="padding:10px; background:rgba(255,112,67,0.1); border-radius:10px; font-size:0.9rem;">🧴 Plastic waste</div>
+          <div style="padding:10px; background:rgba(255,112,67,0.1); border-radius:10px; font-size:0.9rem;">🏭 Certain industrial waste</div>
+          <div style="padding:10px; background:rgba(255,112,67,0.1); border-radius:10px; font-size:0.9rem;">🧪 Harmful chemicals</div>
+          <div style="padding:10px; background:rgba(255,112,67,0.1); border-radius:10px; font-size:0.9rem;">🌾 Excessive agricultural chemicals</div>
+          <div style="padding:10px; background:rgba(255,112,67,0.1); border-radius:10px; font-size:0.9rem;">🛢️ Oil and fuel spills</div>
+          <div style="padding:10px; background:rgba(255,112,67,0.1); border-radius:10px; font-size:0.9rem;">🔋 Batteries & e-waste</div>
+        </div>
+        <div style="margin-top:14px; padding:12px; background:rgba(255,193,7,0.1); border:1px solid var(--xp); border-radius:10px;">
+          ⚠️ <strong>Safety Note:</strong> Never try to clean up chemicals, batteries, or hazardous materials yourself. Always tell a trusted adult.
+        </div>
+      </div>
+
+      <h3 style="padding:0 0 12px; color:var(--accent);">🎮 Pollution Detective Game</h3>
+      <p style="color:#b0c4de; margin-bottom:16px;">Click on items that could cause soil pollution. Be careful — not everything is a polluter!</p>
+      <div id="detective-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:12px; padding:8px;"></div>
+      <div id="detective-result" style="margin-top:16px; padding:14px; border-radius:12px; display:none;"></div>
+      <button class="btn btn-soil" id="l2-claim-btn" style="margin-top:16px; display:none;" onclick="claimLevel('soil',2,60,'Soil Detective','🔍')">⭐ Claim +60 XP & Badge!</button>
+    </div>
+  </div>
+
+  <!-- LEVEL 3: SAVE THE SOIL -->
+  <div class="tab-content" id="soil-tab-save">
+    <div style="padding:16px; max-width:800px; margin:0 auto;">
+      <div class="card" style="border-color:var(--accent); margin-bottom:16px;">
+        <h3 style="color:var(--accent);">💪 Level 3: Save the Soil — Cleanup Planner</h3>
+        <p style="margin-top:8px; line-height:1.7;">You see a polluted area! Choose the <strong>right actions</strong> to help clean it up safely. Remember — some waste can only be handled by trained adults!</p>
+      </div>
+      <div id="save-soil-scene" style="font-size:2.5rem; background:rgba(93,64,55,0.3); border-radius:16px; padding:20px; text-align:center; margin-bottom:16px; line-height:1.8;">
+        🛍️ 🧴 🥫 🔋 🌱 🗑️ 🏚️
+        <div style="font-size:0.9rem; color:#b0c4de; margin-top:8px;">A polluted area with plastic, bottles, cans, battery waste, and overflowing garbage</div>
+      </div>
+
+      <h4 style="margin-bottom:12px;">What should you do? Choose ALL correct actions:</h4>
+      <div id="cleanup-choices" style="display:grid; gap:10px;"></div>
+      <div id="cleanup-result" style="margin-top:16px;"></div>
+      <button class="btn btn-green" id="l3-claim-btn" style="margin-top:16px; display:none;" onclick="claimLevel('soil',3,70,'Garden Guardian','🌳')">⭐ Claim +70 XP & Badge!</button>
+    </div>
+  </div>
+
+  <!-- LEVEL 4: SOIL AND FOOD -->
+  <div class="tab-content" id="soil-tab-food">
+    <div style="padding:16px; max-width:800px; margin:0 auto;">
+      <div class="card" style="border-color:#FFA726; margin-bottom:16px;">
+        <h3 style="color:#FFCC80;">🥕 Level 4: Soil and Food</h3>
+        <p style="margin-top:8px; line-height:1.7; font-size:1.05rem;">
+          <strong style="color:var(--xp);">Healthy Soil → Healthy Plants → Agriculture → Food on Your Table</strong>
+        </p>
+        <p style="margin-top:10px; line-height:1.7;">Every vegetable, grain, and fruit you eat starts in the soil. When soil is healthy, it holds water, provides nutrients, and supports root growth. Without healthy soil, agriculture suffers and food becomes scarce.</p>
+        <div class="divider"></div>
+        <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+          <div style="text-align:center;">🌱<br><small>Plant seeds</small></div>
+          <div style="font-size:1.5rem; color:var(--accent);">→</div>
+          <div style="text-align:center;">🌿<br><small>Absorb nutrients</small></div>
+          <div style="font-size:1.5rem; color:var(--accent);">→</div>
+          <div style="text-align:center;">🥦<br><small>Grow food</small></div>
+          <div style="font-size:1.5rem; color:var(--accent);">→</div>
+          <div style="text-align:center;">🍽️<br><small>Feed people</small></div>
+        </div>
+      </div>
+
+      <h3 style="padding:0 0 12px; color:var(--accent);">🎮 Restore the Garden</h3>
+      <p style="color:#b0c4de; margin-bottom:8px;">Click garden cells to plant and help restore this soil! Make 8 good choices.</p>
+      <div style="display:flex; gap:12px; margin-bottom:12px; flex-wrap:wrap;">
+        <button class="btn btn-green" style="padding:8px 16px; font-size:0.9rem;" onclick="gardenAction('plant')">🌱 Plant</button>
+        <button class="btn btn-water" style="padding:8px 16px; font-size:0.9rem;" onclick="gardenAction('water')">💧 Water</button>
+        <button class="btn" style="padding:8px 16px; font-size:0.9rem; background:#FF9800;" onclick="gardenAction('recycle')">♻️ Recycle</button>
+        <button class="btn btn-green" style="padding:8px 16px; font-size:0.9rem;" onclick="gardenAction('protect')">🌳 Protect</button>
+      </div>
+      <div class="garden-grid" id="garden-grid"></div>
+      <div style="margin-top:12px;"><div class="progress-container"><div class="progress-fill" id="garden-progress" style="width:0%;background:linear-gradient(90deg,var(--green),#8BC34A);"></div></div></div>
+      <div id="garden-status" style="margin-top:8px; color:#b0c4de;">Garden health: 0/8</div>
+      <button class="btn btn-green" id="l4-claim-btn" style="margin-top:16px; display:none;" onclick="claimLevel('soil',4,60,'Eco Recycler','♻️')">⭐ Claim +60 XP & Badge!</button>
+    </div>
+  </div>
+
+  <!-- LEVEL 5: WHO LIVES IN SOIL -->
+  <div class="tab-content" id="soil-tab-life">
+    <div style="padding:16px; max-width:800px; margin:0 auto;">
+      <div class="card" style="border-color:#CE93D8; margin-bottom:16px;">
+        <h3 style="color:#CE93D8;">🪱 Level 5: Who Lives in the Soil?</h3>
+        <p style="margin-top:8px; line-height:1.7;">One tablespoon of healthy soil can contain billions of microorganisms! The soil is an entire ecosystem teeming with life. Each creature has an important job.</p>
+      </div>
+
+      <div class="grid-2" style="padding:0; margin-bottom:16px;">
+        <div class="card" style="border-color:#A5D6A7;">
+          <div style="font-size:2.5rem;">🪱</div><strong>Earthworms</strong>
+          <p style="font-size:0.85rem; color:#b0c4de; margin-top:6px;">Mix and aerate the soil, creating channels for air and water. Their movement improves soil structure.</p>
+        </div>
+        <div class="card" style="border-color:#A5D6A7;">
+          <div style="font-size:2.5rem;">🐜</div><strong>Ants & Insects</strong>
+          <p style="font-size:0.85rem; color:#b0c4de; margin-top:6px;">Tunnel through soil, helping water drain and bringing nutrients closer to plant roots.</p>
+        </div>
+        <div class="card" style="border-color:#A5D6A7;">
+          <div style="font-size:2.5rem;">🍄</div><strong>Fungi</strong>
+          <p style="font-size:0.85rem; color:#b0c4de; margin-top:6px;">Break down dead matter, releasing nutrients back into the soil for plants to use.</p>
+        </div>
+        <div class="card" style="border-color:#A5D6A7;">
+          <div style="font-size:2.5rem;">🦠</div><strong>Microorganisms</strong>
+          <p style="font-size:0.85rem; color:#b0c4de; margin-top:6px;">Bacteria and other tiny organisms recycle organic material and keep the soil healthy.</p>
+        </div>
+        <div class="card" style="border-color:#A5D6A7;">
+          <div style="font-size:2.5rem;">🌱</div><strong>Plant Roots</strong>
+          <p style="font-size:0.85rem; color:#b0c4de; margin-top:6px;">Anchor plants and absorb water and nutrients from the soil, feeding leaves and fruits above.</p>
+        </div>
+        <div class="card" style="border-color:#A5D6A7;">
+          <div style="font-size:2.5rem;">🐛</div><strong>Small Insects</strong>
+          <p style="font-size:0.85rem; color:#b0c4de; margin-top:6px;">Break down leaves and organic matter, helping to create humus — the rich dark layer of soil.</p>
+        </div>
+      </div>
+
+      <h3 style="padding:0 0 12px; color:var(--accent);">🎮 Match the Organism to Its Role!</h3>
+      <div id="match-game" style="padding:8px;"></div>
+      <div id="match-result" style="margin-top:12px;"></div>
+      <button class="btn btn-green" id="l5-claim-btn" style="margin-top:16px; display:none;" onclick="claimLevel('soil',5,70,'Earth Protector','🌍')">⭐ Claim +70 XP & Badge!</button>
+    </div>
+  </div>
+
+  <!-- LEVEL 6: SOIL GUARDIAN SCENARIOS -->
+  <div class="tab-content" id="soil-tab-guardian">
+    <div style="padding:16px; max-width:800px; margin:0 auto;">
+      <div class="card" style="border-color:var(--xp); margin-bottom:16px;">
+        <h3 style="color:var(--xp);">🛡️ Level 6: Become a Soil Guardian</h3>
+        <p style="margin-top:8px; line-height:1.7;">In this level, you make real-life decisions! Read each scenario and choose the best action. Remember — keeping yourself safe matters too!</p>
+      </div>
+      <div id="scenario-container"></div>
+      <button class="btn btn-fire" id="l6-claim-btn" style="margin-top:16px; display:none;" onclick="claimLevel('soil',6,80,'Earth Guardian','🌎')">🌎 Claim +80 XP & Final Badge!</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== AIR POLLUTION WORLD ==================== -->
+<div id="screen-air" class="screen content">
+  <div class="world-banner air-banner">
+    <div style="font-size:4rem;filter:drop-shadow(0 6px 18px rgba(0,0,0,.5));animation:float 3.5s ease-in-out infinite;margin-bottom:4px;">🌬️</div>
+    <h1>🌬️ Air City World</h1>
+    <p>Discover what pollutes our air and how clean air keeps us and nature healthy!</p>
+    <div style="margin-top:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <span class="world-banner-badge">🎯 4 Levels</span>
+      <span class="world-banner-badge">🎮 Quiz + Game</span>
+      <span class="world-banner-badge" id="air-xp-earned">⭐ 0 XP Earned</span>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('air','info')">📖 Learn</button>
+    <button class="tab-btn" onclick="showTab('air','quiz')">❓ Quiz</button>
+    <button class="tab-btn" onclick="showTab('air','game')">🎮 Mini Game</button>
+    <button class="tab-btn" onclick="showTab('air','actions')">✅ Actions</button>
+  </div>
+  <div class="tab-content active" id="air-tab-info">
+    <div style="padding:20px; max-width:800px; margin:0 auto;">
+      <div class="card" style="border-color:#80DEEA;">
+        <h3 style="color:#80DEEA; margin-bottom:12px;">🌬️ What is Air Pollution?</h3>
+        <p style="line-height:1.8;">Air pollution happens when harmful substances — such as gases, particles, and smoke — enter the atmosphere. These pollutants can come from vehicles, factories, burning waste, and natural events. Clean air is vital for the health of people, animals, and plants.</p>
+      </div>
+      <div class="grid-2" style="padding:0; margin-top:16px;">
+        <div class="card" style="border-color:#FF7043;"><div style="font-size:2rem;">🚗</div><strong>Vehicle Emissions</strong><p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Cars, trucks, and motorbikes release exhaust fumes containing carbon monoxide and other pollutants.</p></div>
+        <div class="card" style="border-color:#FF7043;"><div style="font-size:2rem;">🏭</div><strong>Factory Smoke</strong><p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Some industrial processes release smoke and gases into the air.</p></div>
+        <div class="card" style="border-color:#FF7043;"><div style="font-size:2rem;">🔥</div><strong>Burning Waste</strong><p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Burning rubbish or leaves in the open releases smoke, ash, and toxic gases.</p></div>
+        <div class="card" style="border-color:#FF7043;"><div style="font-size:2rem;">🌫️</div><strong>Dust & Particles</strong><p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Construction sites, dry soil, and roads can create fine dust that floats in the air.</p></div>
+      </div>
+      <div class="card" style="margin-top:16px; border-color:var(--green);">
+        <h4 style="color:var(--green); margin-bottom:10px;">💚 Effects of Air Pollution</h4>
+        <p style="line-height:1.7;">Polluted air can affect breathing health, harm trees and plants, and contribute to broader environmental changes. Communities, governments, and organizations all work together to improve air quality.</p>
+      </div>
+      <div class="card" style="margin-top:16px; border-color:var(--accent);">
+        <h4 style="color:var(--accent); margin-bottom:10px;">✨ Fun Fact!</h4>
+        <p>Trees help improve air quality! One large tree can absorb a significant amount of carbon dioxide each year. Caring for trees and green spaces is one way communities help keep air healthier.</p>
+      </div>
+      <button class="btn btn-air" onclick="showTab('air','quiz')" style="margin-top:16px;">Take the Quiz! →</button>
+    </div>
+  </div>
+  <div class="tab-content" id="air-tab-quiz">
+    <div style="padding:20px; max-width:600px; margin:0 auto;">
+      <h3 style="color:#80DEEA; margin-bottom:16px;">❓ Air Pollution Quiz</h3>
+      <div id="air-quiz-container"></div>
+    </div>
+  </div>
+  <div class="tab-content" id="air-tab-game">
+    <div style="padding:20px; max-width:700px; margin:0 auto;">
+      <h3 style="color:#80DEEA; margin-bottom:8px;">🎮 Clean the Skies!</h3>
+      <p style="color:#b0c4de; margin-bottom:16px;">Click on each pollution source to learn about it and reduce air pollution!</p>
+      <div style="background:linear-gradient(180deg,#1a3a6b,#2d6a8a,#87CEEB); border-radius:16px; min-height:250px; position:relative; display:flex; align-items:center; justify-content:space-around; flex-wrap:wrap; padding:30px; gap:20px;" id="air-game-scene">
+        <div style="text-align:center; cursor:pointer;" onclick="airGameClick('factory',this)"><div style="font-size:3rem;" class="pulse">🏭</div><div style="font-size:0.8rem;">Factory</div></div>
+        <div style="text-align:center; cursor:pointer;" onclick="airGameClick('car',this)"><div style="font-size:3rem;" class="pulse">🚗</div><div style="font-size:0.8rem;">Car</div></div>
+        <div style="text-align:center; cursor:pointer;" onclick="airGameClick('fire',this)"><div style="font-size:3rem;" class="pulse">🔥</div><div style="font-size:0.8rem;">Burning waste</div></div>
+        <div style="text-align:center; cursor:pointer;" onclick="airGameClick('tree',this)"><div style="font-size:3rem;">🌳</div><div style="font-size:0.8rem;">Tree</div></div>
+        <div style="text-align:center; cursor:pointer;" onclick="airGameClick('bike',this)"><div style="font-size:3rem;">🚲</div><div style="font-size:0.8rem;">Bicycle</div></div>
+        <div style="text-align:center; cursor:pointer;" onclick="airGameClick('solar',this)"><div style="font-size:3rem;">☀️</div><div style="font-size:0.8rem;">Clean energy</div></div>
+      </div>
+      <div id="air-game-info" style="margin-top:16px; padding:14px; background:rgba(0,229,255,0.08); border:1px solid var(--accent); border-radius:12px; display:none;"></div>
+      <button class="btn btn-air" onclick="claimLevel('air',1,80,'Air Guardian','🌬️')" style="margin-top:16px;">⭐ Complete Air World! (+80 XP)</button>
+    </div>
+  </div>
+  <div class="tab-content" id="air-tab-actions">
+    <div style="padding:20px; max-width:600px; margin:0 auto;">
+      <h3 style="color:#80DEEA; margin-bottom:16px;">✅ Safe Things I Can Do</h3>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>🚶 Walk or cycle when it is appropriate and safe to do so</div></div>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>💡 Switch off lights and electronics when not in use</div></div>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>🌳 Help care for trees and green spaces in your community</div></div>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>🔥 Never burn rubbish — use proper waste bins</div></div>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>📢 Tell a trusted adult if you see someone burning waste dangerously</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== WATER POLLUTION WORLD ==================== -->
+<div id="screen-water" class="screen content">
+  <div class="world-banner water-banner">
+    <div style="font-size:4rem;filter:drop-shadow(0 6px 18px rgba(0,0,0,.5));animation:float 4s ease-in-out infinite .4s;margin-bottom:4px;">💧</div>
+    <h1>💧 Water Valley World</h1>
+    <p>Protect rivers, lakes, and oceans from pollution — water is life!</p>
+    <div style="margin-top:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <span class="world-banner-badge">🎯 4 Levels</span>
+      <span class="world-banner-badge">🎮 Quiz + Game</span>
+      <span class="world-banner-badge" id="water-xp-earned">⭐ 0 XP Earned</span>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('water','info')">📖 Learn</button>
+    <button class="tab-btn" onclick="showTab('water','quiz')">❓ Quiz</button>
+    <button class="tab-btn" onclick="showTab('water','game')">🎮 Mini Game</button>
+    <button class="tab-btn" onclick="showTab('water','actions')">✅ Actions</button>
+  </div>
+  <div class="tab-content active" id="water-tab-info">
+    <div style="padding:20px; max-width:800px; margin:0 auto;">
+      <div class="card" style="border-color:#42A5F5;">
+        <h3 style="color:#42A5F5; margin-bottom:12px;">💧 What is Water Pollution?</h3>
+        <p style="line-height:1.8;">Water pollution happens when harmful substances enter rivers, lakes, oceans, or groundwater. This affects aquatic animals, plants, and the many communities that depend on clean water. Protecting water is everyone's responsibility.</p>
+      </div>
+      <div class="grid-2" style="padding:0; margin-top:16px;">
+        <div class="card" style="border-color:#1565C0;"><div style="font-size:2rem;">🧴</div><strong>Plastic Waste</strong><p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Plastic bottles, bags, and packaging that are not properly disposed of can enter waterways.</p></div>
+        <div class="card" style="border-color:#1565C0;"><div style="font-size:2rem;">🧪</div><strong>Chemical Runoff</strong><p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Chemicals from farms, factories, or roads can wash into rivers and lakes.</p></div>
+        <div class="card" style="border-color:#1565C0;"><div style="font-size:2rem;">🗑️</div><strong>Improper Waste</strong><p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Throwing rubbish into water bodies is a major cause of water pollution worldwide.</p></div>
+        <div class="card" style="border-color:#1565C0;"><div style="font-size:2rem;">🏭</div><strong>Industrial Discharge</strong><p style="font-size:0.85rem;color:#b0c4de;margin-top:6px;">Some industrial processes can release pollutants into nearby water if not properly managed.</p></div>
+      </div>
+      <div class="card" style="margin-top:16px; border-color:#42A5F5;">
+        <h4 style="color:#42A5F5; margin-bottom:10px;">🐟 Effects on Aquatic Life</h4>
+        <p style="line-height:1.7;">Polluted water can harm fish, aquatic plants, and other creatures that depend on clean water. It can also affect the quality of drinking water and the communities that rely on water for food and livelihoods.</p>
+      </div>
+      <div class="card" style="margin-top:16px; border-color:var(--accent);">
+        <h4 style="color:var(--accent); margin-bottom:10px;">✨ Fun Fact!</h4>
+        <p>Oceans cover about 71% of Earth's surface. Keeping them clean is vital for weather patterns, oxygen production, and biodiversity across the entire planet!</p>
+      </div>
+      <button class="btn btn-water" onclick="showTab('water','quiz')" style="margin-top:16px;">Take the Quiz! →</button>
+    </div>
+  </div>
+  <div class="tab-content" id="water-tab-quiz">
+    <div style="padding:20px; max-width:600px; margin:0 auto;">
+      <h3 style="color:#42A5F5; margin-bottom:16px;">❓ Water Pollution Quiz</h3>
+      <div id="water-quiz-container"></div>
+    </div>
+  </div>
+  <div class="tab-content" id="water-tab-game">
+    <div style="padding:20px; max-width:700px; margin:0 auto;">
+      <h3 style="color:#42A5F5; margin-bottom:8px;">🎮 Clean the River!</h3>
+      <p style="color:#b0c4de; margin-bottom:16px;">Click on the pollutants in the river to remove them and restore aquatic life!</p>
+      <div style="background:linear-gradient(180deg,#1a3a6b 0%,#1565C0 40%,#0D47A1 100%); border-radius:16px; min-height:250px; display:flex; align-items:center; justify-content:space-around; flex-wrap:wrap; padding:30px; gap:20px;" id="water-game-scene">
+        <div style="text-align:center; cursor:pointer;" onclick="waterGameClick('bottle',this)"><div style="font-size:3rem;" class="pulse">🧴</div><div style="font-size:0.8rem;">Plastic bottle</div></div>
+        <div style="text-align:center; cursor:pointer;" onclick="waterGameClick('bag',this)"><div style="font-size:3rem;" class="pulse">🛍️</div><div style="font-size:0.8rem;">Plastic bag</div></div>
+        <div style="text-align:center; cursor:pointer;" onclick="waterGameClick('can',this)"><div style="font-size:3rem;" class="pulse">🥫</div><div style="font-size:0.8rem;">Tin can</div></div>
+        <div style="text-align:center; cursor:pointer;" onclick="waterGameClick('fish',this)"><div style="font-size:3rem;">🐟</div><div style="font-size:0.8rem;">Fish — protect me!</div></div>
+        <div style="text-align:center; cursor:pointer;" onclick="waterGameClick('plant',this)"><div style="font-size:3rem;">🌿</div><div style="font-size:0.8rem;">Water plant</div></div>
+      </div>
+      <div id="water-game-info" style="margin-top:16px; padding:14px; background:rgba(66,165,245,0.08); border:1px solid #42A5F5; border-radius:12px; display:none;"></div>
+      <button class="btn btn-water" onclick="claimLevel('water',1,80,'Water Guardian','💧')" style="margin-top:16px;">⭐ Complete Water World! (+80 XP)</button>
+    </div>
+  </div>
+  <div class="tab-content" id="water-tab-actions">
+    <div style="padding:20px; max-width:600px; margin:0 auto;">
+      <h3 style="color:#42A5F5; margin-bottom:16px;">✅ Safe Things I Can Do</h3>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>🚿 Turn off taps when not needed</div></div>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>🧴 Never throw litter near rivers, lakes, or beaches</div></div>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>♻️ Recycle plastic bottles and packaging properly</div></div>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>🐟 Join or support community water clean-up efforts</div></div>
+      <div class="eco-action" onclick="toggleAction(this,5)"><div class="eco-check">✓</div><div>💧 Use water responsibly — avoid wasting it</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== MINI GAMES HUB ==================== -->
+<div id="screen-games" class="screen content">
+  <div class="section-header" style="text-align:center; padding:30px 20px;">
+    <h2>🎮 Mini Games Arena</h2>
+    <p>Play all the pollution-fighting games! Earn XP and become a Planet Protector!</p>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('games','sorting')">↕️ Sorting Game</button>
+    <button class="tab-btn" onclick="showTab('games','connection')">🔗 Pollution Connection</button>
+    <button class="tab-btn" onclick="showTab('games','healthy')">🔍 Healthy or Polluted?</button>
+    <button class="tab-btn" onclick="showTab('games','match')">🎯 Match the Cause</button>
+    <button class="tab-btn" onclick="showTab('games','garden')">🌻 Green Garden</button>
+  </div>
+
+  <!-- SORTING GAME -->
+  <div class="tab-content active" id="games-tab-sorting">
+    <div style="padding:20px; max-width:900px; margin:0 auto;">
+      <h3 style="color:var(--accent); margin-bottom:6px;">↕️ Where Does It Belong?</h3>
+      <p style="color:#b0c4de; margin-bottom:20px;">Drag each item into the correct pollution category. Some items affect more than one!</p>
+      <div id="sort-items" style="display:flex; flex-wrap:wrap; gap:10px; min-height:60px; padding:12px; background:rgba(255,255,255,0.03); border-radius:12px; margin-bottom:20px; border:2px dashed rgba(255,255,255,0.15);"></div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px;">
+        <div>
+          <div style="text-align:center; font-size:1.5rem; margin-bottom:8px;">🌬️ AIR</div>
+          <div class="drop-zone" id="drop-air" ondragover="dragOver(event)" ondrop="dropItem(event,'air')"></div>
+        </div>
+        <div>
+          <div style="text-align:center; font-size:1.5rem; margin-bottom:8px;">💧 WATER</div>
+          <div class="drop-zone" id="drop-water" ondragover="dragOver(event)" ondrop="dropItem(event,'water')"></div>
+        </div>
+        <div>
+          <div style="text-align:center; font-size:1.5rem; margin-bottom:8px;">🌱 SOIL</div>
+          <div class="drop-zone" id="drop-soil" ondragover="dragOver(event)" ondrop="dropItem(event,'soil')"></div>
+        </div>
+      </div>
+      <div id="sort-feedback" style="margin-top:16px;"></div>
+      <button class="btn btn-primary" onclick="checkSorting()" style="margin-top:16px;">✅ Check My Answers!</button>
+      <button class="btn" style="margin-top:16px; margin-left:8px; background:rgba(255,255,255,0.1);" onclick="resetSorting()">🔄 Reset</button>
+    </div>
+  </div>
+
+  <!-- POLLUTION CONNECTION -->
+  <div class="tab-content" id="games-tab-connection">
+    <div style="padding:20px; max-width:700px; margin:0 auto;" id="connection-screen">
+      <h3 style="color:var(--accent); margin-bottom:6px;">🔗 Pollution Connection</h3>
+      <p style="color:#b0c4de; margin-bottom:20px;">Air, water, and soil are all connected! Click each stage to discover how pollution moves through our environment.</p>
+      <div style="display:flex; flex-direction:column; gap:8px; align-items:center;">
+        <div class="cycle-item" style="width:100%; max-width:400px;" onclick="showCycleInfo('air-c')">
+          <div style="font-size:2rem;">☁️</div><strong>AIR</strong>
+          <p style="font-size:0.85rem; color:#b0c4de; margin-top:4px;">Pollutants are released into the atmosphere</p>
+          <div id="cycle-air-c" style="display:none; margin-top:10px; padding:10px; background:rgba(0,229,255,0.08); border-radius:8px; font-size:0.9rem;">
+            Smoke, gases, and fine particles enter the air from vehicles, factories, and burning waste. These can travel far from their source.
+          </div>
+        </div>
+        <div class="cycle-arrow">⬇️ Rain carries pollutants downward</div>
+        <div class="cycle-item" style="width:100%; max-width:400px;" onclick="showCycleInfo('rain-c')">
+          <div style="font-size:2rem;">🌧️</div><strong>RAIN</strong>
+          <p style="font-size:0.85rem; color:#b0c4de; margin-top:4px;">Pollution in the air can fall with rain</p>
+          <div id="cycle-rain-c" style="display:none; margin-top:10px; padding:10px; background:rgba(0,229,255,0.08); border-radius:8px; font-size:0.9rem;">
+            Rain absorbs pollutants from the air and carries them down. This is sometimes called "acid rain" — it can affect plants and soil.
+          </div>
+        </div>
+        <div class="cycle-arrow">⬇️ Rain reaches the ground</div>
+        <div class="cycle-item" style="width:100%; max-width:400px;" onclick="showCycleInfo('soil-c')">
+          <div style="font-size:2rem;">🌱</div><strong>SOIL</strong>
+          <p style="font-size:0.85rem; color:#b0c4de; margin-top:4px;">Polluted rainwater enters the soil</p>
+          <div id="cycle-soil-c" style="display:none; margin-top:10px; padding:10px; background:rgba(0,229,255,0.08); border-radius:8px; font-size:0.9rem;">
+            Polluted rainwater seeps into soil and can affect soil organisms, plant roots, and the nutrients available for crops and plants.
+          </div>
+        </div>
+        <div class="cycle-arrow">⬇️ Water drains from soil to rivers</div>
+        <div class="cycle-item" style="width:100%; max-width:400px;" onclick="showCycleInfo('water-c')">
+          <div style="font-size:2rem;">💧</div><strong>WATER</strong>
+          <p style="font-size:0.85rem; color:#b0c4de; margin-top:4px;">Pollutants reach rivers, lakes, and groundwater</p>
+          <div id="cycle-water-c" style="display:none; margin-top:10px; padding:10px; background:rgba(0,229,255,0.08); border-radius:8px; font-size:0.9rem;">
+            Polluted runoff flows into rivers and lakes, affecting aquatic life. It can also seep into groundwater that communities use for drinking.
+          </div>
+        </div>
+        <div class="cycle-arrow">⬇️ Aquatic life and food chains affected</div>
+        <div class="cycle-item" style="width:100%; max-width:400px;" onclick="showCycleInfo('animals-c')">
+          <div style="font-size:2rem;">🐟🌿</div><strong>ANIMALS & PLANTS</strong>
+          <p style="font-size:0.85rem; color:#b0c4de; margin-top:4px;">The entire food chain can be affected</p>
+          <div id="cycle-animals-c" style="display:none; margin-top:10px; padding:10px; background:rgba(0,229,255,0.08); border-radius:8px; font-size:0.9rem;">
+            Pollution can affect fish, insects, birds, and other animals that eat contaminated food or live in polluted environments.
+          </div>
+        </div>
+        <div class="cycle-arrow">⬇️</div>
+        <div class="cycle-item" style="width:100%; max-width:400px; border-color:var(--green);" onclick="showCycleInfo('eco-c')">
+          <div style="font-size:2rem;">🌎</div><strong>ECOSYSTEM & COMMUNITIES</strong>
+          <p style="font-size:0.85rem; color:#b0c4de; margin-top:4px;">Everything is connected — the whole ecosystem is affected</p>
+          <div id="cycle-eco-c" style="display:none; margin-top:10px; padding:10px; background:rgba(76,175,80,0.1); border-radius:8px; font-size:0.9rem;">
+            The health of ecosystems depends on clean air, water, and soil. Communities, governments, scientists, and individuals all have roles in protecting and restoring our environment.
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="awardXP(60)" style="margin-top:24px;">⭐ I Understand the Connection! (+60 XP)</button>
+    </div>
+  </div>
+
+  <!-- HEALTHY OR POLLUTED -->
+  <div class="tab-content" id="games-tab-healthy">
+    <div style="padding:20px; max-width:700px; margin:0 auto;">
+      <h3 style="color:var(--accent); margin-bottom:6px;">🔍 Healthy or Polluted?</h3>
+      <p style="color:#b0c4de; margin-bottom:16px;">Look at each scene description and decide if it shows a healthy or polluted environment!</p>
+      <div id="healthy-game"></div>
+      <button class="btn btn-primary" id="healthy-check-btn" style="margin-top:16px; display:none;" onclick="checkHealthyGame()">✅ Check Answers!</button>
+      <div id="healthy-result" style="margin-top:16px;"></div>
+    </div>
+  </div>
+
+  <!-- MATCH THE CAUSE -->
+  <div class="tab-content" id="games-tab-match">
+    <div style="padding:20px; max-width:700px; margin:0 auto;">
+      <h3 style="color:var(--accent); margin-bottom:6px;">🎯 Match the Cause</h3>
+      <p style="color:#b0c4de; margin-bottom:16px;">Match each action or object to its environmental effect!</p>
+      <div id="cause-match-game"></div>
+      <div id="cause-match-result" style="margin-top:16px;"></div>
+    </div>
+  </div>
+
+  <!-- BUILD A GREEN GARDEN -->
+  <div class="tab-content" id="games-tab-garden">
+    <div style="padding:20px; max-width:700px; margin:0 auto;">
+      <h3 style="color:var(--green); margin-bottom:6px;">🌻 Build a Green Garden</h3>
+      <p style="color:#b0c4de; margin-bottom:16px;">Make environmentally responsible choices to build a thriving garden! Choose wisely and watch it grow.</p>
+      <div id="green-garden-choices" style="display:grid; gap:10px; margin-bottom:16px;"></div>
+      <div id="green-garden-scene" style="background:linear-gradient(180deg,#87CEEB 0%,#8BC34A 50%,#5D4037 100%); border-radius:16px; min-height:200px; display:flex; align-items:flex-end; justify-content:space-around; padding:20px; flex-wrap:wrap; gap:12px;" id="green-garden-visual">
+        <div style="font-size:0.9rem; color:rgba(255,255,255,0.7); width:100%; text-align:center; padding-bottom:8px;" id="garden-health-text">Garden health: 🌑🌑🌑🌑🌑</div>
+      </div>
+      <div id="green-garden-result" style="margin-top:16px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== LEARN HUB ==================== -->
+<div id="screen-learnhub" class="screen content">
+  <div class="section-header" style="text-align:center; padding:30px 20px;">
+    <h2>📚 Learn Hub</h2>
+    <p>Deep dive into every environmental topic!</p>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('learn','air')">🌬️ Air</button>
+    <button class="tab-btn" onclick="showTab('learn','water')">💧 Water</button>
+    <button class="tab-btn" onclick="showTab('learn','soil')">🌱 Soil</button>
+    <button class="tab-btn" onclick="showTab('learn','recycle')">♻️ Recycling</button>
+    <button class="tab-btn" onclick="showTab('learn','ecosystems')">🌳 Ecosystems</button>
+    <button class="tab-btn" onclick="showTab('learn','protection')">🌎 Protection</button>
+  </div>
+  <div class="tab-content active" id="learn-tab-air">
+    <div style="padding:20px; max-width:800px; margin:0 auto;">
+      <div class="card" style="border-color:#80DEEA;"><h3 style="color:#80DEEA;">🌬️ Air Pollution</h3><div class="divider"></div>
+        <p><strong style="color:var(--xp);">Definition:</strong> Air pollution occurs when harmful substances are released into the atmosphere, reducing air quality.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">Causes:</strong> Vehicle emissions, factory smoke, burning of waste, dust, and certain natural events.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">Effects:</strong> Can affect breathing health, harm plants and animals, and contribute to environmental changes.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">Prevention:</strong> Using cleaner transport, reducing waste burning, planting trees, and supporting clean energy.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">What you can do safely:</strong> Walk or cycle when appropriate, save electricity, care for trees, avoid burning waste.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">Fun fact:</strong> ✨ Trees act as natural air filters! Forests absorb carbon dioxide and release oxygen, helping keep the air cleaner.</p>
+        <button class="btn btn-air" style="margin-top:16px;" onclick="showScreen('air')">🎮 Explore Air World →</button>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content" id="learn-tab-water">
+    <div style="padding:20px; max-width:800px; margin:0 auto;">
+      <div class="card" style="border-color:#42A5F5;"><h3 style="color:#42A5F5;">💧 Water Pollution</h3><div class="divider"></div>
+        <p><strong style="color:var(--xp);">Definition:</strong> Water pollution occurs when harmful substances enter rivers, lakes, oceans, or groundwater.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">Causes:</strong> Plastic waste, chemical runoff, sewage, and improper disposal of waste near waterways.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">Effects:</strong> Harms aquatic life, affects drinking water quality, and impacts communities that depend on water.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">Prevention:</strong> Proper waste disposal, recycling plastics, reducing chemical use, and protecting water bodies.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">What you can do safely:</strong> Turn off taps, avoid littering near water, recycle packaging, use water responsibly.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">Fun fact:</strong> ✨ Less than 3% of Earth's water is freshwater, and much of that is frozen in glaciers. Protecting what's left is incredibly important!</p>
+        <button class="btn btn-water" style="margin-top:16px;" onclick="showScreen('water')">🎮 Explore Water World →</button>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content" id="learn-tab-soil">
+    <div style="padding:20px; max-width:800px; margin:0 auto;">
+      <div class="card" style="border-color:#A1887F;"><h3 style="color:#A1887F;">🌱 Soil Pollution</h3><div class="divider"></div>
+        <p><strong style="color:var(--xp);">Definition:</strong> Soil pollution occurs when harmful substances contaminate the land, reducing its quality for plants, animals, and agriculture.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">Causes:</strong> Improper waste disposal, plastic, chemical contamination, batteries and e-waste, and excessive agricultural chemicals.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">Effects:</strong> Harms soil organisms, reduces agricultural productivity, and can affect the quality of food and groundwater.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">Prevention:</strong> Proper waste management, recycling, reducing plastic use, using waste bins, and protecting green areas.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">What you can do safely:</strong> Don't litter, use bins, reduce plastic, care for gardens. If you find hazardous waste, tell a trusted adult.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">Fun fact:</strong> ✨ A single teaspoon of healthy soil contains billions of microorganisms that help plants grow and keep the ecosystem balanced!</p>
+        <button class="btn btn-soil" style="margin-top:16px;" onclick="showScreen('soil')">🎮 Explore Soil World →</button>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content" id="learn-tab-recycle">
+    <div style="padding:20px; max-width:800px; margin:0 auto;">
+      <div class="card" style="border-color:#66BB6A;"><h3 style="color:#66BB6A;">♻️ Waste & Recycling</h3><div class="divider"></div>
+        <p><strong style="color:var(--xp);">What is recycling?</strong> Recycling means turning used materials into new ones instead of throwing them away. It reduces waste and protects natural resources.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">What can be recycled?</strong> Paper, cardboard, glass bottles, plastic containers, metal cans, and electronic items (through special facilities).</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">What about hazardous waste?</strong> Batteries, electronics, chemicals, and medicine should NEVER be thrown in regular bins. Ask a trusted adult how to dispose of them properly in your area.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">Fun fact:</strong> ✨ Recycling one aluminium can saves enough energy to power a TV for approximately 3 hours!</p>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content" id="learn-tab-ecosystems">
+    <div style="padding:20px; max-width:800px; margin:0 auto;">
+      <div class="card" style="border-color:#FFA726;"><h3 style="color:#FFA726;">🌳 Ecosystems</h3><div class="divider"></div>
+        <p><strong style="color:var(--xp);">What is an ecosystem?</strong> An ecosystem is a community of living organisms — plants, animals, insects, fungi, and microorganisms — interacting with their environment.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">Why do they matter?</strong> Healthy ecosystems provide clean air, clean water, food, medicine, and many other services we depend on.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">How does pollution affect ecosystems?</strong> Pollution can disrupt food chains, reduce biodiversity, and make ecosystems less able to recover from other pressures.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">Fun fact:</strong> ✨ Bees pollinate about one-third of the food we eat. Protecting the environment helps protect bees and the food systems they support!</p>
+        <button class="btn btn-primary" onclick="showTab('games','connection')" style="margin-top:16px;">🔗 See How Ecosystems Connect →</button>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content" id="learn-tab-protection">
+    <div style="padding:20px; max-width:800px; margin:0 auto;">
+      <div class="card" style="border-color:var(--accent);"><h3 style="color:var(--accent);">🌎 Environmental Protection</h3><div class="divider"></div>
+        <p><strong style="color:var(--xp);">Who is responsible?</strong> Protecting the environment is a shared responsibility. Governments, organizations, communities, families, and individuals all play important roles.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">What do governments do?</strong> Governments create environmental laws, manage protected areas, and regulate pollution from industry and agriculture.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">What can young people do?</strong> Learn about environmental issues, make responsible daily choices, care for local environments, and encourage others to do the same.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">Important:</strong> Never try to clean up hazardous or chemical waste on your own. Always involve adults for anything potentially dangerous.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--xp);">Fun fact:</strong> ✨ The word "ecology" comes from the Greek word "oikos" meaning home. Earth is our home — and protecting it protects us all!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== BADGES ==================== -->
+<div id="screen-badges" class="screen content">
+  <div class="section-header" style="text-align:center; padding:30px 20px;">
+    <h2>🏆 My Badges</h2>
+    <p>Earn badges by completing levels and challenges!</p>
+  </div>
+  <div style="padding:16px; display:flex; flex-wrap:wrap; gap:16px; justify-content:center;" id="badges-grid">
+    <!-- populated by JS -->
+  </div>
+  <div style="text-align:center; padding:20px;">
+    <div id="badges-earned-count" style="font-size:1.2rem; color:var(--xp);">0 badges earned</div>
+    <button class="btn btn-primary" onclick="showScreen('certificate')" style="margin-top:16px;" id="cert-btn" style="display:none;">🏅 View My Certificate →</button>
+  </div>
+</div>
+
+<!-- ==================== ECO ACTIONS ==================== -->
+<div id="screen-actions" class="screen content">
+  <div class="section-header" style="text-align:center; padding:30px 20px;">
+    <h2>🌱 3 Things I Can Do</h2>
+    <p>Small, safe actions make a big difference over time! Check them off to earn XP.</p>
+  </div>
+  <div style="max-width:700px; margin:0 auto; padding:16px;">
+    <div class="card" style="border-color:#80DEEA; margin-bottom:16px;">
+      <h3 style="color:#80DEEA; margin-bottom:12px;">🌬️ AIR Actions</h3>
+      <div class="eco-action" onclick="toggleAction(this,10)" id="action-air-1"><div class="eco-check">✓</div><div>🚶 Walk or cycle when it is safe and appropriate instead of going by vehicle</div></div>
+      <div class="eco-action" onclick="toggleAction(this,10)" id="action-air-2"><div class="eco-check">✓</div><div>💡 Save electricity — switch off lights, fans, and screens when not in use</div></div>
+      <div class="eco-action" onclick="toggleAction(this,10)" id="action-air-3"><div class="eco-check">✓</div><div>🌳 Help care for trees and green spaces near your home or school</div></div>
+      <div class="eco-action" onclick="toggleAction(this,10)" id="action-air-4"><div class="eco-check">✓</div><div>🔥 Never burn rubbish — use proper waste bins and recycling facilities</div></div>
+    </div>
+    <div class="card" style="border-color:#42A5F5; margin-bottom:16px;">
+      <h3 style="color:#42A5F5; margin-bottom:12px;">💧 WATER Actions</h3>
+      <div class="eco-action" onclick="toggleAction(this,10)" id="action-water-1"><div class="eco-check">✓</div><div>🚿 Turn off the tap while brushing teeth or when water is not needed</div></div>
+      <div class="eco-action" onclick="toggleAction(this,10)" id="action-water-2"><div class="eco-check">✓</div><div>💧 Avoid wasting water — take shorter showers and fix dripping taps</div></div>
+      <div class="eco-action" onclick="toggleAction(this,10)" id="action-water-3"><div class="eco-check">✓</div><div>🧴 Never throw litter into rivers, lakes, or beaches</div></div>
+      <div class="eco-action" onclick="toggleAction(this,10)" id="action-water-4"><div class="eco-check">✓</div><div>♻️ Recycle plastic bottles and packaging so they don't reach waterways</div></div>
+    </div>
+    <div class="card" style="border-color:#A1887F; margin-bottom:16px;">
+      <h3 style="color:#A1887F; margin-bottom:12px;">🌱 SOIL Actions</h3>
+      <div class="eco-action" onclick="toggleAction(this,10)" id="action-soil-1"><div class="eco-check">✓</div><div>🚮 Do not litter — always put waste in the correct bin</div></div>
+      <div class="eco-action" onclick="toggleAction(this,10)" id="action-soil-2"><div class="eco-check">✓</div><div>🧴 Reduce unnecessary plastic use — choose reusable options when you can</div></div>
+      <div class="eco-action" onclick="toggleAction(this,10)" id="action-soil-3"><div class="eco-check">✓</div><div>🌱 Help care for gardens and plants — they support healthy soil</div></div>
+      <div class="eco-action" onclick="toggleAction(this,10)" id="action-soil-4"><div class="eco-check">✓</div><div>⚠️ If you find waste that may be dangerous, tell a trusted adult — do not touch it</div></div>
+      <div class="eco-action" onclick="toggleAction(this,10)" id="action-soil-5"><div class="eco-check">✓</div><div>♻️ Separate recyclables from regular waste before putting them in the bin</div></div>
+    </div>
+    <div style="text-align:center; margin-top:16px;">
+      <div style="font-size:1.1rem; margin-bottom:8px;">Actions completed: <span id="actions-done-count" style="color:var(--xp); font-weight:700;">0</span> / 13</div>
+      <div class="progress-container" style="max-width:400px; margin:0 auto; height:14px;"><div class="progress-fill" id="actions-bar" style="width:0%;"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PROGRESS ==================== -->
+<div id="screen-progress" class="screen content">
+  <div class="section-header" style="text-align:center; padding:30px 20px;">
+    <h2>📊 My Progress</h2>
+    <p>Track your adventure through all the worlds!</p>
+  </div>
+  <div style="max-width:700px; margin:0 auto; padding:16px;">
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+        <div style="text-align:center;">
+          <div style="font-size:2.5rem; font-weight:900; color:var(--xp);" id="prog-xp">0</div>
+          <div style="color:#b0c4de;">Total XP</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:2.5rem; font-weight:900; color:var(--badge);" id="prog-level">1</div>
+          <div style="color:#b0c4de;">Level</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:2.5rem; font-weight:900; color:var(--green);" id="prog-badges">0</div>
+          <div style="color:#b0c4de;">Badges</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:2.5rem; font-weight:900; color:var(--accent);" id="prog-actions">0</div>
+          <div style="color:#b0c4de;">Actions Done</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div style="margin-top:12px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>🌬️ Air City</span><span id="prog-air-pct">0%</span></div>
+        <div class="progress-container" style="margin-bottom:12px;"><div class="progress-fill" id="prog-air-bar" style="width:0%;background:linear-gradient(90deg,#80DEEA,#00BCD4);"></div></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>💧 Water Valley</span><span id="prog-water-pct">0%</span></div>
+        <div class="progress-container" style="margin-bottom:12px;"><div class="progress-fill" id="prog-water-bar" style="width:0%;background:linear-gradient(90deg,#42A5F5,#1565C0);"></div></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>🌱 Soil Gardens</span><span id="prog-soil-pct">0%</span></div>
+        <div class="progress-container" style="margin-bottom:12px;"><div class="progress-fill" id="prog-soil-bar" style="width:0%;background:linear-gradient(90deg,#A1887F,#5D4037);"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== EARTH GUARDIAN FINAL CHALLENGE ==================== -->
+<div id="screen-earthguardian" class="screen content">
+  <div style="background:linear-gradient(135deg,#1a3a1a,#2E7D32,#1565C0); padding:30px 20px; text-align:center; border-radius:0 0 24px 24px;">
+    <div style="font-size:4rem;" class="floating">🌎</div>
+    <h1 style="font-size:2.2rem; font-weight:900;">Earth Guardian HQ</h1>
+    <p style="color:rgba(255,255,255,0.85); margin-top:8px;">The final challenge! Your decisions will shape the future of this virtual town.</p>
+  </div>
+
+  <div style="padding:20px; max-width:800px; margin:0 auto;">
+    <div class="card" style="border-color:var(--xp); margin-bottom:20px; text-align:center;">
+      <p style="font-size:1rem; line-height:1.7;">You are the <strong style="color:var(--xp);">Earth Guardian</strong> of this town! Make decisions to reduce pollution across air, water, and soil. Remember: real change comes from communities, organizations, and governments working together — your individual choices matter AND inspire others!</p>
+    </div>
+
+    <!-- VIRTUAL TOWN SCENE -->
+    <div style="background:linear-gradient(180deg,#87CEEB 0%,#87CEEB 35%,#8BC34A 35%,#8BC34A 50%,#6D8B2E 50%); border-radius:16px; min-height:200px; padding:20px; display:flex; align-items:flex-end; justify-content:space-around; flex-wrap:wrap; gap:16px; margin-bottom:20px;" id="guardian-town">
+      <div style="text-align:center; font-size:2.5rem;">🏙️<br><small style="font-size:0.6rem;">City</small></div>
+      <div style="text-align:center; font-size:2.5rem;" id="gt-factory">🏭<br><small style="font-size:0.6rem;">Factory</small></div>
+      <div style="text-align:center; font-size:2.5rem;" id="gt-forest">🌳<br><small style="font-size:0.6rem;">Forest</small></div>
+      <div style="text-align:center; font-size:2.5rem;">🌱<br><small style="font-size:0.6rem;">Farm</small></div>
+      <div style="text-align:center; font-size:2.5rem;" id="gt-river">💧<br><small style="font-size:0.6rem;">River</small></div>
+      <div style="text-align:center; font-size:2.5rem;">🏖️<br><small style="font-size:0.6rem;">Lake</small></div>
+      <div style="text-align:center; font-size:2.5rem;">🚲<br><small style="font-size:0.6rem;">Paths</small></div>
+      <div style="text-align:center; font-size:2.5rem;">♻️<br><small style="font-size:0.6rem;">Recycling</small></div>
+    </div>
+
+    <!-- CHALLENGES -->
+    <div id="guardian-challenges"></div>
+    <div id="guardian-result" style="margin-top:20px;"></div>
+  </div>
+</div>
+
+<!-- ==================== ACHIEVEMENT CERTIFICATE ==================== -->
+<div id="screen-certificate" class="screen content">
+  <div style="padding:30px 20px; text-align:center;">
+    <div class="certificate" id="cert-display">
+      <div class="cert-seal">🌎</div>
+      <h1 style="font-size:2rem; margin:16px 0; color:var(--xp);">Certificate of Achievement</h1>
+      <div style="font-size:1.1rem; color:#b0c4de; margin-bottom:16px;">This certifies that</div>
+      <div style="font-size:1.8rem; font-weight:900; color:var(--accent); margin-bottom:16px;" id="cert-name">Young Planet Protector</div>
+      <div style="line-height:1.8; color:#e8f4f8; margin-bottom:16px;">has successfully completed the <strong>EcoQuest: Planet Protectors</strong> adventure,<br>learning about Air Pollution, Water Pollution, and Soil Pollution,<br>and earning the title of</div>
+      <div style="font-size:2rem; font-weight:900; color:var(--green); margin:16px 0;">🌿 Earth Guardian 🌿</div>
+      <div style="font-size:1rem; color:#b0c4de; margin-bottom:20px;">Total XP Earned: <span style="color:var(--xp); font-weight:700;" id="cert-xp">0</span></div>
+      <div style="padding:12px; background:rgba(0,229,255,0.1); border:1px solid var(--accent); border-radius:10px; font-style:italic; max-width:480px; margin:0 auto;">
+        "The air we breathe, the water we use, and the soil that grows our food are all connected. Small safe actions can help us care for our environment."
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="showScreen('home')" style="margin-top:24px;">🏠 Return Home</button>
+  </div>
+</div>
+
+<!-- ==================== PARENT & TEACHER MODE ==================== -->
+<div id="screen-parent" class="screen content">
+  <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;" id="parent-login-area">
+    <div style="max-width:500px; width:100%; text-align:center;">
+      <div style="font-size:4rem; margin-bottom:16px;">👨‍👩‍👧</div>
+      <h2 style="color:var(--badge); margin-bottom:8px;">Parent & Teacher Area</h2>
+      <p style="color:#b0c4de; margin-bottom:24px;">This section is for adults. Enter the access PIN to continue.</p>
+      <div style="background:var(--card); border-radius:16px; padding:30px; border:2px solid var(--badge);">
+        <input type="password" id="parent-pin" placeholder="Enter PIN (try: 1234)" style="background:rgba(255,255,255,0.1);border:2px solid var(--badge);color:white;padding:14px 20px;border-radius:10px;font-size:1.1rem;width:100%;text-align:center;margin-bottom:16px;"/>
+        <button class="btn" style="background:linear-gradient(135deg,var(--badge),#E65100);width:100%;font-size:1.1rem;" onclick="parentLogin()">🔓 Enter Adult Area</button>
+        <div id="pin-error" style="color:#EF9A9A; margin-top:10px; font-size:0.9rem;"></div>
+        <div style="margin-top:16px; padding:12px; background:rgba(255,193,7,0.08); border-radius:8px; font-size:0.85rem; color:#b0c4de;">Demo PIN: <strong style="color:var(--xp);">1234</strong></div>
+      </div>
+      <button class="btn" style="background:rgba(255,255,255,0.1); margin-top:16px;" onclick="showScreen('map')">← Back to Adventure</button>
+    </div>
+  </div>
+
+  <div id="parent-dashboard" style="display:none; padding:20px;">
+    <div style="max-width:800px; margin:0 auto;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+        <h2 style="color:var(--badge);">👨‍👩‍👧 Parent & Teacher Dashboard</h2>
+        <button class="btn" style="background:rgba(255,255,255,0.1); font-size:0.9rem;" onclick="parentLogout()">🔒 Lock</button>
+      </div>
+
+      <div class="grid-2" style="padding:0; margin-bottom:20px;">
+        <div class="card" style="border-color:var(--xp);">
+          <h4 style="color:var(--xp);">⭐ Total XP</h4>
+          <div style="font-size:2.5rem; font-weight:900; margin-top:8px;" id="parent-xp-val">0</div>
+        </div>
+        <div class="card" style="border-color:var(--badge);">
+          <h4 style="color:var(--badge);">🏅 Badges Earned</h4>
+          <div style="font-size:2.5rem; font-weight:900; margin-top:8px;" id="parent-badges-val">0</div>
+        </div>
+        <div class="card" style="border-color:var(--green);">
+          <h4 style="color:var(--green);">✅ Eco Actions Done</h4>
+          <div style="font-size:2.5rem; font-weight:900; margin-top:8px;" id="parent-actions-val">0</div>
+        </div>
+        <div class="card" style="border-color:var(--accent);">
+          <h4 style="color:var(--accent);">🎯 Guardian Level</h4>
+          <div style="font-size:2.5rem; font-weight:900; margin-top:8px;" id="parent-level-val">1</div>
+        </div>
+      </div>
+
+      <div class="card" style="border-color:var(--badge); margin-bottom:20px;">
+        <h3 style="color:var(--badge); margin-bottom:12px;">📖 About This Application</h3>
+        <p style="line-height:1.8;">EcoQuest: Planet Protectors is designed for children aged 8–15. It teaches environmental science through interactive gameplay focused on Air Pollution, Water Pollution, and Soil Pollution.</p>
+        <p style="margin-top:10px; line-height:1.8;">The application follows the learning cycle: <strong>Discover → Learn → Play → Answer → Earn XP → Unlock → Take Action</strong>. All safety guidance emphasizes that children should involve trusted adults for any hazardous materials.</p>
+        <p style="margin-top:10px; line-height:1.8;">The core message throughout: <em>"The air we breathe, the water we use, and the soil that grows our food are all connected. Communities, organizations, governments, and individuals all have roles in environmental protection."</em></p>
+      </div>
+
+      <div class="card" style="border-color:#FF9800; margin-bottom:20px;">
+        <h3 style="color:#FF9800; margin-bottom:12px;">💬 IBM Bob AI Assistant</h3>
+        <p style="color:#b0c4de; margin-bottom:16px;">Ask IBM Bob any questions about the curriculum, environmental topics, or how to support a child's learning journey.</p>
+        <button class="btn" style="background:linear-gradient(135deg,#FF9800,#E65100);" onclick="openChat()">💬 Open IBM Bob Chat</button>
+        <p style="margin-top:12px; font-size:0.85rem; color:#b0c4de;">IBM Bob is an AI assistant. For specific environmental or educational questions, always verify with authoritative sources.</p>
+      </div>
+
+      <div class="card" style="border-color:var(--accent);">
+        <h3 style="color:var(--accent); margin-bottom:12px;">🎓 Teaching Tips</h3>
+        <ul style="padding-left:20px; line-height:2; color:#b0c4de;">
+          <li>Let children explore worlds at their own pace — curiosity matters!</li>
+          <li>Discuss the Eco Actions together — which ones can you do as a family?</li>
+          <li>Use the Learn Hub as a reference for homework or school projects.</li>
+          <li>Reinforce that environmental protection is a shared community effort.</li>
+          <li>Celebrate badge achievements — positive reinforcement builds motivation.</li>
+          <li>Discuss what children learn in the games and encourage questions.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IBM BOB CHAT WIDGET -->
+<div id="watson-chat">
+  <button class="chat-fab" id="chat-fab-btn" onclick="toggleChat()">💬</button>
+  <div class="chat-window" id="chat-window">
+    <div class="chat-header">
+      <div><h4>🤖 IBM Bob Assistant</h4><span>Adult Education Support</span></div>
+      <button class="chat-close" onclick="toggleChat()">✕</button>
+    </div>
+    <div class="chat-messages" id="chat-messages">
+      <div class="chat-msg bot">Hello! I'm IBM Bob, your AI education assistant. I'm here to help parents and teachers understand the EcoQuest curriculum and environmental topics. What would you like to know?</div>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="chat-input" placeholder="Ask about the curriculum..." onkeypress="if(event.key==='Enter')sendChat()"/>
+      <button onclick="sendChat()">➤</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ============================================================
+//  GAME STATE
+// ============================================================
+const state = {
+  xp: 0, level: 1,
+  badges: [],
+  completedLevels: { soil: [], air: [], water: [] },
+  actionsCompleted: 0,
+  soilExplored: new Set(),
+  detectiveScore: 0,
+  cleanupSelected: new Set(),
+  gardenCount: 0,
+  matchScore: 0,
+  guardianScore: 0,
+  parentLoggedIn: false
+};
+
+const BADGES_DEF = [
+  { id:'soil-explorer', name:'Soil Explorer', icon:'🌱', desc:'Explored the soil world' },
+  { id:'soil-detective', name:'Soil Detective', icon:'🔍', desc:'Found all soil polluters' },
+  { id:'garden-guardian', name:'Garden Guardian', icon:'🌳', desc:'Completed soil cleanup level' },
+  { id:'eco-recycler', name:'Eco Recycler', icon:'♻️', desc:'Restored the garden' },
+  { id:'earth-protector', name:'Earth Protector', icon:'🌍', desc:'Mastered soil ecosystem' },
+  { id:'earth-guardian', name:'Earth Guardian', icon:'🌎', desc:'Completed all worlds!' },
+  { id:'air-guardian', name:'Air Guardian', icon:'🌬️', desc:'Completed Air World' },
+  { id:'water-guardian', name:'Water Guardian', icon:'💧', desc:'Completed Water World' },
+];
+
+// Load from localStorage
+function loadState() {
+  try {
+    const s = localStorage.getItem('ecoquest_state');
+    if (s) Object.assign(state, JSON.parse(s));
+    state.soilExplored = new Set(state.soilExplored || []);
+  } catch(e) {}
+}
+function saveState() {
+  try {
+    const s = {...state};
+    s.soilExplored = [...state.soilExplored];
+    localStorage.setItem('ecoquest_state', JSON.stringify(s));
+  } catch(e) {}
+}
+
+// ============================================================
+//  SCREEN & TAB ROUTING
+// ============================================================
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('screen-' + name);
+  if (el) { el.classList.add('active'); window.scrollTo(0,0); }
+  if (name === 'badges') renderBadges();
+  if (name === 'earthguardian') initGuardian();
+  if (name === 'games') initSortingGame();
+  if (name === 'certificate') updateCertificate();
+  if (name === 'parent') {
+    if (state.parentLoggedIn) {
+      document.getElementById('parent-login-area').style.display = 'none';
+      document.getElementById('parent-dashboard').style.display = 'block';
+      updateParentDashboard();
+    } else {
+      document.getElementById('parent-login-area').style.display = 'flex';
+      document.getElementById('parent-dashboard').style.display = 'none';
+    }
+  }
+}
+
+function showTab(world, tab) {
+  const allTabs = document.querySelectorAll(`#screen-${world} .tab-content`);
+  allTabs.forEach(t => t.classList.remove('active'));
+  const target = document.getElementById(`${world}-tab-${tab}`);
+  if (target) target.classList.add('active');
+  const allBtns = document.querySelectorAll(`#screen-${world} .tab-btn`);
+  allBtns.forEach(b => b.classList.remove('active'));
+  // Find matching button by text content
+  allBtns.forEach(b => { if (b.textContent.toLowerCase().includes(tab) || b.getAttribute('onclick') && b.getAttribute('onclick').includes(`'${tab}'`)) b.classList.add('active'); });
+  // Init games on demand
+  if (world === 'soil' && tab === 'detective') initDetectiveGame();
+  if (world === 'soil' && tab === 'save') initCleanupGame();
+  if (world === 'soil' && tab === 'food') initGardenGrid();
+  if (world === 'soil' && tab === 'life') initMatchGame();
+  if (world === 'soil' && tab === 'guardian') initScenarios();
+  if (world === 'air' && tab === 'quiz') initAirQuiz();
+  if (world === 'water' && tab === 'quiz') initWaterQuiz();
+  if (world === 'games' && tab === 'healthy') initHealthyGame();
+  if (world === 'games' && tab === 'match') initCauseMatch();
+  if (world === 'games' && tab === 'garden') initGreenGarden();
+}
+
+function tryEarthGuardian() {
+  const done = state.completedLevels.soil.length + state.completedLevels.air.length + state.completedLevels.water.length;
+  if (done >= 3) showScreen('earthguardian');
+  else {
+    const el = document.getElementById('earth-circle');
+    el.classList.add('shake');
+    setTimeout(() => el.classList.remove('shake'), 500);
+    document.getElementById('earth-label').textContent = 'Complete more worlds first!';
+  }
+}
+
+// ============================================================
+//  XP & LEVELING
+// ============================================================
+function awardXP(amount, label) {
+  state.xp += amount;
+  state.level = Math.floor(state.xp / 200) + 1;
+  saveState();
+  updateNavXP();
+  showXPPopup(label || `+${amount} XP`);
+}
+
+function updateNavXP() {
+  document.getElementById('nav-xp').textContent = state.xp + ' XP';
+  document.getElementById('nav-level').textContent = 'Lv ' + state.level;
+  const pct = (state.xp % 200) / 200 * 100;
+  document.getElementById('nav-xp-bar').style.width = pct + '%';
+  // Update progress screen
+  const px = document.getElementById('prog-xp');
+  if (px) px.textContent = state.xp;
+  const pl = document.getElementById('prog-level');
+  if (pl) pl.textContent = state.level;
+  const pb = document.getElementById('prog-badges');
+  if (pb) pb.textContent = state.badges.length;
+  const pa = document.getElementById('prog-actions');
+  if (pa) pa.textContent = state.actionsCompleted;
+  updateWorldBars();
+}
+
+function showXPPopup(msg) {
+  const el = document.getElementById('xp-popup');
+  el.textContent = '⭐ ' + msg;
+  el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 2000);
+}
+
+function updateWorldBars() {
+  const sl = state.completedLevels.soil.length;
+  const al = state.completedLevels.air.length;
+  const wl = state.completedLevels.water.length;
+  const sp = Math.round(sl/6*100), ap = Math.round(al/1*100), wp = Math.round(wl/1*100);
+  // Map cards
+  ['soil-bar','air-bar','water-bar'].forEach((id,i) => {
+    const el = document.getElementById(id);
+    if (el) el.style.width = [sp,ap,wp][i] + '%';
+  });
+  // Soil world bar
+  const swb = document.getElementById('soil-world-bar');
+  if (swb) swb.style.width = sp + '%';
+  const swp = document.getElementById('soil-world-pct');
+  if (swp) swp.textContent = sp + '% Complete';
+  // Map labels
+  const spl = document.getElementById('soil-progress-label');
+  if (spl) spl.textContent = sl + '/6 Levels';
+  const apl = document.getElementById('air-progress-label');
+  if (apl) apl.textContent = al + '/1 Completed';
+  const wpl = document.getElementById('water-progress-label');
+  if (wpl) wpl.textContent = wl + '/1 Completed';
+  // Earth HQ unlock
+  const total = sl + al + wl;
+  if (total >= 3) {
+    const ec = document.getElementById('earth-circle');
+    if (ec) ec.classList.remove('locked');
+    const el2 = document.getElementById('earth-label');
+    if (el2) el2.textContent = '🌟 UNLOCKED!';
+  }
+  // Progress screen
+  ['prog-air-pct','prog-water-pct','prog-soil-pct'].forEach((id,i) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = [ap,wp,sp][i] + '%';
+  });
+  ['prog-air-bar','prog-water-bar','prog-soil-bar'].forEach((id,i) => {
+    const el = document.getElementById(id);
+    if (el) el.style.width = [ap,wp,sp][i] + '%';
+  });
+}
+
+// ============================================================
+//  BADGES
+// ============================================================
+function awardBadge(id) {
+  if (!state.badges.includes(id)) {
+    state.badges.push(id);
+    saveState();
+    renderBadges();
+    const badge = BADGES_DEF.find(b => b.id === id);
+    if (badge) showXPPopup('Badge: ' + badge.name + ' ' + badge.icon);
+  }
+}
+
+function renderBadges() {
+  const grid = document.getElementById('badges-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  BADGES_DEF.forEach(b => {
+    const earned = state.badges.includes(b.id);
+    grid.innerHTML += `<div class="badge-item ${earned?'earned':'locked'}">
+      <div class="badge-icon">${b.icon}</div>
+      <div class="badge-name">${b.name}</div>
+      <div style="font-size:0.65rem;color:${earned?'var(--xp)':'#666'};margin-top:2px;">${earned?'Earned!':'Locked'}</div>
+    </div>`;
+  });
+  const cnt = document.getElementById('badges-earned-count');
+  if (cnt) cnt.textContent = state.badges.length + ' / ' + BADGES_DEF.length + ' badges earned';
+  const cb = document.getElementById('cert-btn');
+  if (cb) cb.style.display = state.badges.length > 0 ? 'inline-block' : 'none';
+  if (document.getElementById('parent-badges-val')) updateParentDashboard();
+}
+
+// ============================================================
+//  LEVEL CLAIM
+// ============================================================
+function claimLevel(world, level, xp, badgeName, badgeIcon) {
+  const key = world + '_' + level;
+  if (!state.completedLevels[world]) state.completedLevels[world] = [];
+  if (!state.completedLevels[world].includes(level)) {
+    state.completedLevels[world].push(level);
+    awardXP(xp, '+' + xp + ' XP! ' + badgeIcon);
+    // Find and award badge
+    const bid = BADGES_DEF.find(b => b.name === badgeName);
+    if (bid) awardBadge(bid.id);
+    else {
+      // Match by icon
+      const bid2 = BADGES_DEF.find(b => b.icon === badgeIcon);
+      if (bid2) awardBadge(bid2.id);
+    }
+    // Update level badge indicators
+    const lbadge = document.getElementById('soil-l' + level + '-badge');
+    if (lbadge && world === 'soil') lbadge.textContent = '✅';
+    saveState();
+    updateWorldBars();
+  }
+  // Update XP display on world screen
+  const xpEl = document.getElementById(world + '-xp-earned');
+  if (xpEl) {
+    const total = (state.completedLevels[world] || []).reduce((a,l2) => {
+      const levelXPs = {soil:{1:50,2:60,3:70,4:60,5:70,6:80},air:{1:80},water:{1:80}};
+      return a + (levelXPs[world] && levelXPs[world][l2] || 0);
+    }, 0);
+    xpEl.textContent = total + ' XP Earned';
+  }
+}
+
+// ============================================================
+//  ECO ACTIONS
+// ============================================================
+function toggleAction(el, xpAmt) {
+  if (el.classList.contains('done')) return;
+  el.classList.add('done');
+  state.actionsCompleted++;
+  const cnt = document.getElementById('actions-done-count');
+  if (cnt) cnt.textContent = state.actionsCompleted;
+  const bar = document.getElementById('actions-bar');
+  if (bar) bar.style.width = Math.min(100, state.actionsCompleted / 13 * 100) + '%';
+  awardXP(xpAmt, 'Action +' + xpAmt + ' XP!');
+  saveState();
+}
+
+// ============================================================
+//  SOIL EXPLORER (Level 1)
+// ============================================================
+const SOIL_INFO = {
+  sun: { title: '☀️ The Sun', text: 'The sun provides energy for plants to grow. Through photosynthesis, plants convert sunlight into food using nutrients from the soil.' },
+  cloud: { title: '⛅ Clouds & Weather', text: 'Rain brings water to the soil. Healthy soil absorbs water like a sponge, storing it for plants to use.' },
+  tree: { title: '🌳 Trees', text: 'Trees anchor soil with their roots, preventing erosion. Their fallen leaves decompose and add nutrients back to the soil.' },
+  plant: { title: '🌱 Plants', text: 'Plants depend on soil for water and nutrients. Their roots hold the soil together and prevent it from washing away.' },
+  crop: { title: '🥕 Crops', text: 'Vegetables and crops grow in soil rich with nutrients. Healthy soil is the foundation of all agriculture and food production.' },
+  rain: { title: '🌧️ Rain', text: 'Rainwater soaks into healthy soil, replenishing underground water. Polluted soil can contaminate this water.' },
+  worm: { title: '🪱 Earthworm', text: 'Earthworms are soil engineers! They mix and aerate the soil, creating tunnels for air and water, improving soil health.' },
+  insect: { title: '🐛 Insects', text: 'Many insects live in soil during part of their life cycle. They help break down organic matter and are food for birds and other animals.' },
+  'soil-layer': { title: '🪨 Soil Layers', text: 'Soil has distinct layers: topsoil (rich with organic matter), subsoil (less organic matter), and bedrock below. Each layer has its own role.' },
+  'water-underground': { title: '💧 Underground Water', text: 'Rainwater that soaks through healthy soil reaches underground reserves called aquifers. Healthy soil acts as a natural filter for this water.' }
+};
+
+let exploreCount = 0;
+function showSoilInfo(key, el) {
+  const info = SOIL_INFO[key];
+  if (!info) return;
+  const box = document.getElementById('soil-info-box');
+  box.innerHTML = `<strong style="color:var(--accent);">${info.title}</strong><p style="margin-top:8px;line-height:1.7;">${info.text}</p>`;
+  box.style.display = 'block';
+  el.style.transform = 'scale(1.5)';
+  setTimeout(() => el.style.transform = '', 500);
+  if (!state.soilExplored.has(key)) {
+    state.soilExplored.add(key);
+    exploreCount = state.soilExplored.size;
+    const prog = document.getElementById('explore-progress');
+    if (prog) prog.style.width = Math.min(100, exploreCount / 6 * 100) + '%';
+    const cnt = document.getElementById('explore-count');
+    if (cnt) cnt.textContent = exploreCount + '/6 explored';
+    if (exploreCount >= 6) {
+      const btn = document.getElementById('l1-claim-btn');
+      if (btn) btn.style.display = 'inline-block';
+    }
+    saveState();
+  }
+}
+
+// ============================================================
+//  DETECTIVE GAME (Level 2)
+// ============================================================
+const DETECTIVE_ITEMS = [
+  { icon: '🧴', label: 'Plastic bottle', polluter: true, reason: 'Plastic takes hundreds of years to break down and releases chemicals as it degrades in soil.' },
+  { icon: '🔋', label: 'Old battery', polluter: true, reason: 'Batteries contain toxic metals like lead and cadmium. Improper disposal is a serious source of soil and water pollution.' },
+  { icon: '🛢️', label: 'Oil drum', polluter: true, reason: 'Oil and fuel contamination prevents plants from growing and harms soil organisms.' },
+  { icon: '🌸', label: 'Flower', polluter: false, reason: 'Flowers support pollinators and contribute to healthy ecosystems. They are good for soil!' },
+  { icon: '🌳', label: 'Tree', polluter: false, reason: 'Trees protect soil, prevent erosion, and add organic matter. Trees are wonderful for soil health!' },
+  { icon: '♻️', label: 'Recycle bin', polluter: false, reason: 'Proper recycling bins help ensure waste is disposed of responsibly, protecting soil and the environment.' },
+  { icon: '🧪', label: 'Chemical container', polluter: true, reason: 'Improper disposal of chemicals can contaminate soil. Always ask an adult to handle chemical waste properly.' },
+  { icon: '🗑️', label: 'Overflowing bin', polluter: true, reason: 'Waste that overflows from bins can scatter, entering soil and waterways. Proper waste management is important.' },
+  { icon: '🌱', label: 'Garden plant', polluter: false, reason: 'Plants protect and enrich soil. Gardening is a positive action for soil health!' },
+];
+let detectiveSelected = {};
+function initDetectiveGame() {
+  const grid = document.getElementById('detective-grid');
+  if (!grid || grid.children.length > 0) return;
+  DETECTIVE_ITEMS.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'background:var(--card);border:2px solid rgba(255,255,255,0.15);border-radius:12px;padding:12px;text-align:center;cursor:pointer;transition:all 0.2s;';
+    div.innerHTML = `<div style="font-size:2.5rem;">${item.icon}</div><div style="font-size:0.8rem;margin-top:6px;">${item.label}</div>`;
+    div.onclick = () => detectiveClick(div, item, i);
+    grid.appendChild(div);
+  });
+}
+function detectiveClick(div, item, i) {
+  detectiveSelected[i] = item;
+  const result = document.getElementById('detective-result');
+  result.style.display = 'block';
+  if (item.polluter) {
+    div.style.borderColor = '#f44336';
+    div.style.background = 'rgba(244,67,54,0.2)';
+    result.style.background = 'rgba(244,67,54,0.15)';
+    result.style.border = '1px solid #f44336';
+    result.innerHTML = `<strong style="color:#f44336;">⚠️ ${item.icon} ${item.label} — Pollution Source!</strong><br>${item.reason}`;
+  } else {
+    div.style.borderColor = 'var(--green)';
+    div.style.background = 'rgba(76,175,80,0.2)';
+    result.style.background = 'rgba(76,175,80,0.15)';
+    result.style.border = '1px solid var(--green)';
+    result.innerHTML = `<strong style="color:var(--green);">✅ ${item.icon} ${item.label} — Good for Soil!</strong><br>${item.reason}`;
+  }
+  state.detectiveScore++;
+  if (state.detectiveScore >= 5) {
+    const btn = document.getElementById('l2-claim-btn');
+    if (btn) btn.style.display = 'inline-block';
+  }
+}
+
+// ============================================================
+//  CLEANUP GAME (Level 3)
+// ============================================================
+const CLEANUP_CHOICES = [
+  { text: '🗑️ Put ordinary litter in the correct waste bin', correct: true },
+  { text: '♻️ Separate recyclable materials from other waste', correct: true },
+  { text: '⚠️ Ask a trusted adult about hazardous waste — do NOT touch it yourself', correct: true },
+  { text: '🚮 Avoid dropping litter in the first place', correct: true },
+  { text: '🌱 Help protect plants and green spaces', correct: true },
+  { text: '🧴 Reduce unnecessary plastic use', correct: true },
+  { text: '🔋 Pick up and handle dangerous waste directly', correct: false },
+  { text: '🚮 Dump everything in one bin regardless of type', correct: false },
+];
+let cleanupChoices = {};
+function initCleanupGame() {
+  const cont = document.getElementById('cleanup-choices');
+  if (!cont || cont.children.length > 0) return;
+  CLEANUP_CHOICES.forEach((c, i) => {
+    const div = document.createElement('div');
+    div.className = 'choice-btn';
+    div.innerHTML = c.text;
+    div.onclick = () => {
+      if (cleanupChoices[i]) return;
+      cleanupChoices[i] = c.correct;
+      const result = document.getElementById('cleanup-result');
+      if (c.correct) {
+        div.classList.add('correct');
+        result.innerHTML = `<div style="padding:10px;background:rgba(76,175,80,0.15);border:1px solid var(--green);border-radius:10px;">✅ Great choice! ${c.text}</div>`;
+      } else {
+        div.classList.add('wrong');
+        result.innerHTML = `<div style="padding:10px;background:rgba(229,57,53,0.15);border:1px solid var(--red);border-radius:10px;">❌ Not recommended. Some waste requires trained adults or proper collection facilities — never handle hazardous items directly.</div>`;
+      }
+      const correctCount = Object.values(cleanupChoices).filter(v => v).length;
+      if (correctCount >= 5) {
+        const btn = document.getElementById('l3-claim-btn');
+        if (btn) btn.style.display = 'inline-block';
+      }
+    };
+    cont.appendChild(div);
+  });
+}
+
+// ============================================================
+//  GARDEN GRID (Level 4)
+// ============================================================
+let gardenSelected = '';
+let gardenDone = 0;
+const GARDEN_EMOJIS = { plant:'🌱', water:'💧', recycle:'♻️', protect:'🌳' };
+function initGardenGrid() {
+  const grid = document.getElementById('garden-grid');
+  if (!grid || grid.children.length > 0) return;
+  for (let i = 0; i < 8; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'garden-cell';
+    cell.innerHTML = '🌑';
+    cell.onclick = () => gardenCellClick(cell);
+    grid.appendChild(cell);
+  }
+}
+function gardenAction(type) { gardenSelected = type; }
+function gardenCellClick(cell) {
+  if (cell.classList.contains('planted')) return;
+  if (!gardenSelected) { alert('Choose an action first! 🌱💧♻️🌳'); return; }
+  cell.classList.add('planted');
+  cell.innerHTML = GARDEN_EMOJIS[gardenSelected];
+  gardenDone++;
+  const prog = document.getElementById('garden-progress');
+  if (prog) prog.style.width = (gardenDone / 8 * 100) + '%';
+  const stat = document.getElementById('garden-status');
+  if (stat) stat.textContent = 'Garden health: ' + gardenDone + '/8 🌱';
+  if (gardenDone >= 8) {
+    const btn = document.getElementById('l4-claim-btn');
+    if (btn) btn.style.display = 'inline-block';
+  }
+}
+
+// ============================================================
+//  MATCH GAME (Level 5)
+// ============================================================
+const MATCH_PAIRS = [
+  { organism: '🪱 Earthworm', role: 'Helps mix and aerate soil structure' },
+  { organism: '🌱 Plant Roots', role: 'Take water and nutrients from soil' },
+  { organism: '🍄 Fungi', role: 'Break down organic material' },
+  { organism: '🐜 Ants', role: 'Create tunnels improving drainage' },
+  { organism: '🦠 Microorganisms', role: 'Recycle nutrients in soil' },
+];
+let matchSelected = null;
+let matchCorrect = 0;
+function initMatchGame() {
+  const game = document.getElementById('match-game');
+  if (!game || game.children.length > 0) return;
+  const shuffledRoles = [...MATCH_PAIRS.map(p=>p.role)].sort(() => Math.random()-0.5);
+  game.innerHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+    <div><div style="color:#b0c4de;font-size:0.85rem;margin-bottom:8px;text-align:center;">Organisms</div>${MATCH_PAIRS.map((p,i) => `<div class="match-item" id="org-${i}" onclick="matchClick('org',${i},'${p.role}')">${p.organism}</div>`).join('')}</div>
+    <div><div style="color:#b0c4de;font-size:0.85rem;margin-bottom:8px;text-align:center;">Roles</div>${shuffledRoles.map((r,i) => `<div class="match-item" id="role-${i}" onclick="matchClick('role',${i},'${r}')">${r}</div>`).join('')}</div>
+  </div>`;
+}
+function matchClick(type, idx, value) {
+  if (!matchSelected) {
+    matchSelected = { type, idx, value };
+    document.getElementById(type + '-' + idx).classList.add('selected');
+  } else {
+    if (matchSelected.type === type) {
+      document.getElementById(matchSelected.type + '-' + matchSelected.idx).classList.remove('selected');
+      matchSelected = { type, idx, value };
+      document.getElementById(type + '-' + idx).classList.add('selected');
+    } else {
+      const a = matchSelected.value, b = value;
+      const isMatch = MATCH_PAIRS.some(p => (p.organism.includes(a.split(' ')[1]||a) || a === p.organism) && p.role === b) ||
+                      MATCH_PAIRS.some(p => p.organism === a && p.role === b) ||
+                      MATCH_PAIRS.some(p => p.role === a && p.organism.includes(b.split(' ')[1]||b));
+      const correctMatch = MATCH_PAIRS.some(p => {
+        return (matchSelected.type === 'org' && a === p.organism && b === p.role) ||
+               (matchSelected.type === 'role' && a === p.role && b === p.organism);
+      });
+      if (correctMatch) {
+        document.getElementById(matchSelected.type + '-' + matchSelected.idx).classList.replace('selected','matched');
+        document.getElementById(type + '-' + idx).classList.replace('selected','matched');
+        matchCorrect++;
+        const result = document.getElementById('match-result');
+        result.innerHTML = `<div style="padding:10px;background:rgba(76,175,80,0.15);border:1px solid var(--green);border-radius:10px;">✅ Correct match! ${matchCorrect}/5 done</div>`;
+        if (matchCorrect >= 5) { const btn = document.getElementById('l5-claim-btn'); if (btn) btn.style.display = 'inline-block'; }
+      } else {
+        document.getElementById(matchSelected.type + '-' + matchSelected.idx).classList.remove('selected');
+        document.getElementById(type + '-' + idx).classList.add('selected');
+        const result = document.getElementById('match-result');
+        result.innerHTML = `<div style="padding:10px;background:rgba(229,57,53,0.15);border:1px solid var(--red);border-radius:10px;">🔄 Not quite — try again!</div>`;
+        setTimeout(() => { document.getElementById(type+'-'+idx).classList.remove('selected'); matchSelected = null; }, 600);
+        return;
+      }
+      matchSelected = null;
+    }
+  }
+}
+
+// ============================================================
+//  SCENARIOS (Level 6)
+// ============================================================
+const SCENARIOS = [
+  {
+    title: 'Scenario 1: Plastic Bottle in the Park',
+    story: 'You finish a plastic bottle while visiting a park. What do you do?',
+    choices: [
+      { text: 'A. Throw it on the ground', correct: false, feedback: '❌ Littering pollutes soil and can harm wildlife. Plastic takes hundreds of years to decompose.' },
+      { text: 'B. Put it in an appropriate waste or recycling bin ✅', correct: true, feedback: '✅ Great choice! Using proper bins prevents litter from polluting soil and waterways.' },
+      { text: 'C. Hide it under the soil', correct: false, feedback: '❌ Burying plastic in soil is still pollution — it harms soil organisms and takes centuries to break down.' },
+      { text: 'D. Leave it beside a plant', correct: false, feedback: '❌ Leaving plastic near plants can harm them and still pollutes the environment.' },
+    ]
+  },
+  {
+    title: 'Scenario 2: Suspicious Waste',
+    story: 'You find what looks like a leaking container of liquid waste near a path. What should you do?',
+    choices: [
+      { text: 'A. Pick it up and try to clean it', correct: false, feedback: '❌ Never touch unknown substances — they could be dangerous to your health!' },
+      { text: 'B. Ignore it and walk away', correct: false, feedback: '⚠️ It\'s better to report it — hazardous waste can continue harming the environment if left.' },
+      { text: 'C. Tell a trusted adult or responsible authority ✅', correct: true, feedback: '✅ Perfect! Hazardous waste must be handled by trained adults or proper authorities. Your job is to report it safely.' },
+      { text: 'D. Try to identify what it is', correct: false, feedback: '❌ Do not get close to unknown chemical substances. Tell an adult immediately.' },
+    ]
+  },
+  {
+    title: 'Scenario 3: The School Garden',
+    story: 'Your school garden looks unhealthy. Plants are dying and the soil looks dry and grey. What might help?',
+    choices: [
+      { text: 'A. Add more plastic bags to the soil', correct: false, feedback: '❌ Plastic in soil is harmful and prevents plants from getting water and nutrients.' },
+      { text: 'B. Check if there is litter nearby and put it in proper bins ✅', correct: true, feedback: '✅ Removing litter and using proper bins helps protect soil health and gives plants a better environment.' },
+      { text: 'C. Stop watering the plants', correct: false, feedback: '❌ Plants need water, especially in unhealthy soil. Less water would make the problem worse.' },
+      { text: 'D. Dump chemical waste near the garden', correct: false, feedback: '❌ Chemical waste in soil is a serious pollutant and would harm plants, soil life, and potentially groundwater.' },
+    ]
+  }
+];
+let scenarioScores = {};
+function initScenarios() {
+  const cont = document.getElementById('scenario-container');
+  if (!cont || cont.children.length > 0) return;
+  SCENARIOS.forEach((sc, si) => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.style.cssText = 'border-color:var(--accent);margin-bottom:20px;';
+    div.innerHTML = `<h4 style="color:var(--xp);margin-bottom:8px;">${sc.title}</h4>
+      <p style="line-height:1.7;margin-bottom:12px;">${sc.story}</p>
+      <div class="scenario-choices">
+        ${sc.choices.map((c,ci) => `<button class="choice-btn" onclick="scenarioClick(${si},${ci},this)">${c.text}</button>`).join('')}
+      </div>
+      <div id="scenario-result-${si}" style="margin-top:10px;"></div>`;
+    cont.appendChild(div);
+  });
+}
+function scenarioClick(si, ci, btn) {
+  if (scenarioScores[si] !== undefined) return;
+  const choice = SCENARIOS[si].choices[ci];
+  const res = document.getElementById('scenario-result-' + si);
+  res.innerHTML = `<div style="padding:10px;background:${choice.correct?'rgba(76,175,80,0.15)':'rgba(229,57,53,0.15)'};border:1px solid ${choice.correct?'var(--green)':'var(--red)'};border-radius:10px;">${choice.feedback}</div>`;
+  btn.classList.add(choice.correct ? 'correct' : 'wrong');
+  scenarioScores[si] = choice.correct ? 1 : 0;
+  const total = Object.values(scenarioScores).length;
+  if (total >= 3) {
+    const btn2 = document.getElementById('l6-claim-btn');
+    if (btn2) btn2.style.display = 'inline-block';
+  }
+}
+
+// ============================================================
+//  QUIZ SYSTEMS
+// ============================================================
+const AIR_QUIZ = [
+  { q: 'What is a common source of air pollution?', opts:['Trees','Vehicle emissions','Rain','Earthworms'], correct:1 },
+  { q: 'Which action helps reduce air pollution?', opts:['Burning rubbish','Walking or cycling','Leaving lights on all day','Wasting electricity'], correct:1 },
+  { q: 'What do trees help do for air quality?', opts:['Make the air worse','Absorb carbon dioxide','Create more smoke','Block sunlight'], correct:1 },
+  { q: 'Why is clean air important?', opts:['Just for weather','It\'s not important','It supports health of people, animals and plants','Only for factories'], correct:2 },
+];
+const WATER_QUIZ = [
+  { q: 'Which item most commonly pollutes rivers and oceans?', opts:['Leaves','Plastic waste','Fish','Sand'], correct:1 },
+  { q: 'What should you NEVER do near a river or lake?', opts:['Watch birds','Throw litter into it','Take photographs','Sit quietly'], correct:1 },
+  { q: 'What percentage of Earth\'s surface is covered by oceans?', opts:['10%','35%','71%','99%'], correct:2 },
+  { q: 'Which action protects water quality?', opts:['Throw batteries in rivers','Use water responsibly','Leave taps running','Dump chemicals outside'], correct:1 },
+];
+let airQuizState = {}, waterQuizState = {};
+function initAirQuiz() { renderQuiz('air-quiz-container', AIR_QUIZ, airQuizState, 'air'); }
+function initWaterQuiz() { renderQuiz('water-quiz-container', WATER_QUIZ, waterQuizState, 'water'); }
+function renderQuiz(containerId, questions, quizState, world) {
+  const cont = document.getElementById(containerId);
+  if (!cont || cont.children.length > 0) return;
+  questions.forEach((q, qi) => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.style.marginBottom = '16px';
+    div.innerHTML = `<p style="font-weight:700;margin-bottom:12px;">${qi+1}. ${q.q}</p>
+      ${q.opts.map((o,oi) => `<button class="quiz-option" onclick="quizAnswer('${containerId}',${qi},${oi},${q.correct},'${world}',this)">${o}</button>`).join('')}
+      <div id="quiz-res-${containerId}-${qi}" style="margin-top:8px;font-size:0.9rem;"></div>`;
+    cont.appendChild(div);
+  });
+}
+function quizAnswer(containerId, qi, chosen, correct, world, btn) {
+  const siblings = btn.closest('.card').querySelectorAll('.quiz-option');
+  siblings.forEach(s => s.disabled = true);
+  const res = document.getElementById('quiz-res-' + containerId + '-' + qi);
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    res.innerHTML = '<span style="color:var(--green);">✅ Correct! Well done!</span>';
+    awardXP(10, '+10 XP! Quiz correct!');
+  } else {
+    btn.classList.add('wrong');
+    siblings[correct].classList.add('correct');
+    res.innerHTML = '<span style="color:#EF9A9A;">❌ Not quite — the correct answer is highlighted in green.</span>';
+  }
+}
+
+// ============================================================
+//  AIR/WATER MINI GAMES
+// ============================================================
+const AIR_GAME_INFO = {
+  factory: '🏭 Factories: Industrial processes can release smoke and gases. Better technology and regulations help reduce factory emissions.',
+  car: '🚗 Vehicles: Cars and trucks produce exhaust fumes. Using public transport, walking, or cycling reduces air pollution.',
+  fire: '🔥 Burning waste: Open burning of rubbish releases toxic smoke. Use proper waste bins and recycling instead.',
+  tree: '🌳 Trees: Trees absorb carbon dioxide and release oxygen! They are natural air cleaners. Protect and plant trees!',
+  bike: '🚲 Cycling: Zero emissions! Cycling is great for the environment and your health when it is safe to do so.',
+  solar: '☀️ Clean energy: Solar power generates electricity without pollution. Using clean energy reduces air pollution!'
+};
+const WATER_GAME_INFO = {
+  bottle: '🧴 Plastic bottle: This is water pollution! Plastic breaks into tiny pieces and harms aquatic life. Always recycle!',
+  bag: '🛍️ Plastic bag: Plastic bags in water can trap and harm fish and other aquatic animals. Avoid single-use plastics!',
+  can: '🥫 Tin can: Metal cans can rust and release chemicals into water. Always put them in the correct recycling bin!',
+  fish: '🐟 Fish: Fish are a natural part of healthy rivers and oceans. We must protect their habitat from pollution!',
+  plant: '🌿 Water plant: Aquatic plants help keep water healthy by absorbing nutrients and providing habitat for other creatures.'
+};
+function airGameClick(type, el) {
+  const info = document.getElementById('air-game-info');
+  info.style.display = 'block';
+  info.innerHTML = AIR_GAME_INFO[type];
+  el.style.opacity = '0.5';
+}
+function waterGameClick(type, el) {
+  const info = document.getElementById('water-game-info');
+  info.style.display = 'block';
+  info.innerHTML = WATER_GAME_INFO[type];
+  el.style.opacity = '0.5';
+}
+
+// ============================================================
+//  SORTING DRAG & DROP
+// ============================================================
+const SORT_ITEMS = [
+  { icon:'🚗', label:'Vehicle smoke', correct:'air' },
+  { icon:'🧴', label:'Bottle in river', correct:'water' },
+  { icon:'🗑️', label:'Waste on land', correct:'soil' },
+  { icon:'🏭', label:'Factory smoke', correct:'air' },
+  { icon:'🧪', label:'Chemical in water', correct:'water' },
+  { icon:'🔋', label:'Discarded battery', correct:'soil' },
+  { icon:'🌫️', label:'Dust particles', correct:'air' },
+  { icon:'🛍️', label:'Plastic bag in ocean', correct:'water' },
+  { icon:'🧴', label:'Plastic waste on soil', correct:'soil' },
+];
+let draggedItem = null;
+function initSortingGame() {
+  const cont = document.getElementById('sort-items');
+  if (!cont || cont.children.length > 0) return;
+  SORT_ITEMS.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'drag-item';
+    div.draggable = true;
+    div.dataset.correct = item.correct;
+    div.dataset.idx = i;
+    div.innerHTML = `${item.icon} ${item.label}`;
+    div.addEventListener('dragstart', e => { draggedItem = div; div.classList.add('dragging'); e.dataTransfer.setData('text/plain', i); });
+    div.addEventListener('dragend', () => div.classList.remove('dragging'));
+    cont.appendChild(div);
+  });
+}
+function dragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function dropItem(e, zone) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if (draggedItem) {
+    e.currentTarget.appendChild(draggedItem);
+    draggedItem = null;
+  }
+}
+function resetSorting() {
+  const cont = document.getElementById('sort-items');
+  ['air','water','soil'].forEach(z => {
+    const dz = document.getElementById('drop-' + z);
+    [...dz.children].forEach(c => cont.appendChild(c));
+  });
+  document.getElementById('sort-feedback').innerHTML = '';
+}
+function checkSorting() {
+  let correct = 0, total = 0;
+  ['air','water','soil'].forEach(zone => {
+    const dz = document.getElementById('drop-' + zone);
+    [...dz.querySelectorAll('.drag-item')].forEach(item => {
+      total++;
+      if (item.dataset.correct === zone) { correct++; item.style.borderColor = 'var(--green)'; }
+      else { item.style.borderColor = 'var(--red)'; }
+    });
+  });
+  const fb = document.getElementById('sort-feedback');
+  if (correct === total && total > 0) {
+    fb.innerHTML = `<div style="padding:14px;background:rgba(76,175,80,0.15);border:1px solid var(--green);border-radius:12px;">🎉 Amazing! ${correct}/${total} correct! Remember: some pollutants like batteries can affect both soil and water!</div>`;
+    awardXP(80, '+80 XP! Sorting champion!');
+  } else if (total === 0) {
+    fb.innerHTML = '<div style="padding:10px;color:#b0c4de;">Drag items into the categories first!</div>';
+  } else {
+    fb.innerHTML = `<div style="padding:14px;background:rgba(255,193,7,0.1);border:1px solid var(--xp);border-radius:12px;">Got ${correct}/${total} — red items are in the wrong category. Try again!</div>`;
+  }
+}
+
+// ============================================================
+//  POLLUTION CONNECTION
+// ============================================================
+function showCycleInfo(id) {
+  const el = document.getElementById('cycle-' + id);
+  if (el) { el.style.display = el.style.display === 'none' ? 'block' : 'none'; }
+}
+
+// ============================================================
+//  HEALTHY OR POLLUTED GAME
+// ============================================================
+const HEALTHY_SCENES = [
+  { desc: '🌿 A river with clear blue water, fish swimming, and birds on the banks', healthy: true },
+  { desc: '🗑️ A river with plastic bags, bottles, and foam floating on the surface', healthy: false },
+  { desc: '🌱 A garden with green plants, earthworms in the soil, and butterflies visiting', healthy: true },
+  { desc: '🏭 A field next to a factory with grey soil and no plants growing', healthy: false },
+  { desc: '☁️ A city with clean blue skies, trees lining the streets, and cyclists', healthy: true },
+  { desc: '🚗 A city covered in smog, with traffic jams and grey haze over buildings', healthy: false },
+];
+let healthyAnswers = {};
+function initHealthyGame() {
+  const cont = document.getElementById('healthy-game');
+  if (!cont || cont.children.length > 0) return;
+  HEALTHY_SCENES.forEach((sc, i) => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.style.marginBottom = '12px';
+    div.innerHTML = `<p style="margin-bottom:12px;">${sc.desc}</p>
+      <div style="display:flex;gap:10px;">
+        <button class="choice-btn" style="flex:1;" onclick="healthyAnswer(${i},true,this)">🌿 Healthy</button>
+        <button class="choice-btn" style="flex:1;" onclick="healthyAnswer(${i},false,this)">☠️ Polluted</button>
+      </div>
+      <div id="healthy-ans-${i}" style="margin-top:8px;font-size:0.85rem;"></div>`;
+    cont.appendChild(div);
+  });
+  document.getElementById('healthy-check-btn').style.display = 'inline-block';
+}
+function healthyAnswer(i, answer, btn) {
+  healthyAnswers[i] = answer;
+  btn.style.borderColor = 'var(--accent)';
+}
+function checkHealthyGame() {
+  let score = 0;
+  HEALTHY_SCENES.forEach((sc, i) => {
+    const ans = document.getElementById('healthy-ans-' + i);
+    if (healthyAnswers[i] === sc.healthy) {
+      score++;
+      ans.innerHTML = '<span style="color:var(--green);">✅ Correct!</span>';
+    } else if (healthyAnswers[i] !== undefined) {
+      ans.innerHTML = `<span style="color:#EF9A9A;">❌ This is a ${sc.healthy?'healthy':'polluted'} environment.</span>`;
+    }
+  });
+  const result = document.getElementById('healthy-result');
+  result.innerHTML = `<div style="padding:14px;background:rgba(76,175,80,0.1);border:1px solid var(--green);border-radius:12px;">Score: ${score}/${HEALTHY_SCENES.length} — ${score >= 5 ? '🌟 Excellent environmental awareness!' : score >= 3 ? '👍 Good job! Keep exploring!' : '🔄 Keep learning about our environment!'}</div>`;
+  if (score >= 4) awardXP(60, '+60 XP! Eco detective!');
+}
+
+// ============================================================
+//  CAUSE MATCH GAME
+// ============================================================
+const CAUSE_PAIRS = [
+  { cause: '🗑️ Improper waste disposal', effect: '🌱 Soil pollution' },
+  { cause: '🧪 Chemical contamination', effect: '🌱 Soil pollution' },
+  { cause: '🚗 Vehicle emissions', effect: '🌬️ Air pollution' },
+  { cause: '🧴 Plastic in rivers', effect: '💧 Water pollution' },
+  { cause: '🌱 Planting trees', effect: '💚 Supports healthy environments' },
+  { cause: '♻️ Recycling properly', effect: '💚 Reduces pollution' },
+];
+let causeSelected = null;
+let causeMatches = {};
+function initCauseMatch() {
+  const cont = document.getElementById('cause-match-game');
+  if (!cont || cont.children.length > 0) return;
+  const shuffledEffects = [...CAUSE_PAIRS.map(p=>p.effect)].sort(() => Math.random()-0.5);
+  cont.innerHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+    <div><div style="color:#b0c4de;text-align:center;margin-bottom:8px;">Causes / Actions</div>
+      ${CAUSE_PAIRS.map((p,i) => `<div class="match-item" id="cause-${i}" onclick="causeClick('cause',${i},'${p.cause}','${p.effect}')">${p.cause}</div>`).join('')}
+    </div>
+    <div><div style="color:#b0c4de;text-align:center;margin-bottom:8px;">Effects</div>
+      ${shuffledEffects.map((e,i) => `<div class="match-item" id="effect-${i}" onclick="causeClick('effect',${i},'${e}','')" data-val="${e}">${e}</div>`).join('')}
+    </div>
+  </div>`;
+}
+let causeMatchScore = 0;
+function causeClick(type, idx, val, expectedEffect) {
+  if (type === 'cause') {
+    if (causeSelected && causeSelected.type === 'cause') {
+      document.getElementById('cause-' + causeSelected.idx).classList.remove('selected');
+    }
+    causeSelected = { type, idx, val, expectedEffect };
+    document.getElementById('cause-' + idx).classList.add('selected');
+  } else {
+    if (!causeSelected) return;
+    if (causeSelected.expectedEffect === val) {
+      document.getElementById('cause-' + causeSelected.idx).classList.replace('selected','matched');
+      document.getElementById('effect-' + idx).classList.replace('selected','matched');
+      causeMatchScore++;
+      const res = document.getElementById('cause-match-result');
+      res.innerHTML = `<div style="padding:10px;background:rgba(76,175,80,0.15);border:1px solid var(--green);border-radius:10px;">✅ Matched! ${causeMatchScore}/${CAUSE_PAIRS.length} correct</div>`;
+      if (causeMatchScore >= CAUSE_PAIRS.length) awardXP(70, '+70 XP! Match master!');
+    } else {
+      const res = document.getElementById('cause-match-result');
+      res.innerHTML = `<div style="padding:10px;background:rgba(229,57,53,0.15);border:1px solid var(--red);border-radius:10px;">🔄 Not a match — try a different pairing!</div>`;
+      document.getElementById('cause-' + causeSelected.idx).classList.remove('selected');
+    }
+    causeSelected = null;
+  }
+}
+
+// ============================================================
+//  GREEN GARDEN GAME
+// ============================================================
+const GARDEN_CHOICES_DEF = [
+  { text: '🌱 Plant native plants in the garden', good: true, result: '🌿' },
+  { text: '💧 Water plants carefully — not wastefully', good: true, result: '🌸' },
+  { text: '♻️ Use the recycling bin for bottles and cans', good: true, result: '🌻' },
+  { text: '🧴 Throw plastic bags on the ground', good: false, result: null },
+  { text: '🌳 Plant a tree to improve the environment', good: true, result: '🌲' },
+  { text: '🗑️ Leave litter near the plants', good: false, result: null },
+  { text: '🚮 Use proper bins for all waste', good: true, result: '🌼' },
+];
+let gardenPlants = [];
+function initGreenGarden() {
+  const cont = document.getElementById('green-garden-choices');
+  if (!cont || cont.children.length > 0) return;
+  GARDEN_CHOICES_DEF.forEach((c, i) => {
+    const div = document.createElement('div');
+    div.className = 'choice-btn';
+    div.innerHTML = c.text;
+    div.onclick = () => greenGardenChoice(div, c);
+    cont.appendChild(div);
+  });
+}
+function greenGardenChoice(btn, choice) {
+  btn.disabled = true;
+  const visual = document.getElementById('green-garden-visual');
+  const result = document.getElementById('green-garden-result');
+  if (choice.good) {
+    btn.classList.add('correct');
+    gardenPlants.push(choice.result);
+    const plant = document.createElement('div');
+    plant.style.cssText = 'font-size:2.5rem;animation:growIn 0.5s ease;';
+    plant.textContent = choice.result;
+    visual.appendChild(plant);
+    const healthText = document.getElementById('garden-health-text');
+    const stars = '🌟'.repeat(gardenPlants.length);
+    healthText.textContent = 'Garden health: ' + stars;
+    result.innerHTML = `<div style="padding:10px;background:rgba(76,175,80,0.15);border:1px solid var(--green);border-radius:10px;">✅ Great choice! Your garden is growing!</div>`;
+    if (gardenPlants.length >= 5) {
+      result.innerHTML += `<div style="margin-top:12px;padding:14px;background:rgba(76,175,80,0.2);border:2px solid var(--green);border-radius:12px;text-align:center;"><strong>🌟 Congratulations! Your green garden is thriving!</strong><br>Every responsible choice helps create a healthier environment!</div>`;
+      awardXP(80, '+80 XP! Green Gardener!');
+    }
+  } else {
+    btn.classList.add('wrong');
+    result.innerHTML = `<div style="padding:10px;background:rgba(229,57,53,0.15);border:1px solid var(--red);border-radius:10px;">❌ That would harm your garden and the environment. Choose more carefully!</div>`;
+  }
+}
+
+// ============================================================
+//  EARTH GUARDIAN FINAL CHALLENGE
+// ============================================================
+const GUARDIAN_CHALLENGES = [
+  {
+    title: '🌬️ Air Challenge',
+    q: 'Factories in this town are producing a lot of smoke. The community wants to reduce air pollution. What should the town do?',
+    opts: [
+      { text: 'Build more factories for economic growth', correct: false, fb: '❌ More unregulated factories would increase air pollution.' },
+      { text: 'Work with factories to adopt cleaner processes and plant more trees', correct: true, fb: '✅ Communities and organizations working with industries to adopt cleaner practices, alongside planting trees, is an effective approach.' },
+      { text: 'Move all factories to the countryside where no one lives', correct: false, fb: '❌ Moving pollution elsewhere doesn\'t solve it — the environment is still harmed.' },
+      { text: 'Ignore the pollution as it\'s too difficult to address', correct: false, fb: '❌ Ignoring pollution allows it to worsen. Community action and policy make a real difference.' },
+    ]
+  },
+  {
+    title: '💧 Water Challenge',
+    q: 'There is litter and waste near the town\'s river. The river ecosystem is suffering. What is the best response?',
+    opts: [
+      { text: 'Continue dumping waste — rivers naturally clean themselves', correct: false, fb: '❌ Rivers cannot clean themselves of plastic and chemicals. This causes lasting environmental damage.' },
+      { text: 'Set up proper waste collection, improve recycling, and organize community clean-up events', correct: true, fb: '✅ Community action, proper waste infrastructure, and clean-up events make a real difference to waterway health.' },
+      { text: 'Build a wall to block the river so pollution stays in one area', correct: false, fb: '❌ This doesn\'t address the source of pollution and would disrupt the river ecosystem.' },
+      { text: 'Tell children to swim less often in the river', correct: false, fb: '⚠️ Reducing exposure to polluted water is sensible, but the root cause — pollution itself — still needs to be addressed.' },
+    ]
+  },
+  {
+    title: '🌱 Soil Challenge',
+    q: 'The farm area near town has unhealthy soil due to improper waste disposal. What should happen?',
+    opts: [
+      { text: 'Abandon the farm and use only imported food', correct: false, fb: '❌ This doesn\'t address the pollution problem and ignores the value of local agriculture.' },
+      { text: 'Implement proper waste management, restore soil through responsible farming practices, and work with environmental experts', correct: true, fb: '✅ Working with environmental experts to restore soil health and improving waste management protects both agriculture and ecosystems.' },
+      { text: 'Pour more chemicals on the soil to "neutralize" it', correct: false, fb: '❌ Adding unregulated chemicals can make contamination worse. Professional environmental expertise is needed.' },
+      { text: 'Sell the land to a factory', correct: false, fb: '❌ This transfers rather than solves the problem and risks further soil damage.' },
+    ]
+  }
+];
+let guardianAnswers = {};
+function initGuardian() {
+  const cont = document.getElementById('guardian-challenges');
+  if (!cont || cont.children.length > 0) return;
+  GUARDIAN_CHALLENGES.forEach((ch, ci) => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.style.cssText = 'margin-bottom:20px;border-color:var(--accent);';
+    div.innerHTML = `<h3 style="color:var(--xp);margin-bottom:10px;">${ch.title}</h3>
+      <p style="line-height:1.7;margin-bottom:16px;">${ch.q}</p>
+      <div class="scenario-choices">
+        ${ch.opts.map((o,oi) => `<button class="choice-btn" onclick="guardianAnswer(${ci},${oi},this)">${o.text}</button>`).join('')}
+      </div>
+      <div id="guardian-res-${ci}" style="margin-top:12px;"></div>`;
+    cont.appendChild(div);
+  });
+}
+function guardianAnswer(ci, oi, btn) {
+  if (guardianAnswers[ci] !== undefined) return;
+  const choice = GUARDIAN_CHALLENGES[ci].opts[oi];
+  const res = document.getElementById('guardian-res-' + ci);
+  res.innerHTML = `<div style="padding:12px;background:${choice.correct?'rgba(76,175,80,0.15)':'rgba(229,57,53,0.15)'};border:1px solid ${choice.correct?'var(--green)':'var(--red)'};border-radius:10px;">${choice.fb}</div>`;
+  btn.classList.add(choice.correct ? 'correct' : 'wrong');
+  guardianAnswers[ci] = choice.correct ? 1 : 0;
+  // Update town visuals
+  if (choice.correct) {
+    if (ci === 0) { const f = document.getElementById('gt-factory'); if (f) f.innerHTML = '🌿<br><small style="font-size:0.6rem;">Cleaner</small>'; }
+    if (ci === 1) { const r = document.getElementById('gt-river'); if (r) r.innerHTML = '🐟<br><small style="font-size:0.6rem;">Restored!</small>'; }
+    if (ci === 2) { const fo = document.getElementById('gt-forest'); if (fo) fo.innerHTML = '🌳🌳<br><small style="font-size:0.6rem;">Growing!</small>'; }
+    awardXP(50, '+50 XP! Earth Guardian choice!');
+  }
+  if (Object.keys(guardianAnswers).length >= 3) {
+    const correctCount = Object.values(guardianAnswers).filter(v=>v).length;
+    const result = document.getElementById('guardian-result');
+    result.innerHTML = `<div style="padding:20px;background:rgba(76,175,80,0.2);border:2px solid var(--green);border-radius:16px;text-align:center;">
+      <div style="font-size:3rem;">🌎</div>
+      <h3 style="color:var(--xp);margin:12px 0;">Challenge Complete! ${correctCount}/3 correct decisions</h3>
+      <p style="line-height:1.7;">Remember: protecting the environment requires cooperation between <strong>individuals, communities, organizations, and governments</strong>. Your choices inspire others!</p>
+      <button class="btn btn-primary" onclick="claimLevel('earth',1,150,'Earth Guardian','🌎'); showScreen('certificate')" style="margin-top:16px;">🌎 Claim Earth Guardian Badge! (+150 XP)</button>
+    </div>`;
+    awardBadge('earth-guardian');
+  }
+}
+
+// ============================================================
+//  CERTIFICATE
+// ============================================================
+function updateCertificate() {
+  const xp = document.getElementById('cert-xp');
+  if (xp) xp.textContent = state.xp + ' XP';
+}
+
+// ============================================================
+//  PARENT LOGIN
+// ============================================================
+function parentLogin() {
+  const pin = document.getElementById('parent-pin').value;
+  const err = document.getElementById('pin-error');
+  if (pin === '1234' || pin === 'ecoquest') {
+    state.parentLoggedIn = true;
+    document.getElementById('parent-login-area').style.display = 'none';
+    document.getElementById('parent-dashboard').style.display = 'block';
+    document.getElementById('chat-fab-btn').style.display = 'block';
+    updateParentDashboard();
+  } else {
+    err.textContent = '❌ Incorrect PIN. Try: 1234';
+    const input = document.getElementById('parent-pin');
+    input.classList.add('shake');
+    setTimeout(() => input.classList.remove('shake'), 500);
+  }
+}
+function parentLogout() {
+  state.parentLoggedIn = false;
+  document.getElementById('parent-login-area').style.display = 'flex';
+  document.getElementById('parent-dashboard').style.display = 'none';
+  document.getElementById('chat-fab-btn').style.display = 'none';
+  document.getElementById('chat-window').classList.remove('open');
+  document.getElementById('parent-pin').value = '';
+}
+function updateParentDashboard() {
+  const map = { 'parent-xp-val': state.xp, 'parent-badges-val': state.badges.length, 'parent-actions-val': state.actionsCompleted, 'parent-level-val': state.level };
+  Object.entries(map).forEach(([id, val]) => { const el = document.getElementById(id); if (el) el.textContent = val; });
+}
+
+// ============================================================
+//  IBM BOB CHAT
+// ============================================================
+const BOT_RESPONSES = {
+  'air': 'Air pollution occurs when harmful gases, smoke, and particles enter the atmosphere. For EcoQuest, children learn about vehicle emissions, factory smoke, and burning waste. Key safe actions include saving electricity, walking or cycling when appropriate, and caring for trees. 🌬️',
+  'water': 'Water pollution happens when harmful substances enter rivers, lakes, or groundwater. The curriculum covers plastic waste, chemical runoff, and proper disposal. Children learn to turn off taps, avoid littering near water, and recycle packaging. 💧',
+  'soil': 'Soil pollution involves harmful substances contaminating land. Topics include improper waste disposal, plastic, chemicals, and batteries. Safety is emphasised — children are taught to tell trusted adults about hazardous waste rather than handle it themselves. 🌱',
+  'badge': 'EcoQuest has 8 badges including Soil Explorer, Garden Guardian, Soil Detective, Eco Recycler, Earth Protector, Air Guardian, Water Guardian, and the final Earth Guardian badge. Badges are earned by completing levels and challenges. 🏅',
+  'xp': 'XP (Experience Points) are earned throughout EcoQuest by completing levels (50–150 XP each), answering quiz questions (+10 XP), and ticking off eco actions (+10 XP each). XP tracks progress and unlocks higher levels. ⭐',
+  'level': 'EcoQuest has Soil Gardens (6 levels), Air City, and Water Valley worlds, plus the Earth Guardian Final Challenge. Each level teaches specific environmental concepts through interactive activities. 🎮',
+  'hazard': 'The application consistently teaches that children should NEVER handle chemicals, batteries, or hazardous waste themselves. The correct lesson throughout is: identify it, do not touch it, and tell a trusted adult or responsible authority. ⚠️',
+  'teach': 'Teaching tips: Let children explore at their own pace, discuss Eco Actions as a family, use Learn Hub for homework, celebrate badge achievements, and discuss what they have learned. The app emphasises shared environmental responsibility. 🎓',
+  'curriculum': 'EcoQuest covers: Air Pollution (causes, effects, safe actions), Water Pollution (plastic, chemicals, conservation), Soil Pollution (waste, organisms, food chain), Pollution Connection (how systems interact), and Earth Guardian Challenge (integrated decision-making). 📚',
+  'default': 'That\'s a great question! EcoQuest: Planet Protectors teaches children aged 8–15 about Air, Water, and Soil Pollution through interactive games and missions. I\'m here to help parents and teachers understand the curriculum. Could you be more specific — are you asking about a particular world, badge, or teaching approach? 🌍'
+};
+
+function toggleChat() {
+  const win = document.getElementById('chat-window');
+  win.classList.toggle('open');
+}
+function openChat() {
+  document.getElementById('chat-fab-btn').style.display = 'block';
+  document.getElementById('chat-window').classList.add('open');
+  window.scrollTo(0, document.body.scrollHeight);
+}
+function sendChat() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  const messages = document.getElementById('chat-messages');
+  messages.innerHTML += `<div class="chat-msg user">${msg}</div>`;
+  input.value = '';
+  // Find best response
+  const lower = msg.toLowerCase();
+  let resp = BOT_RESPONSES.default;
+  if (lower.includes('air')) resp = BOT_RESPONSES.air;
+  else if (lower.includes('water')) resp = BOT_RESPONSES.water;
+  else if (lower.includes('soil') || lower.includes('dirt')) resp = BOT_RESPONSES.soil;
+  else if (lower.includes('badge')) resp = BOT_RESPONSES.badge;
+  else if (lower.includes('xp') || lower.includes('point')) resp = BOT_RESPONSES.xp;
+  else if (lower.includes('level') || lower.includes('world')) resp = BOT_RESPONSES.level;
+  else if (lower.includes('hazard') || lower.includes('chemical') || lower.includes('battery') || lower.includes('danger')) resp = BOT_RESPONSES.hazard;
+  else if (lower.includes('teach') || lower.includes('tip') || lower.includes('classroom') || lower.includes('school')) resp = BOT_RESPONSES.teach;
+  else if (lower.includes('curriculum') || lower.includes('learn') || lower.includes('topic')) resp = BOT_RESPONSES.curriculum;
+  setTimeout(() => {
+    messages.innerHTML += `<div class="chat-msg bot">🤖 <strong>IBM Bob:</strong> ${resp}</div>`;
+    messages.scrollTop = messages.scrollHeight;
+  }, 700);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  loadState();
+  updateNavXP();
+  renderBadges();
+  updateWorldBars();
+  exploreCount = state.soilExplored ? state.soilExplored.size : 0;
+  (state.completedLevels.soil || []).forEach(l => {
+    const el = document.getElementById('soil-l' + l + '-badge');
+    if (el) el.textContent = '✅';
+  });
+  initStars();
+});
+
+// ── TWINKLING STARS BACKGROUND ──────────────────────────────
+function initStars() {
+  const bg = document.getElementById('stars-bg');
+  if (!bg) return;
+  for (let i = 0; i < 80; i++) {
+    const s = document.createElement('div');
+    s.className = 'star-dot';
+    const size = Math.random() * 3 + 1;
+    s.style.cssText = [
+      `width:${size}px`, `height:${size}px`,
+      `left:${Math.random()*100}%`, `top:${Math.random()*100}%`,
+      `--d:${(Math.random()*3+2).toFixed(1)}s`,
+      `animation-delay:${(Math.random()*5).toFixed(1)}s`
+    ].join(';');
+    bg.appendChild(s);
+  }
+}
+
+// ── CONFETTI BURST ───────────────────────────────────────────
+const CONFETTI_COLORS = ['#00e5ff','#2ECC40','#FFD600','#FF69B4','#FF9800','#9B59B6','#E74C3C'];
+function launchConfetti(count) {
+  count = count || 30;
+  for (let i = 0; i < count; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.cssText = [
+      `left:${Math.random()*100}vw`,
+      `background:${CONFETTI_COLORS[Math.floor(Math.random()*CONFETTI_COLORS.length)]}`,
+      `width:${Math.random()*8+6}px`,
+      `height:${Math.random()*8+6}px`,
+      `border-radius:${Math.random()>.5?'50%':'3px'}`,
+      `--dur:${(Math.random()*1.5+1.8).toFixed(1)}s`,
+      `animation-delay:${(Math.random()*.6).toFixed(2)}s`
+    ].join(';');
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 4000);
+  }
+}
+
+// ── OVERRIDE awardXP to fire confetti on badge ───────────────
+const _origAwardXP = awardXP;
+// ── OVERRIDE awardBadge to fire confetti ─────────────────────
+const _origAwardBadge = awardBadge;
+function awardBadge(id) {
+  const wasNew = !state.badges.includes(id);
+  _origAwardBadge(id);
+  if (wasNew) { launchConfetti(45); }
+}
+
+// ── EMOJI REACTION HELPER ────────────────────────────────────
+function showEmojiReaction(emoji, x, y) {
+  const el = document.createElement('div');
+  el.textContent = emoji;
+  el.style.cssText = `position:fixed;left:${x}px;top:${y}px;font-size:2.5rem;pointer-events:none;z-index:9997;animation:emojiPop .9s ease forwards;`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1000);
+}
+// Inject keyframe
+(function(){
+  const s=document.createElement('style');
+  s.textContent='@keyframes emojiPop{0%{transform:scale(0) translateY(0);opacity:1}60%{transform:scale(1.3) translateY(-40px);opacity:1}100%{transform:scale(1) translateY(-80px);opacity:0}}';
+  document.head.appendChild(s);
+})();
+
+// ── CLICK RIPPLE on clickable objects ───────────────────────
+document.addEventListener('click', function(e) {
+  const target = e.target.closest('.clickable-obj,.choice-btn.correct,.quiz-option.correct,.garden-cell,.drag-item');
+  if (!target) return;
+  const reactions = ['✨','⭐','🌟','💫','🎉','🌈'];
+  showEmojiReaction(reactions[Math.floor(Math.random()*reactions.length)], e.clientX - 20, e.clientY - 40);
+});
+</script>
+
+</body>
+</html>
